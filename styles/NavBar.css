@@ -1,0 +1,69 @@
+.nav-main{
+    text-align: left;
+    width: 300px;
+}
+.nav-main li {
+    list-style: none;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: grab;
+    margin-bottom:8px;
+}
+.nav-main img{
+    width: 25px;
+    height: 25px;
+    margin-right:5px ;
+}
+
+.avatar-img{
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    border-radius: 50%;
+}
+.nav-main li:hover{
+    color:#ff3eaf;
+    font-size: 23px;
+   
+}
+.navBar-main{
+    background-color: #003048;
+}
+.nav-main h1{
+    text-align: center;
+    font-size: 50px;
+    color:#00c7b6;
+}
+.Logo {
+    display: flex;
+    margin: auto;
+
+}
+.Logo img{
+    width: 55px;
+    height: 55px;
+}
+.main-navegacion{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: fixed;
+    top:0%;
+    width: 100%;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.452);
+    height: 65px;
+
+}
+.info-nav{
+    margin-left: auto;
+    margin-bottom:auto ;
+    margin-top: auto;
+    margin-right: 40px;
+    display: flex;
+}
+.nameAvatar{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+}
