@@ -9,9 +9,11 @@ function MyApp({ Component, pageProps }) {
         <title>Sistema de Gestion</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavBar>
-        <Component {...pageProps} />
-      </NavBar>
+      {
+          <NavBar>
+          <Component {...pageProps} />
+        </NavBar>
+      }
     </>
   );
 }
