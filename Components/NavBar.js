@@ -1,7 +1,7 @@
 import Drawer from "@material-ui/core/Drawer";
 import Link from "next/link";
 import AppBarNav from './AppBarNav';
-export default function NavBar() {
+export default function NavBar({children}) {
   return (
     <>
     <AppBarNav />
@@ -44,7 +44,7 @@ export default function NavBar() {
         </li>
         <li>
           <img  src="https://www.flaticon.es/svg/vstatic/svg/3094/3094851.svg?token=exp=1610749211~hmac=3e0b7f2a92febae872b2a9a385cce697"/>
-          <Link href="/Informacion/Informacion">
+          <Link href="/Informes/Informes">
             <a>Informes</a>
           </Link>
         </li>
@@ -56,12 +56,15 @@ export default function NavBar() {
         </li>
         <li>
             <img src="https://www.flaticon.es/svg/vstatic/svg/561/561196.svg?token=exp=1610749328~hmac=8c6885cd3b1b1d915dbda79d73ebf01e"/>
-          <Link href="/Configuracion/Connfiguracion">
+          <Link href="/Configuracion/Configuracion">
             <a>Configuracion</a>
           </Link>
         </li>
       </ul>
     </Drawer>
+      <main className="contaniner-principal">
+        {children}
+      </main>
     </>
   );
 }

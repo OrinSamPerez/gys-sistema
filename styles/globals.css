@@ -14,3 +14,9 @@ a {
 * {
   box-sizing: border-box;
 }
+h6{
+  text-align: center;
+}
+.contaniner-principal{
+  margin-left: auto;
+}
