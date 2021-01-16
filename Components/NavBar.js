@@ -14,7 +14,7 @@ export default function NavBar({children}) {
         </div>
         <li>
         <img src="https://www.flaticon.es/svg/vstatic/svg/25/25694.svg?token=exp=1610748697~hmac=3437445e313696bbffad4fdb0ab1d2b0"/>
-          <Link href="/Home/Home">
+          <Link href="/">
             <a>Casa</a>
           </Link>
         </li>
