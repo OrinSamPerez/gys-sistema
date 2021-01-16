@@ -32,7 +32,6 @@ export const loginCollection = (email, nameEmpresa,number,typeEmpresa)=>{
 export const loginSingIn = (email, password)=>{
     return firebase.auth().signInWithEmailAndPassword(email, password)
 }
-
-export const userDate = ()=>{
-    return db.collection("perezorlin104@gmail.comxx").get()
+export const userDate = (email)=>{
+    return db.collection(email).get()
 }

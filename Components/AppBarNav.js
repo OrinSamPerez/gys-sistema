@@ -5,19 +5,8 @@ import EmailIcon from '@material-ui/icons/Email';
 import {userDate} from '../firebase.BD/firebase.conf'
 import {useState} from 'react';
 
-
 export default function AppBarNav(){
-    const [user, setUser] = useState(null)
-    userDate().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            const data = doc.data()
-            const user = data.nameEmpresa;
-            setUser(user)
-            
-        });
-    });
-
+    const user = "undefined"
     return(
         <nav className="main-navegacion">
              

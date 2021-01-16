@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useState } from "react";
 import Modal from "@material-ui/core/Modal";
 import {loginWithEmail, loginCollection} from '../../firebase.BD/firebase.conf';
-import { validadorLogin } from '../../Services/validadorLogin'
+import { validadorLogin } from '../../Services/validadorLogin';
+import { userDate } from '../../firebase.BD/firebase.conf';
+
 export default function Registro() {
   const [open, setModal] = useState(true);
-
+  
   const registroInputs = (e)=>{
     e.preventDefault();
     const nameEmpresa = document.getElementById('nameEmpresa').value;
@@ -22,10 +24,13 @@ export default function Registro() {
     then((resp)=>{
       console.log(resp)
     })
+    userDate(email)
     loginCollection(email, nameEmpresa,number,typeEmpresa).
     then((resp)=>{
+      
       setModal(false)
-    })
+    },[])
+ 
   }
   return (
     <Modal

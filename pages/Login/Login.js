@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import Styles from "../../styles/Login.module.css";
 import Link from "next/link";
 import {loginSingIn} from '../../firebase.BD/firebase.conf'
-
+import { userDate } from '../../firebase.BD/firebase.conf';
 
 export default function  Login() {
     const [open, setModal ] = useState(true)
@@ -12,11 +12,11 @@ export default function  Login() {
         e.preventDefault();
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
-    
+        userDate(email)
         loginSingIn(email, password)
         .then((resp)=>{
             setModal(false)
-        })
+        },[])
     }
     return(
     <Modal 
