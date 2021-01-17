@@ -12,10 +12,12 @@
 }
 .container {
   width: 400px;
-  height: 400px;
+  height: 450px;
   justify-content: center;
   align-items: center;
   margin: auto;
+  box-shadow: -3px 3px 10px rgba(0, 0, 0, 0.459);
+  border-radius: 15px;
 }
 .formMain input {
   justify-content: center;
@@ -46,6 +48,7 @@
 
 .formMain span:hover {
   color: rgb(253, 47, 116);
+  cursor: grab;
 }
 .seccion {
   color: rgb(26, 26, 26);

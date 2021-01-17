@@ -2,11 +2,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
-import {userDate} from '../firebase.BD/firebase.conf'
-import {useState} from 'react';
 
 export default function AppBarNav(){
-    const user = "undefined"
+    const user = 'undefined'
     return(
         <nav className="main-navegacion">
              

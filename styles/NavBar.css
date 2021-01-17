@@ -10,10 +10,11 @@
     cursor: grab;
     margin-bottom:8px;
 }
-.nav-main img{
+.imagenes{
     width: 25px;
     height: 25px;
     margin-right:5px ;
+    display: flex;
 }
 
 .avatar-img{
