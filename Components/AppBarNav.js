@@ -3,8 +3,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
 
-export default function AppBarNav(){
-    const user = 'undefined'
+export default function AppBarNav({user}){
+    
     return(
         <nav className="main-navegacion">
              

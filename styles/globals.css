@@ -20,3 +20,14 @@ h6{
 .contaniner-principal{
   margin-left: auto;
 }
+.center-table{
+  margin-bottom: 20px;
+}
+.table{
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.button-table{
+  margin-left:12px ;
+}

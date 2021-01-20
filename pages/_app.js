@@ -3,8 +3,9 @@ import "../styles/NavBar.css";
 import NavBar from "../Components/NavBar";
 import Head from "next/head";
 import Login from "./Login/Login";
-import { firebaseG } from "../firebase.BD/firebase.conf";
+import { firebaseG, userInfo } from "../firebase.BD/firebase.conf";
 import { useState } from "react";
+import "../styles/goblaForms.css"
 function MyApp({ Component, pageProps }) {
   const [userName, setUserName] = useState(null);
   return (
@@ -15,8 +16,9 @@ function MyApp({ Component, pageProps }) {
       </Head>
       {firebaseG.auth().onAuthStateChanged((user) => setUserName(user))}
 
+      
       {userName ? (
-        <NavBar>
+        <NavBar userInfo={userInfo()}>
           <Component {...pageProps} />
         </NavBar>
       ) : (

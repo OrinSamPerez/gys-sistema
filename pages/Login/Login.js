@@ -39,7 +39,7 @@ export default function Login() {
     });
 
     loginCollection(email, nameEmpresa, number, typeEmpresa).then((resp) => {
-      setModal(false);
+
     }, []);
   };
   const bodyLogin = (

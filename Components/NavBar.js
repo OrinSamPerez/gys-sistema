@@ -9,10 +9,10 @@ import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
 import SettingsIcon from '@material-ui/icons/Settings';
-export default function NavBar({children}) {
+export default function NavBar({children, userInfo}) {
   return (
     <>
-    <AppBarNav />
+    <AppBarNav user={userInfo} />
     <Drawer  variant="permanent" anchor="left" color="primary">
       <ul className="nav-main">
 
@@ -46,7 +46,7 @@ export default function NavBar({children}) {
         </li>
         <li>
           <Link href="/Provedor/Provedor">
-            <div className="imagenes"><LocalShippingIcon/>  <a>Provedor</a></div>    
+            <div className="imagenes"><LocalShippingIcon/>  <a>Proveedor</a></div>    
           </Link>
         </li>
         <li>
