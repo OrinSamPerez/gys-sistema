@@ -1,13 +1,26 @@
-import { firebaseG, userInfo} from "./firebase.conf";
-
+import { firebaseG } from "./firebase.conf";
 const db = firebaseG.firestore();
-var  userEmail="orlin@gmail.com"
+var dataGlobal;
+let userData = "";
+var userEmail = "orlinb";
 
+const dato =()=>{
+  userData =  firebaseG.auth().currentUser;
+      if (userData != null) {
+        userEmail = userData.email;
+        dataGlobal = userEmail;
+      }
+      return userEmail = dataGlobal; 
+}
 
-
+firebaseG.auth().onAuthStateChanged((user) => {
+  user
+    ?dato()
+    : console.log("No hay datos");
+});
 
 //Enviando datos a firebase
-const collectionDB = db.collection( userInfo() || userEmail ).doc("Proveedor"); 
+const collectionDB = db.collection(userEmail).doc("Proveedor");
 export const enviarDatoProveedor = (
   emailProveedor,
   terminosPago,
@@ -18,7 +31,7 @@ export const enviarDatoProveedor = (
   nombreProveedor
 ) => {
   var f = new Date();
-  var uId =  (nombreProveedor + f)
+  var uId = nombreProveedor + f;
   collectionDB
     .collection("Proveedor")
     .doc(uId)
@@ -30,7 +43,7 @@ export const enviarDatoProveedor = (
       emailProveedor,
       terminosPago,
       notaProveedor,
-      uId
+      uId,
     })
     .then(function () {
       console.log("Se ha registrado");
@@ -40,34 +53,44 @@ export const enviarDatoProveedor = (
     });
 };
 
-
 //Recibiendo datos de firebase y enviando al cliente
 
-export const getProveedor = () => collectionDB.collection("Proveedor").get()
-.then(({ docs })=>{
-  return docs.map( (doc)=>{
-    const  data= doc.data()
-    const { uId,nombreProveedor, dirrecion,cargoRepresentante, telefono, emailProveedor, terminosPago, notaProveedor } = data;
-    return{
-    
-          nombreProveedor, 
+export const getProveedor = () =>
+  collectionDB
+    .collection("Proveedor")
+    .get()
+    .then(({ docs }) => {
+      return docs.map((doc) => {
+        const data = doc.data();
+        const {
+          uId,
+          nombreProveedor,
           dirrecion,
-          cargoRepresentante, 
-          telefono, 
-          emailProveedor, 
+          cargoRepresentante,
+          telefono,
+          emailProveedor,
           terminosPago,
-           notaProveedor, 
-           uId
-    }
-  })
-})
+          notaProveedor,
+        } = data;
+        return {
+          nombreProveedor,
+          dirrecion,
+          cargoRepresentante,
+          telefono,
+          emailProveedor,
+          terminosPago,
+          notaProveedor,
+          uId,
+        };
+      });
+    });
 
 // const comprobarDatos =  () =>{
 //   if(userEmail === "null"){
 //     console.log('hola')
 //     userEmail =  userInfo()
 //     console.log(userEmail)
-//     return comprobarDatos() 
+//     return comprobarDatos()
 //   }
 // else if (userEmail != "null"){
 //     return userEmail =  userInfo()

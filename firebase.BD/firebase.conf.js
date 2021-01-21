@@ -26,7 +26,18 @@ export const userInfo = () => {
     userEmail = userData.email;
     return userEmail;
   }
+
 };
+
+export const userInfoData =  () => {
+    userData = firebase.auth().currentUser;
+    if (userData != null) {
+      var email  = userData.providerData.email;
+    }
+    return  email ;
+
+}  
+  
 
 export const loginCollection = (email, nameEmpresa, number, typeEmpresa) => {
   return db.collection(email).doc("datosUsuario").set({

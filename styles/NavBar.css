@@ -64,6 +64,14 @@
     margin-right: 40px;
     display: flex;
 }
+.info-nav div{
+    margin-bottom: auto;
+    margin-top: auto;
+    margin-right: 5px;
+}
+.info-nav h1{
+    font-size: 30px;
+}
 .nameAvatar{
     margin-top: auto;
     margin-bottom: auto;

@@ -46,7 +46,7 @@ export default function Login() {
     <div className={Styles.container}>
       <form className={Styles.formMain}>
         <div className={Styles.formInfo}>
-          <img src="https://www.flaticon.es/svg/vstatic/svg/2897/2897743.svg?token=exp=1610909471~hmac=c19c98f63e80478be05e99c969e79cec" />
+          <img src="/inventario.svg" />
           <h1>Iniciar Session</h1>
           <div>
             <label>
@@ -89,7 +89,7 @@ export default function Login() {
     <div className={StylesRegistro.container}>
       <form className={StylesRegistro.formMain}>
         <div className={StylesRegistro.formInfo}>
-          <img src="https://www.flaticon.es/svg/vstatic/svg/2897/2897743.svg?token=exp=1610909471~hmac=c19c98f63e80478be05e99c969e79cec" />
+          <img src="/inventario.svg" />
           <h1>Registrarse aqui</h1>
           <div>
             <label>

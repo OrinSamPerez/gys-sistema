@@ -17,7 +17,7 @@ export default function NavBar({children, userInfo}) {
       <ul className="nav-main">
 
         <div className="Logo">
-            <img src="https://www.flaticon.es/svg/vstatic/svg/2897/2897743.svg?token=exp=1610909471~hmac=c19c98f63e80478be05e99c969e79cec"/>
+            <img src="/inventario.svg"/>
             <h1>SGIF</h1>
         </div>
         <li>
