@@ -53,7 +53,9 @@ const proveedorInputs = () => {
   );
   setModal(false)
 };
-
+const deleteFila = (e)=>{
+  console.log(e.target.dataset.id)
+}
 const FormsProveedor = (
   <form className="form-modal">
     <h1>Añadir proveedor</h1>
@@ -176,10 +178,9 @@ const FormsProveedor = (
               <TableCell align="left">{row.notaProveedor}</TableCell>
               <TableCell>
                   <button  data-id={row.uId} >
-           
                     <EditIcon color="primary"/>
                   </button>
-                  <button data-id={row.uId}  >
+                  <button data-id={row.telefono} onClick={deleteFila}  >
                     <DeleteIcon color="secondary"/>
                   </button>
                   
@@ -192,7 +193,6 @@ const FormsProveedor = (
 
 
     </div>
-
 
      <Modal
       open={open}

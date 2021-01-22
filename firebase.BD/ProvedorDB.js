@@ -75,7 +75,7 @@ const getDataFirebase = (doc) => {
 export const listenData = (callback) => {
   return collectionDB
     .collection("Proveedor")
-    .orderBy("nombreProveedor", "desc")
+    .orderBy("uId", "asc")
     .onSnapshot(({ docs }) => {
       const newData = docs.map(getDataFirebase);
       callback(newData);

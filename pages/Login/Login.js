@@ -5,6 +5,9 @@ import Link from "next/link";
 import { loginSingIn,loginWithEmail,loginCollection } from "../../firebase.BD/firebase.conf";
 import StylesRegistro from "../../styles/Registro.module.css";
 import {validadorLogin} from "../../Services/validadorLogin";
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 
 export default function Login() {
 
@@ -21,7 +24,7 @@ export default function Login() {
 
     loginSingIn(email, password).then((resp) => {
 
-    }, []);
+    }, []).catch(resp => console.log("error" ) );
   };
 
   const registroInputs = (e) => {
@@ -163,10 +166,12 @@ export default function Login() {
   const [body, setBody] = useState(bodyLogin);
 
   return (
-    <div>
+    <>
+
+    <div className="fondo-login" >
         {body}
     </div>
-      
+    </>
 
   );
 }

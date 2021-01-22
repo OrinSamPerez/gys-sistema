@@ -1,23 +1,26 @@
 .formMain {
   background-color: white;
   border-radius: 20px;
-  margin-top: 30px;
   width: 400px;
   height: 450px;
   text-align: center;
+
 }
 
 .formMain label {
   margin-left: auto;
 }
 .container {
-  width: 400px;
-  height: 450px;
-  justify-content: center;
+
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(1, 30, 53, 0.80);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  margin: auto;
-  box-shadow: -3px 3px 10px rgba(0, 0, 0, 0.459);
-  border-radius: 15px;
+  justify-content: center;
 }
 .formMain input {
   justify-content: center;
