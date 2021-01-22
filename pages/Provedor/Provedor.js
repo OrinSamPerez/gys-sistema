@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import * as React from "react";
-import { getProveedor } from "../../firebase.BD/ProvedorDB";
+import {  listenData } from "../../firebase.BD/ProvedorDB";
 import Button from "@material-ui/core/Button";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import Modal from "@material-ui/core/Modal";
 import {FormsProveedor} from './FormsProveedor'
-import { TableContainer, TableCell ,TableHead,Table, TableRow, TableBody, ButtonGroup } from "@material-ui/core";
+import { TableContainer, TableCell ,TableHead,Table, TableRow, TableBody, ButtonGroup, Fab } from "@material-ui/core";
 import Paper from '@material-ui/core/Paper';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -16,7 +16,8 @@ export default function Provedor() {
   const [ rows, setRows ] = useState([ ]);
   
    useEffect(()=>{
-     getProveedor().then(setRows) 
+    // getProveedor().then(setRows) 
+    listenData((newData)=>{setRows(newData)})
  
   },[])
   const openModal = () => {
@@ -25,9 +26,15 @@ export default function Provedor() {
   const alertDelete =()=>{
 
   }
-
   
-  getProveedor()
+  const search = ()=>{
+    const valueSearch =  document.getElementById('search').value
+    const found = rows.indexOf(valueSearch);
+
+    console.log(rows)
+    console.log(found)
+  }
+
   return (
     <>
     <div className="table">
@@ -48,7 +55,14 @@ export default function Provedor() {
           <GetAppIcon />
         </Button>
       </div>
-
+      <div>
+        <input id="search" placeholder="Buscar en tabla"/>
+        <Button onClick={search} variant="text" color="default">
+          <Fab color="inherit" aria-label="">
+            buscar
+          </Fab>
+        </Button>
+      </div>
       <TableContainer component={Paper}>
       <Table size="small" aria-label="a dense table">
         <TableHead >
@@ -64,9 +78,8 @@ export default function Provedor() {
           </TableRow>
         </TableHead>    
         <TableBody >
-          {rows.map((row) => (
+          {rows.lenght ===0?<h1>No tiene datos, registrados</h1> :(rows.map((row) => (
             <TableRow key={row.nombreProveedor}>
-            {console.log(row.uId)}
               <TableCell align="left">{row.nombreProveedor}</TableCell>
               <TableCell align="left">{row.dirrecion}</TableCell>
               <TableCell align="left">{row.cargoRepresentante}</TableCell>
@@ -84,7 +97,7 @@ export default function Provedor() {
                   
               </TableCell>
             </TableRow>
-          ))}
+          )))}
         </TableBody>
       </Table>
     </TableContainer>
@@ -99,7 +112,7 @@ export default function Provedor() {
       aria-describedby="simple-modal-description"
     >
       {FormsProveedor}
-    </Modal>;
+    </Modal>
     </>
   );
 }
