@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
 import { makeStyles } from '@material-ui/core/styles';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
+import {firebaseG} from '../firebase.BD/firebase.conf'
 import Badge from '@material-ui/core/Badge';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,7 +26,9 @@ const useStyles = makeStyles((theme) => ({
 
     },
   }));
-
+const exitApp = ()=>{
+console.log('hola')
+}
 
 export default function AppBarNav({user}){
     const classes = useStyles()
@@ -49,7 +52,7 @@ export default function AppBarNav({user}){
                     <Avatar className={classes.purple}><h1>{avatar}</h1></Avatar>
                 </div>
                 <div>
-                    <Button color="default">
+                    <Button onClick={exitApp} color="default">
                         <Typography variant="subtitle1" color="initial">
                             Salir
                         </Typography>

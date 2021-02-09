@@ -2,10 +2,9 @@ import "../styles/globals.css";
 import "../styles/NavBar.css";
 import NavBar from "../Components/NavBar";
 import Head from "next/head";
-import Login from "./Login/Login";
+import Login from "./Login";
 import { firebaseG, userInfo } from "../firebase.BD/firebase.conf";
 import { useState } from "react";
-import "../styles/goblaForms.css"
 function MyApp({ Component, pageProps }) {
   const [userName, setUserName] = useState(null);
   return (

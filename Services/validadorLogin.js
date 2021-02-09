@@ -1,8 +1,4 @@
 export const  validadorLogin = (password, nameEmpresa,number,confPassword)=>{
-   
-    
-    
-
     if(password.lenght <= 7){
         alert('Su contraseña debe ser menor a 8 caracteres')
     }

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Button from "@material-ui/core/Button";
-import Styles from "../../styles/Login.module.css";
+import Styles from "../styles/Login.module.css";
 import Link from "next/link";
-import { loginSingIn,loginWithEmail,loginCollection } from "../../firebase.BD/firebase.conf";
-import StylesRegistro from "../../styles/Registro.module.css";
-import {validadorLogin} from "../../Services/validadorLogin";
+import { loginSingIn,loginWithEmail,loginCollection } from "../firebase.BD/firebase.conf";
+import StylesRegistro from "../styles/Registro.module.css";
+import {validadorLogin} from "../Services/validadorLogin";
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'

@@ -28,39 +28,39 @@ export default function NavBar({children, userInfo}) {
         </li>
         <li>
         
-          <Link href="/Factura/Factura">
+          <Link href="/Factura">
             <div className="imagenes"><DescriptionIcon/>  <a>Factura</a></div>
           </Link>
         </li>
         <li>
        
-        <Link href="/Producto/Producto">
+        <Link href="/Producto">
           <div className="imagenes"><OpenInBrowserIcon/>  <a>Producto</a></div>
         </Link>
 
         </li>
         <li>
-          <Link href="/Cliente/Cliente">
-            <div className="imagenes"><SupervisorAccountIcon/>  <a>Cliente</a></div>
+          <Link href="/Cliente">
+            <div className="imagenes"><SupervisorAccountIcon/>  <a>Clientes</a></div>
           </Link>
         </li>
         <li>
-          <Link href="/Provedor/Provedor">
-            <div className="imagenes"><LocalShippingIcon/>  <a>Proveedor</a></div>    
+          <Link href="/Provedor">
+            <div className="imagenes"><LocalShippingIcon/>  <a>Proveedores</a></div>    
           </Link>
         </li>
         <li>
-          <Link href="/Informes/Informes">
+          <Link href="/Informes">
             <div className="imagenes"><ShowChartIcon />  <a>Informes</a></div>
           </Link>
         </li>
         <li>
-          <Link href="/Stock/Stock">
+          <Link href="/Stock">
             <div className="imagenes"><ImportContactsIcon/>  <a>Stock</a></div>
           </Link>
         </li>
         <li>
-          <Link href="/Configuracion/Configuracion">
+          <Link href="/Configuracion">
             <div className="imagenes"><SettingsIcon/>  <a>Configuracion</a></div>
           </Link>
         </li>
