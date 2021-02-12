@@ -74,7 +74,8 @@ export default function Provedor() {
           <tr>
             <td>Producto</td>
             <td>Cantidad</td>
-            <td>Precio U</td>
+            <td>Precio Venta</td>
+            <td>Precio Compra</td>
             <td>Proveedor</td>
             <td>Categoria</td>
             <td>Fecha</td>
@@ -83,7 +84,8 @@ export default function Provedor() {
             (<tr key={datos.id } >
               <td >{datos.nombreProducto}</td>
               <td>{datos.cantidadProducto}</td>
-              <td>RD${datos.precioProducto}</td>
+              <td>RD${datos.precioVentaProducto}</td>
+              <td>RD${datos.precioCompraProducto}</td>
               <td>{datos.proveedorProducto}</td>
               <td>{datos.categoriaProducto}</td>
               <td>{datos.fechaProducto}</td>

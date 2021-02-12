@@ -19,7 +19,8 @@ export default function FormsProducto(props) {
     fechaProducto: fecha,
     proveedorProducto: "",
     categoriaProducto: "",
-    precioProducto:1,
+    precioCompraProducto:1,
+    precioVentaProducto:1,
   };
   const DRAG_IMAGE_STATES = {
     ERROR: -1,
@@ -190,10 +191,18 @@ export default function FormsProducto(props) {
         <input
           type="number"
           min={1}
-          value={values.precioProducto}
+          value={values.precioCompraProducto}
           onChange={handleInputChange}
-          placeholder="Precio del producto"
-          name="precioProducto"
+          placeholder="Precio de Compra"
+          name="precioCompraProducto"
+        />
+        <input
+          type="number"
+          min={1}
+          value={values.precioVentaProducto}
+          onChange={handleInputChange}
+          placeholder="Precio de venta"
+          name="precioVentaProducto"
         />
         {getProveedor.length === 0 ? (
           <Link href="/Provedor">
