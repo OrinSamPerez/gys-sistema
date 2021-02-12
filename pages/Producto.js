@@ -74,6 +74,7 @@ export default function Provedor() {
           <tr>
             <td>Producto</td>
             <td>Cantidad</td>
+            <td>Precio U</td>
             <td>Proveedor</td>
             <td>Categoria</td>
             <td>Fecha</td>
@@ -82,6 +83,7 @@ export default function Provedor() {
             (<tr key={datos.id } >
               <td >{datos.nombreProducto}</td>
               <td>{datos.cantidadProducto}</td>
+              <td>RD${datos.precioProducto}</td>
               <td>{datos.proveedorProducto}</td>
               <td>{datos.categoriaProducto}</td>
               <td>{datos.fechaProducto}</td>
