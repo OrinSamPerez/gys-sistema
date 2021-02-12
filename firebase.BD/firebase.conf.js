@@ -39,12 +39,13 @@ export const userInfoData =  () => {
 }  
   
 
-export const loginCollection = (email, nameEmpresa, number, typeEmpresa) => {
+export const loginCollection = (email, nameEmpresa, number, typeEmpresa, direccion) => {
   return db.collection(email).doc("datosUsuario").set({
     email,
     nameEmpresa,
     number,
     typeEmpresa,
+    direccion
   });
 };
 

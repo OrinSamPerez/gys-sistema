@@ -35,15 +35,17 @@ export default function Login() {
     const typeEmpresa = document.getElementById("typeEmpresa").value;
     const password = document.getElementById("password").value;
     const confPassword = document.getElementById("confPassword").value;
+    const direccion= document.getElementById("direccion").value;
 
     validadorLogin(password, nameEmpresa, number, confPassword);
+    loginCollection(email, nameEmpresa, number, typeEmpresa, direccion).then((resp) => {
+
+    }, []);
     loginWithEmail(email, password).then((resp) => {
       console.log(resp);
     });
 
-    loginCollection(email, nameEmpresa, number, typeEmpresa).then((resp) => {
-
-    }, []);
+    
   };
   const bodyLogin = (
     <div className={Styles.container}>
@@ -130,6 +132,13 @@ export default function Login() {
                 placeholder="Tipo de empresa"
               />
             </label>
+            <label>
+              <input
+                id="direccion"
+                required
+                placeholder="Ingresa la dirrecion"
+              />
+            </label>
           </div>
           <div>
             <label>
@@ -140,6 +149,7 @@ export default function Login() {
                 placeholder="Ingresa tu contraseña"
               />
             </label>
+       
             <label>
               <input
                 id="confPassword"
