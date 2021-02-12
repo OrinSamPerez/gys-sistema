@@ -76,6 +76,7 @@ export default function Provedor() {
             <td>Cantidad</td>
             <td>Precio Venta</td>
             <td>Precio Compra</td>
+            <td>Descuento</td>
             <td>Proveedor</td>
             <td>Categoria</td>
             <td>Fecha</td>
@@ -86,6 +87,7 @@ export default function Provedor() {
               <td>{datos.cantidadProducto}</td>
               <td>RD${datos.precioVentaProducto}</td>
               <td>RD${datos.precioCompraProducto}</td>
+              <td>%{datos.descuentoProducto}</td>
               <td>{datos.proveedorProducto}</td>
               <td>{datos.categoriaProducto}</td>
               <td>{datos.fechaProducto}</td>
