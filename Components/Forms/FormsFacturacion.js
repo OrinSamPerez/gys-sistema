@@ -2,28 +2,117 @@ import Button from '@material-ui/core/Button'
 import {useState, useEffect} from 'react';
 import {firebaseG} from '../../firebase.BD/firebase.conf'
 import SendIcon from '@material-ui/icons/Send';
+import Link from 'next/head'
+import {agregarProductoFactura} from '../../Services/functionFactura'
+import {getFecha} from '../../Services/getFecha';
+
 
 const db =  firebaseG.firestore();
-
+const metodoPago = ['Efectivo','Tarjeta de credito']
 export default function FormsFacturacion(props){
-    const valueInitial = {
-        clienteFactura:'',
-        domicilioFactura:'',
-        ciudadFactura:'',
-        NIFFactura:'',
-        comentariosFactura:'',
-        productos:[],
-        clienteExistente:[]
+  const [dataProducto, setDataProducto] = useState([]) 
+  const [dataProductoAñadidos, setDataProductoAñadidos] = useState([])
+  const [fecha, setFecha] = useState(getFecha);
+  const [hora, setHora]=useState()
+  var fechaA = new Date();
+  const horaActual = (`${fechaA.getHours()}:${fechaA.getMinutes()}:${fechaA.getSeconds()}`)
+  setTimeout(()=>{
+    setHora(horaActual)
+},1000)
 
-     }
+  const getDataProductoAñadidos =()=>{ 
+    firebaseG.auth().onAuthStateChanged(async (user) => {
+     db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').onSnapshot((querySnapshot)=>{
+       const docs = [];
+       querySnapshot.forEach(doc =>{
+         docs.push({...doc.data(),id:doc.id})
+         
+       })
+       setDataProductoAñadidos(docs);
+     });
+     })
+   }
+   useEffect(()=>{
+    getDataProductoAñadidos()
+   },[])
+  const getDataProducto =()=>{
+
+        firebaseG.auth().onAuthStateChanged(async (user) => {
+        db.collection(user.email).doc('Producto').collection('Producto').orderBy("fechaProducto", "desc").onSnapshot((querySnapshot)=>{
+            const docs = [];
+            querySnapshot.forEach(doc =>{
+              docs.push({...doc.data(),id:doc.id})
+              
+            })
+            setDataProducto(docs)
+        });
+        })
+    }
+    useEffect(()=>{
+        getDataProducto()
+    },[])
+
+    const valueInitial = {
+        numeroFactura:'',
+        nombreClienteFactura:'',
+        correoClienteFactura:'',
+        rncEmpresa:'',
+        telefonoEmpresa:'',
+        fechaActual:fecha,
+        horaActual:hora,
+        plazoPagoFactura:'',
+        vencimientoFactura:'',
+        estadoPago:'',
+        ITBISFactura:'',
+        subTotal:'',
+        Total:'',
+        productoFactura:[],
+        tipoPagoFactura:'',
+        dirrecionCliente:'',
+        ncfFactura:'',
+
+
+    }
+     
     const [values, setValues] = useState(valueInitial);
+    const [valuesProductos, setValuesProductos] = useState([]);
+    const [ data, setData ] = useState([ ])
+    const [ dataAgregarProducto,setDataAgregarProducto  ]= useState([])
+    const [cantidadMax, setCantidadMax ] = useState(1)
+    const [productoSeleccionado,setProductoSeleccionado]=useState('')
+    const [productAdd, setProductAdd]= useState('Añadir producto')
     const handleInputChange = (e)=>{
         const { name , value } = e.target;
         setValues({...values, [name]:value}) 
     }
+    const getData =()=>{
+
+        firebaseG.auth().onAuthStateChanged(async (user) => {
+         db.collection(user.email).doc('Producto').collection('Producto').orderBy("fechaProducto", "desc").onSnapshot((querySnapshot)=>{
+           const docs = [];
+           querySnapshot.forEach(doc =>{
+             docs.push({...doc.data(),id:doc.id})
+             
+           })
+           setData(docs);
+         });
+         })
+       }
+       useEffect(()=>{
+         getData()
+       },[])
+
     const handleSubmit = (e)=>{
         e.preventDefault();
-        props.addactFactura(values);  
+        const estadoPago = document.getElementById("estadoPago").value;
+        const tipoPagoFactura = document.getElementById("tipoPagoFactura").value;
+        values.tipoPagoFactura = tipoPagoFactura
+        values.estadoPago = estadoPago
+        values.subTotal = props.SUBTOTAL
+        values.Total = props.TOTAL
+        values.ITBISFactura = props.ITBIS
+        values.productoFactura = props.data
+        props.addFactura(values);  
         setValues({...valueInitial})
     }
     const getDataId = async (id) =>{
@@ -41,19 +130,135 @@ export default function FormsFacturacion(props){
             getDataId(props.currentId)
         }
     },[props.currentId])
+    //Buscar productos
+    const buscarProducto = (e)=>{
+        let palabraBuscar = e.target.value
+        let numeroPalabraBuscar = palabraBuscar.length;
+
+        const result = dataProducto.filter(word =>{
+            const PalabraProducto = word.nombreProducto; 
+            const caracterPalabrasActual = PalabraProducto.substr(0,numeroPalabraBuscar) 
+            return caracterPalabrasActual === palabraBuscar
+
+        } )
+        setDataAgregarProducto(result)
+        result.map(dato=>{
+            setProductoSeleccionado(dato.nombreProducto)
+            setCantidadMax(dato.cantidadProducto)
+            const datoProductos = {
+                producto:dato.nombreProducto,
+                descuento:dato.descuentoProducto,
+                precio:dato.precioVentaProducto,
+                cantidad:dato.cantidadProducto,
+                itbis:0,
+                total:0,
+                subTotal:0,
+            }
+            setValuesProductos(datoProductos)
+        })
+    }
+    const añdirProductoClick =(e)=>{
+        
+        const result = dataProducto.filter(word=>word.nombreProducto===e)
+        result.map(dato=>{
+            setCantidadMax(dato.cantidadProducto)
+            setProductAdd(dato.nombreProducto)
+            setProductoSeleccionado(dato.nombreProducto)
+            const datoProductos = {
+                producto:dato.nombreProducto,
+                descuento:dato.descuentoProducto,
+                precio:dato.precioVentaProducto,
+                cantidad:dato.cantidadProducto,
+                itbis:0,
+                total:0,
+                subTotal:0,
+            }
+            setValuesProductos(datoProductos)
+        })
+    }
+    const addProducto = ()=>{
+        let cantidadIn = document.getElementById('cantidadIn').value
+        const cantidadMax = valuesProductos.cantidad
+        if(cantidadIn === ""){
+            cantidadIn = 1
+            agregarProductoFactura(cantidadIn,cantidadMax,valuesProductos)
+        }
+        else{
+            agregarProductoFactura(cantidadIn,cantidadMax,valuesProductos)
+        }
+       
+        
+    }
 
     return(
     <div>
+        <span>Fecha actual {fecha} </span>
+        <span> Hora actual{hora}</span>
         <form onSubmit={handleSubmit}>
-          <input type="text" required value={values.clienteFactura} onChange={handleInputChange} placeholder="Cliente" name="domicilioFactura"/>
-          <input type="text" required value={values.domicilioFactura}  onChange={handleInputChange} placeholder="Domicilio" name="domicilioFactura"/>
-          <input type="text" required value={values.ciudadFactura}  onChange={handleInputChange} placeholder="Ciudad" name="ciudadFactura"/>
-          <input type="text" required value={values.NIFFactura}  onChange={handleInputChange} placeholder="NIF" name="NIFFactura"/>
+           <label>Seleccionar cliente</label>
+           <select>
+               <option value="selec" >Selec</option>
+           </select>
+           <labe>Cliente</labe>
+           <input type="text" required value={values.nombreClienteFactura} onChange={handleInputChange} placeholder="Cliente" name="nombreClienteFactura"/>
+           <input type="email"  value={values.correoClienteFactura} onChange={handleInputChange} placeholder="Correo Cliente" name="correoClienteFactura"/>
+           <input type="text" value={values.dirrecionCliente} onChange={handleInputChange} placeholder="Dirrecion Cliente" name="dirrecionCliente"/>
+           <input type="text" value={values.plazoPagoFactura} onChange={handleInputChange} placeholder="Plazo Factura" name="plazoPagoFactura"/>
+           <input type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/>
+           {metodoPago.length === 0?
+           <Link href="/Configuracion">
+            <Button variant="contained" color="default">
+              Añadir metodo de pago
+            </Button>
+           </Link>
+           :<select id="tipoPagoFactura"  onChange={handleInputChange} name="tipoPagoFactura"> {metodoPago.map(pago => 
+               <option value={pago}>{pago}</option>
+           )}
+           </select>}
+            
+           <select id="estadoPago" onChange={handleInputChange} name="estadoPago" >
+               <option value="Pagada">Pagada</option>
+               <option value="A plazo">No pagada</option>
+           </select>
+            <div className="añdirProducto">
+                <div>
+                    <label>Seleccionar producto</label>
+                    <input className="buscarProducto" type="text" onChange={buscarProducto} placeholder={productAdd}/>
+                    <div className="ProductoSelect">
+                        {dataAgregarProducto.map(producto=>
+                            <>
+                            <Button  onClick={()=>añdirProductoClick(producto.nombreProducto)}  variant="text" color="default">
+                                {producto.nombreProducto}
+                            </Button>
+                            <br></br>
+                            </>)
+                        }
+                    
+                    </div>
+                </div>
+                <input type="number" id="cantidadIn" min="1" max={cantidadMax} />
+                <span>Producto Seleccionado {productoSeleccionado}, Cantidad maxima #{cantidadMax}</span>
+                 
+            </div>
+            <Button onClick={addProducto} variant="text" color="default">
+              Agregar Producto
+            </Button>
           <Button onClick={handleSubmit} variant="text" color="default">
-             <SendIcon color="secondary"/> 
-           </Button>
+             Crear Factura
+           </Button> 
         </form> 
+        <style jsx>{`
+        .ProductoSelect{
+            position:fixed;
         
+        }
+        .añdirProducto{
+            display:flex;
+        }
+        .buscarProducto{
+            width:50%;
+        }
+        `}</style>
      </div>
     )
 } 

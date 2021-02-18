@@ -1,12 +1,13 @@
 import Button from "@material-ui/core/Button";
 import { useState, useEffect } from "react";
 import { firebaseG } from "../../firebase.BD/firebase.conf";
-import SendIcon from "@material-ui/icons/Send";
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import EditIcon from "@material-ui/icons/Edit";
 import Modal from "@material-ui/core/Modal";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Link from "next/link";
 import { getFecha } from "../../Services/getFecha";
+import Fab from '@material-ui/core/Fab'
 import CloseIcon from "@material-ui/icons/Close";
 const db = firebaseG.firestore();
 
@@ -88,7 +89,7 @@ export default function FormsProducto(props) {
     });
     const ref = firebaseG
       .storage()
-      .ref(`/${email}/imagesProducto/${file.name}`);
+      .ref(`/imagesProducto/${file.name}`);
     const task = ref.put(file);
     console.log(task)
     return task;
@@ -166,53 +167,28 @@ export default function FormsProducto(props) {
     const refDelete = firebaseG
       .storage()
       .ref()
-      .child(`${email}/imagesProducto/${file.name}`);
+      .child(`/imagesProducto/${file.name}`);
     refDelete.delete().then(() => {
       setImage(null);
     });
   };
   return (
     <>
+    <div  >
       <form onSubmit={handleSubmit}>
-        <input
+      {props.currentId === ""? (<h2>Registrar Producto</h2> ) : (<h2>Actualizar Producto</h2>)}
+     
+      
+      <div>
+        <label   >Descripcion</label><input
+         className="inputd-producto" 
           type="text"
           value={values.nombreProducto}
           onChange={handleInputChange}
           placeholder="Descripcion del producto"
           name="nombreProducto"
         />
-        <input
-          type="number"
-          min={1}
-          value={values.cantidadProducto}
-          onChange={handleInputChange}
-          placeholder="Cantidad en unidades de productos"
-          name="cantidadProducto"
-        />
-        <input
-          type="number"
-          min={1}
-          value={values.precioCompraProducto}
-          onChange={handleInputChange}
-          placeholder="Precio de Compra"
-          name="precioCompraProducto"
-        />
-        <input
-          type="number"
-          min={1}
-          value={values.precioVentaProducto}
-          onChange={handleInputChange}
-          placeholder="Precio de venta"
-          name="precioVentaProducto"
-        /><input
-          type="number"
-          min={1}
-          max={100}
-          value={values.descuentoProducto}
-          onChange={handleInputChange}
-          placeholder="Aplicar descuento"
-          name="descuentoProducto"
-        />
+         <label >Proveedor</label>
         {getProveedor.length === 0 ? (
           <Link href="/Provedor">
             <Button variant="container" color="primary">
@@ -221,6 +197,7 @@ export default function FormsProducto(props) {
           </Link>
         ) : (
           <select
+         
             required
             name="proveedorProducto"
             id="nameProveedor"
@@ -234,6 +211,44 @@ export default function FormsProducto(props) {
             ))}
           </select>
         )}
+        
+       <label  >Cantidad</label> <input
+          className="nproducto" 
+          type="number"
+          min={1}
+          value={values.cantidadProducto}
+          onChange={handleInputChange}
+          placeholder="Cantidad en unidades de productos"
+          name="cantidadProducto"
+        />
+       
+       <label >Precio de Compra</label> <input
+          className="nproducto"  
+          type="number"
+          min={1}
+          value={values.precioCompraProducto}
+          onChange={handleInputChange}
+          placeholder="Precio de Compra"
+          name="precioCompraProducto"
+        />
+         
+        
+        </div>
+        <div>
+        <label className="rellenar">Imagen</label>
+        <input
+          onChange={handleInputChange}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          name="imageProducto"
+          placeholder="Arrastar imagen aqui"
+          className="inputd-producto" 
+        />
+          
+          
+          
+        <label className="rellenar1">Categoria</label>
         {getCategoria.length === 0 ? (
           <Link href="/Categoria">
             <Button variant="container" color="primary">
@@ -242,6 +257,7 @@ export default function FormsProducto(props) {
           </Link>
         ) : (
           <select
+         
             required
             name="categoriaProducto"
             id="nameCategoria"
@@ -255,16 +271,30 @@ export default function FormsProducto(props) {
             ))}
           </select>
         )}
-        <textarea
+        <label >Descuento</label><input
+          className="nproducto" 
+          type="number"
+          min={1}
+          max={100}
+          value={values.descuentoProducto}
           onChange={handleInputChange}
-          onDragEnter={handleDragEnter}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          name="imageProducto"
-        >
-          Arrastar imagen aqui
-        </textarea>
-        {image && (
+          placeholder="Aplicar descuento"
+          name="descuentoProducto"
+        />
+        
+       
+        
+       
+        <label className="rellenar3">Precio de Venta</label><input
+         className="nproducto" 
+          type="number"
+          min={1}
+          value={values.precioVentaProducto}
+          onChange={handleInputChange}
+          placeholder="Precio de venta"
+          name="precioVentaProducto"
+        />
+      {image && (
           <section>
             <button onClick={handleDeleteImg}>
               <CloseIcon />
@@ -272,17 +302,16 @@ export default function FormsProducto(props) {
             <img src={image} />
           </section>
         )}
+       
+        </div>
         <Button onClick={handleSubmit} variant="text" color="default">
-          {props.currentId === "" ? (
-            <>
-              <SendIcon color="secondary" />{" "}
-            </>
-          ) : (
-            <EditIcon color="primary" />
-          )}
-        </Button>
+         <Fab color="default" aria-label="">
+             {props.currentId === ""? (<><AddCircleOutlineIcon style={{fontSize:25}} color="secondary"/> {console.log('editar')} </>) : (<EditIcon color="primary" /> )}
+             </Fab>
+           </Button>
+          
       </form>
-
+</div>
       <Modal
         open={open}
         onClose={handleClose}
@@ -296,8 +325,12 @@ export default function FormsProducto(props) {
       <style jsx>{`
         textarea {
           border: ${drag === DRAG_IMAGE_STATES.DRAG_OVER
-            ? "3px solid #09f"
+            ? "3px solid #b6b8bb"
             : "3px solid red"};
+            resize:none;
+            border-radius: 5px;
+            margin-top: 5px;
+            
         }
 
         img {

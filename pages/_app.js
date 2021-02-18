@@ -1,5 +1,8 @@
 import "../styles/globals.css";
 import "../styles/NavBar.css";
+import "../styles/table.css"
+import "../styles/form.css"
+import "../styles/home.css"
 import NavBar from "../Components/NavBar";
 import Head from "next/head";
 import Login from "./Login";

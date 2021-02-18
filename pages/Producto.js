@@ -5,6 +5,7 @@ import FormsProducto from '../Components/Forms/FormsProducto'
 import {firebaseG} from '../firebase.BD/firebase.conf';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import SearchIcon from '@material-ui/icons/Search';
 const db =  firebaseG.firestore();
 export default function Provedor() {
   const [ data, setData ] = useState([ ])
@@ -58,19 +59,27 @@ export default function Provedor() {
     <>
     <div className="table">
       <h1>Inventario Producto</h1>
+     
+      <FormsProducto {...{addProducto, currentId,data}}/>
+      <br></br>
+      <div className="grid">
+      <div>
+      <label className="buscar">
+      <input id="search" type="text"  placeholder="Buscar" />
+     <button className="button"> <i className="icon">  <SearchIcon /></i></button>
+      </label>
+      </div>
       <div className="center-table">
         <Button variant="contained" color="secondary">
           Descargar tabla
           <GetAppIcon />
         </Button>
-        <input id="search"   placeholder="Buscar en tabla"/>
-        <Button variant="text" color="default">
-          
-        </Button>
       </div>
-      <FormsProducto {...{addProducto, currentId,data}}/>
-      <div>
+    </div>
+     
+    <div >
         <table>
+        <thead>
           <tr>
             <td>Producto</td>
             <td>Cantidad</td>
@@ -80,7 +89,11 @@ export default function Provedor() {
             <td>Proveedor</td>
             <td>Categoria</td>
             <td>Fecha</td>
+            <td></td>
+            <td></td>
           </tr>
+          </thead>
+
            {data.map(datos =>
             (<tr key={datos.id } >
               <td >{datos.nombreProducto}</td>
@@ -97,6 +110,8 @@ export default function Provedor() {
                     <DeleteIcon />
                   </Button>
                 </li>
+                </td>
+                <td>
                 <li>
                   <Button variant="text" onClick={() => setCurrenId(datos.id)} color="primary">
                     <EditIcon />

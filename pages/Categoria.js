@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import FormsProveedor from '../Components/Forms/FormsProveedor'
+import FormsCategoria from '../Components/Forms/FormsCategoria'
 import {firebaseG} from '../firebase.BD/firebase.conf'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -29,7 +29,7 @@ const estilo = useStyles()
   const getData =()=>{
 
    firebaseG.auth().onAuthStateChanged(async (user) => {
-    db.collection(user.email).doc('Proveedor').collection('Proveedor').orderBy("nombreProveedor", "desc").onSnapshot((querySnapshot)=>{
+    db.collection(user.email).doc('Categoria').collection('Categoria').orderBy("descripcionCategoria", "desc").onSnapshot((querySnapshot)=>{
       const docs = [];
       querySnapshot.forEach(doc =>{
         docs.push({...doc.data(),id:doc.id})
@@ -42,14 +42,14 @@ const estilo = useStyles()
   useEffect(()=>{
     getData()
   },[])
-  const addProveedor =  (objectProveedor)=>{
+  const addCategoria =  (objectCategoria)=>{
     firebaseG.auth().onAuthStateChanged(async (user) => {
       try{
         if(currentId === ""){
-          await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc().set(objectProveedor)
+          await db.collection(user.email).doc('Categoria').collection('Categoria').doc().set(objectCategoria)
          }
          else{ 
-           await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc(currentId).update(objectProveedor)
+           await db.collection(user.email).doc('Categoria').collection('Categoria').doc(currentId).update(objectCategoria)
            setCurrenId("");
    
           }
@@ -63,7 +63,7 @@ const estilo = useStyles()
     if (window.confirm("¿Seguro que deseas eliminar?")) {
 
       firebaseG.auth().onAuthStateChanged(async (user) => {
-        await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc(id).delete();
+        await db.collection(user.email).doc('Categoria').collection('Categoria').doc(id).delete();
     })
     }
 }
@@ -72,8 +72,8 @@ const estilo = useStyles()
   return (
     <>
     <div className="table">
-      <h1>Proveedor</h1>
-      <FormsProveedor {...{addProveedor, currentId,data}}/>
+      <h1>Categorias</h1>
+      <FormsCategoria {...{addCategoria, currentId,data}}/>
       <br></br>
       <div className="grid">
       
@@ -100,12 +100,8 @@ const estilo = useStyles()
         <table >
         <thead>
           <tr>
-            <td>Proveedor</td>
-            <td>Direccion</td>
-            <td>Correo</td>
-            <td>Telefono</td>
-            <td>Pago</td>
-            <td>Cargo</td>
+            <td>Descripcion</td>
+            
             <td></td>
             
           </tr>
@@ -116,12 +112,7 @@ const estilo = useStyles()
           
           {data.map(datos =>
             (<tr key={datos.id } >
-              <td >{datos.nombreProveedor}</td>
-              <td>{datos.direccionProveedor}</td>
-              <td>{datos.correoProveedor}</td>
-              <td>{datos.telefonoProveedor}</td>
-              <td>{datos.pagoProveedor}</td>
-              <td>{datos.cargoProveedor}</td>
+              <td >{datos.descripcionCategoria}</td>
               <td>
                <td> <li>
                   <Button onClick={() => onDelete(datos.id)} variant="text" color="secondary">

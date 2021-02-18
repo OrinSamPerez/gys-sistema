@@ -9,6 +9,7 @@ import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
 import SettingsIcon from '@material-ui/icons/Settings';
+import CategoryIcon from '@material-ui/icons/Category';
 export default function NavBar({children, userInfo}) {
   return (
     <>
@@ -34,11 +35,18 @@ export default function NavBar({children, userInfo}) {
         </li>
         <li>
        
-        <Link href="/Producto">
-          <div className="imagenes"><OpenInBrowserIcon/>  <a>Producto</a></div>
+        <Link href="/Categoria">
+          <div className="imagenes"><CategoryIcon />  <a>Categorias</a></div>
         </Link>
 
         </li>
+        <li>
+       
+       <Link href="/Producto">
+         <div className="imagenes"><OpenInBrowserIcon/>  <a>Producto</a></div>
+       </Link>
+
+       </li>
         <li>
           <Link href="/Cliente">
             <div className="imagenes"><SupervisorAccountIcon/>  <a>Clientes</a></div>

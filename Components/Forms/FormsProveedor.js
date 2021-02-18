@@ -1,8 +1,9 @@
 import Button from '@material-ui/core/Button'
 import {useState, useEffect} from 'react';
 import {firebaseG} from '../../firebase.BD/firebase.conf'
-import SendIcon from '@material-ui/icons/Send';
 import EditIcon from '@material-ui/icons/Edit';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import Fab from '@material-ui/core/Fab'
 
 const db =  firebaseG.firestore();
 
@@ -42,17 +43,29 @@ export default function FormsProveedor(props){
     },[props.currentId])
 
     return(
-    <div>
-        <form onSubmit={handleSubmit}>
-          <input type="text" required value={values.nombreProveedor} onChange={handleInputChange} placeholder="Nombre del proveedor" name="nombreProveedor"/>
-          <input type="text" required value={values.direccionProveedor}  onChange={handleInputChange} placeholder="Direccion" name="direccionProveedor"/>
-          <input type="email" required value={values.correoProveedor}  onChange={handleInputChange} placeholder="Correo" name="correoProveedor"/>
-          <input type="text" required value={values.telefonoProveedor}  onChange={handleInputChange} placeholder="Telefono" name="telefonoProveedor"/>
-          <input type="text" required value={values.pagoProveedor}  onChange={handleInputChange} placeholder="Termino de pago" name="pagoProveedor"/>
-          <input type="text" required value={values.cargoProveedor} onChange={handleInputChange} placeholder="Cargo del representante" name="cargoProveedor"/>
-          <Button onClick={handleSubmit} variant="text" color="default">
-             {props.currentId === ""? (<><SendIcon color="secondary"/> {console.log('editar')} </>) : (<EditIcon color="primary" /> )}
+    <div >
+        <form  onSubmit={handleSubmit}>
+        {props.currentId === ""? (<h2>Registrar Proveedor</h2> ) : (<h2>Actualizar Proveedor</h2>)}
+        <div> 
+         <label className="relleno2">Nombre</label> <input  type="text" required value={values.nombreProveedor} onChange={handleInputChange} placeholder="Nombre del proveedor" name="nombreProveedor"/>
+         <label className="relleno1" >Direccion</label> <input  type="text" required value={values.direccionProveedor}  onChange={handleInputChange} placeholder="Direccion" name="direccionProveedor"/>
+        
+         <label className="relleno" >Correo</label><input  type="email" required value={values.correoProveedor}  onChange={handleInputChange} placeholder="Correo" name="correoProveedor"/>
+         </div>
+         <div >
+         <label>Telefono</label> <input  type="text" required value={values.telefonoProveedor}  onChange={handleInputChange} placeholder="Telefono" name="telefonoProveedor"/>
+        
+        
+         <label>Forma de Pago</label> <input  type="text" required value={values.pagoProveedor}  onChange={handleInputChange} placeholder="Termino de pago" name="pagoProveedor"/>
+         <label>Cargo</label> <input type="text" required value={values.cargoProveedor} onChange={handleInputChange} placeholder="Cargo del representante" name="cargoProveedor"/>
+         </div>
+         <Button onClick={handleSubmit} variant="text" color="default">
+         <Fab color="default" aria-label="">
+             {props.currentId === ""? (<><AddCircleOutlineIcon style={{fontSize:25}} color="secondary"/> {console.log('editar')} </>) : (<EditIcon color="primary" /> )}
+             </Fab>
            </Button>
+         
+         
         </form> 
         
      </div>

@@ -1,4 +1,12 @@
-.formMain {
+.formMain{
+  background-color: white;
+  border-radius: 20px;
+  margin-top: 30px;
+  width: 500px;
+  height: 500px;
+  text-align: center; 
+}
+.formMainEmpresa{
     background-color: white;
     border-radius: 20px;
     margin-top: 30px;
@@ -6,11 +14,14 @@
     height: 500px;
     text-align: center;
   }
-  
+  .formMainEmpresa{
+    width: 600px;
+    height: 580px;
+  }
   .formMain label {
     margin-left: auto;
   }
-  .container {
+  .container{
     margin: 0;
     padding: 0;
     width: 100%;
@@ -21,7 +32,10 @@
     align-items: center;
     justify-content: center;
   }
-
+  .containerEmpresa{
+    width: 700px;
+    height: 500px;
+  }
   .formMain input {
     justify-content: center;
     align-items: center;
@@ -35,6 +49,12 @@
     border-bottom-color: rgb(119, 119, 119);
     width: 40%;
     margin-left: 8px;
+  }
+  .formMainEmpresa img {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70px;
+    margin-top: 25px;
   }
   .formMain img {
     margin-left: auto;
@@ -63,4 +83,9 @@
   .links {
     margin-top: 10px;
   }
-  
+  .formMainEmpresa label{
+    font-size: 15px;
+  }
+  .formMainEmpresa select{
+    width: 50%;
+   }
