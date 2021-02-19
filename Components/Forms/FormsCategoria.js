@@ -39,7 +39,7 @@ export default function FormsCategoria(props){
 
     return(
     <div >
-        <form className="form-agregar" onSubmit={handleSubmit}>
+        <form  onSubmit={handleSubmit}>
         {props.currentId === ""? (<h2>Registrar Categoria</h2> ) : (<h2>Actualizar Categoria</h2>)}
         <div> 
          <label >Descripcion </label> <input className="input " type="text" required value={values.descripcionCategoria} onChange={handleInputChange} placeholder="Descripcion de la Categoria" name="descripcionCategoria"/>
