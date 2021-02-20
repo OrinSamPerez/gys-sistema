@@ -4,7 +4,8 @@
   margin-top: 30px;
   width: 500px;
   height: 500px;
-  text-align: center; 
+  text-align: center;
+  box-shadow: none;
 }
 .formMainEmpresa{
     background-color: white;
@@ -12,11 +13,13 @@
     margin-top: 30px;
     width: 500px;
     height: 500px;
-    text-align: center;
+    justify-content: center;
+    align-items: center;
   }
   .formMainEmpresa{
     width: 600px;
     height: 580px;
+    text-align: left;
   }
   .formMain label {
     margin-left: auto;
@@ -50,12 +53,7 @@
     width: 40%;
     margin-left: 8px;
   }
-  .formMainEmpresa img {
-    margin-left: auto;
-    margin-right: auto;
-    width: 70px;
-    margin-top: 25px;
-  }
+ 
   .formMain img {
     margin-left: auto;
     margin-right: auto;
@@ -84,8 +82,47 @@
     margin-top: 10px;
   }
   .formMainEmpresa label{
-    font-size: 15px;
+    font-size: 17px;
+    text-align: left;
+
   }
   .formMainEmpresa select{
-    width: 50%;
+    width: 56%;
    }
+  .flexion{
+
+    display: grid;
+    grid-template-columns: 45% 45%;
+    text-align: left;
+
+  }
+  .formMainEmpresa h3{
+    text-align: center;
+  }
+  .formMainEmpresa img {
+    margin-left: 40%;
+    margin-right: auto;
+    width: 70px;
+    margin-top: 25px;
+    text-align: center;
+  }
+  .formMainEmpresa div{
+    padding-left: 34px;
+    margin-top: 8px;
+  }
+  .formMainEmpresa input{
+        border: 1px solid white;
+        font-size: 15px;
+        border-bottom-color: black; 
+
+  }
+  .inputNone{
+    display: none;
+  }
+  .botonImage{
+    margin-left: 10%;
+  }
+  .botones{
+    margin-left: 25%;
+
+  }

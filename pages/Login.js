@@ -1,154 +1,176 @@
 import { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Styles from "../styles/Login.module.css";
-import { loginSingIn,loginWithEmail,loginCollection, firebaseG } from "../firebase.BD/firebase.conf";
+import { loginSingIn,loginWithEmail,loginCollection, firebaseG} from "../firebase.BD/firebase.conf";
 import StylesRegistro from "../styles/Registro.module.css";
 import {validadorLogin} from "../Services/validadorLogin";
-import Modal from '@material-ui/core/Modal';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-export default function Login() {
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import PersonAddIcon from '@material-ui/icons/PersonAdd'; 
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
-  const cambio = () => {
-    setBody(bodyRegistro);
-  };
-  const cambioLogin = ()=>{
-      setBody(bodyLogin)
+export default function Login() {
+  const valueInitial = { 
+    nameEmpresa:"",
+    emailEmpresa:'',
+    numberEmpresa:'',
+    direccionEmpresa:'',
+    passwordEmpresa:'',
+    confPassword:'',
+    rncEmpresa:'',
+    ncfEmpresa:'',
+    PagoEnEfectivo:'',
+    PagoConTarjetaDeCréditooDébito:'',
+    PUE:'',
+    PPD:'',
+    tipoEmpresa:'',
+    imageLogo:null,
+    imageEmpresa:null,
   }
+
+
+  const [values, setValues] = useState(valueInitial);
   const singIn = (e) => {
     e.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    loginSingIn(email, password)
+  }
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    setValues({...values, [name]:value}) 
+    if('nameEmpresa' === name ){ values.nameEmpresa= value;} if('emailEmpresa' === name ){ values.emailEmpresa= value;} 
+    if('numberEmpresa' === name ){ values.numberEmpresa= value;}if('direccionEmpresa' === name ){ values.direccionEmpresa= value;}
+    if('passwordEmpresa' === name ){ values.passwordEmpresa= value;} if('confPassword' === name ){ values.confPassword= value;} 
+    if('rncEmpresa' === name ){ values.rncEmpresa= value;}if('ncfEmpresa' === name ){ values.ncfEmpresa= value;}
+    if('PagoEnEfectivo' === name ){ values.PagoEnEfectivo= value;}if('PagoConTarjetaDeCréditooDébito' === name ){ values.PagoConTarjetaDeCréditooDébito= value;}
+    if('PUE' === name ){ values.PUE= value;} if('PPD' === name ){ values.PPD= value;} 
+    if('tipoEmpresa' === name ){ values.tipoEmpresa= value;}if('imageLogo' === name )
+    { values.imageLogo = files[0]}
+    if('imageEmpresa' === name ){ values.imageEmpresa  = files[0]}
 
-    loginSingIn(email, password).then((resp) => {
-
-    }, []).catch(resp => console.log("error" ) );
   };
-
-  const registroInputs = (e) => {
+  const handleValidador =(e)=>{
     e.preventDefault();
-    const nameEmpresa = document.getElementById("nameEmpresa").value;
-    const email = document.getElementById("email").value;
-    const number = document.getElementById("number").value;
-    const typeEmpresa = document.getElementById("typeEmpresa").value;
-    const password = document.getElementById("password").value;
-    const confPassword = document.getElementById("confPassword").value;
-    const direccion= document.getElementById("direccion").value;
-
-    validadorLogin(password,email, nameEmpresa, number, confPassword);
-    loginCollection(email, nameEmpresa, number, typeEmpresa, direccion).then((resp) => {
-
-    }, []);
-    loginWithEmail(email, password).then((resp) => {
-      console.log(resp);
-    });
-
+    console.log(values.nameEmpresa)
+    const password =  values.passwordEmpresa;
+    const email = values.emailEmpresa;
+    const nameEmpresa = values.nameEmpresa;
+    const confPassword  = values.confPassword
+    const emailVerificado =  validadorLogin(password,email, nameEmpresa,  confPassword)
     
-  };
-  const [welcomeName, setWelcomeName]=useState('')
+    
+    if(emailVerificado != email){
+      console.log('No se ha validado')
+    }
+    else if(emailVerificado === email ){
+      setBody(bodyRegistroEmpresa)
 
+    }
+  }
+  const handleRegistro =async ()=>{
+    loginWithEmail(values.emailEmpresa, values.passwordEmpresa, values)
+
+  }
+  let empresaD = values.nameEmpresa
   const bodyRegistroEmpresa = (
     <div className={StylesRegistro.container}>
       <div className={StylesRegistro.formMainEmpresa}>
       <img src="/inventario.svg" />
-      <h3>Bienvenido {welcomeName} favor rellenar lo siguientes campos </h3>
+      <h3>{empresaD}¡Bienvenido  favor rellenar lo siguientes campos!</h3>
       <div>
         <label>
         RNC Empresa
           <input
-            id="rncEmpresa"
+            name="rncEmpresa"
             required
             type="text"
             placeholder="Rnc empresa "
+            onChange={handleInputChange}
+
           />
           </label>
           <label>
           NCF Empresa
             <input
+            onChange={handleInputChange}
               id="ncfEmpresa"
+              name="ncfEmpresa"
               required
               type="text"
               placeholder="NCF empresa "
             />
           </label>
       </div>
+
+      <div className={StylesRegistro.flexion}>
+        <div>
+          <label>
+        Formas de pago
+            
+          <FormControlLabel onChange={handleInputChange} name="PagoEnEfectivo"  control={<Checkbox onChange={handleInputChange} name="PagoEnEfectivo" id="efectivo" color="primary" />} label="Pago en efectivo" />
+          <FormControlLabel onChange={handleInputChange} name="PagoConTarjetaDeCréditooDébito" control={<Checkbox onChange={handleInputChange} name="PagoConTarjetaDeCréditooDébito" color="primary" />} label="Pago con tarjeta de crédito o débito" />
+        
+        </label>
+        </div>
+        <div>
+          <label>
+        Metodos de pago que aceptaras
+          <FormControlLabel onChange={handleInputChange} control={<Checkbox onChange={handleInputChange} name="PUE" color="primary" />} name="PUE" label="(PUE)Pago en una sola exhibición" />
+          <FormControlLabel onChange={handleInputChange} control={<Checkbox onChange={handleInputChange} name="PPD" color="primary" />} name="PPD" label="(PPD)Pago en parcialidades o diferido" />
+        
+        </label>
+        </div>
+      </div>
       <div>
           <label>
         Tipo de empresa
-          <select>
+          <select onChange={handleInputChange} name="tipoEmpresa">
+            <option value="" >Selecciona uno</option>
             <option value="sectorprimario" >Sector primario</option>
             <option value="sectorsecundario" >Sector secundario(Industrial)</option>
             <option value="sectorterciario" >sector terciario (sector servicios)</option>
           </select>
         </label>
       </div>
+      <div className={StylesRegistro.botonImage}>
+      <input onChange={handleInputChange} name="imageLogo" accept="image/*" className={StylesRegistro.inputNone} id="contained-button-file" type="file" />
+        <label  htmlFor="contained-button-file">
+          <Button variant="contained" color="primary" component="span">
+            Subir Logo aqui
+            <PhotoCamera/>
+          
+          </Button>
+    
+        </label>
+        &nbsp;&nbsp;&nbsp;
+        <input onChange={handleInputChange} name="imageEmpresa" accept="image/*" className={StylesRegistro.inputNone} id="image-button-file" type="file" />
+        <label htmlFor="image-button-file">
+          <Button variant="contained" color="primary" component="span">
+            Subir Imagen aqui
+            <PhotoCamera/>
+          </Button>
+        </label>
+      </div>
+      <div className={StylesRegistro.botones}>
+        <Button onClick={()=> setBody(bodyRegistro)} variant="text" color="primary">
+          <KeyboardBackspaceIcon />
+          Atras
+        </Button>
+        &nbsp;&nbsp;&nbsp;
+        <Button onClick={handleRegistro} variant="text" color="secondary">
+          Registrarse
+          <PersonAddIcon/>
+        </Button>
+      </div>
+      </div>
+   
 
-      <div>
-        <div>
-          <label>
-        Formas de pago
-          <FormControlLabel control={<Checkbox name="Pago en efectivo" color="primary" />} label="Pago en efectivo" />
-          <FormControlLabel control={<Checkbox name="Pago con tarjeta de crédito o débito" color="primary" />} label="Pago con tarjeta de crédito o débito" />
-          <FormControlLabel control={<Checkbox name="Pago por transferencia bancaria" color="primary" />} label="Pago por transferencia bancaria" />
-        
-        </label>
-        </div>
-        <div>
-          <label>
-        Meotodos de pago que aceptaras
-          <FormControlLabel control={<Checkbox name="(PUE)Pago en una sola exhibición" color="primary" />} label="(PUE)Pago en una sola exhibición" />
-          <FormControlLabel control={<Checkbox name="(PPD)Pago en parcialidades o diferido" color="primary" />} label="(PPD)Pago en parcialidades o diferido" />
-        
-        </label>
-        </div>
-      </div>
-      
-      </div>
       <label></label>
     </div>
   )
-  const validaccion = async (e) => {
-    e.preventDefault();
-    const nameEmpresa = document.getElementById("nameEmpresa").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password-registro").value;
-    const confPassword = document.getElementById("confPassword").value;
-    const correoEmail = validadorLogin(password,email, nameEmpresa, confPassword);
-    setWelcomeName(nameEmpresa)
-    if(correoEmail===''){
-      console.log('Espere')
-    }
-    else{
-      
-      setBody(bodyRegistroEmpresa)
-    }
-  //   if (correoEmail === ''){
-  //     console.log('Espere')
-  //   }
-  //   else{
-  //     const actionCodeSettings = {
-  //       url:'http://localhost:3000/?email='+correoEmail,
-  //     handleCodeInApp: true,
-  //     iOS: {
-  //       bundleId: 'sistemagestion.page.link'
-  //     },
-  //     android: {
-  //       packageName: 'sistemagestion.page.link',
-  //       installApp: true,
-  //       minimumVersion: '12'
-  //     },
-  //      dynamicLinkDomain: 'sistemagestion.page.link'
-  //       }
-  //     firebaseG.auth().sendSignInLinkToEmail(email, actionCodeSettings).then((resp)=>{
-  //       console.log(resp)
-  //     }) 
-  //     .catch((error) => {
-  //       console.log(error)
-  //       // ...
-  //     });
-    
-  // }
-}
   const bodyLogin = (
     <div className={Styles.container}>
       <form className={Styles.formMain}>
@@ -178,7 +200,7 @@ export default function Login() {
             <h2 className={Styles.seccion}>Iniciar Session</h2>
           </Button>
           <div className={Styles.links}>
-            <a onClick={cambio}>
+            <a onClick={()=> setBody(bodyRegistro)}>
               <span> ¡Registrate aqui!</span>
             </a>
           </div>
@@ -188,24 +210,26 @@ export default function Login() {
   );
   const bodyRegistro = (
     <div className={StylesRegistro.container}>
-      <form className={StylesRegistro.formMain}>
+      <form onSubmit={handleValidador} className={StylesRegistro.formMain}>
         <div className={StylesRegistro.formInfo}>
           <img src="/inventario.svg" />
           <h1>Registrarse aqui</h1>
           <div>
             <label>
               <input
-                id="nameEmpresa"
+                name="nameEmpresa"
                 type="text"
                 required
+                onChange={handleInputChange}
                 placeholder="Ingresa el nombre de la empresa"
               />
             </label>
             <label>
               <input
-                id="email"
                 type="email"
+                name="emailEmpresa"
                 required
+                onChange={handleInputChange}
                 placeholder="Ingresa tu email aqui"
               />
             </label>
@@ -214,8 +238,10 @@ export default function Login() {
             <label>
               <input
                 id="number"
+                name="numberEmpresa"
                 required
                 type="text"
+                onChange={handleInputChange}
                 placeholder="Numero telefonico "
               />
             </label>
@@ -223,6 +249,8 @@ export default function Login() {
               <input
                 type="text"
                 required
+                onChange={handleInputChange}
+                name="direccionEmpresa"
                 id="dirrecion"
                 required
                 placeholder="Ingresar la direccion "
@@ -234,7 +262,9 @@ export default function Login() {
               <input
                 id="password-registro"
                 required
+                name="passwordEmpresa"
                 type="password"
+                onChange={handleInputChange}
                 placeholder="Ingresa tu contraseña"
               />
             </label>
@@ -242,18 +272,20 @@ export default function Login() {
             <label>
               <input
                 id="confPassword"
+                onChange={handleInputChange}
                 required
+                name="confPassword"
                 type="password"
                 placeholder="Confirma tu contraseña"
               />
             </label>
           </div>
-         <Button onClick={validaccion} variant="contained" color="inherent">
-           Siguiente
+         <Button onClick={handleValidador} variant="text " color="">
+           Siguiente <ArrowForwardIcon  color="secondary"/>
          </Button>
           <div className={StylesRegistro.links}>
             
-              <a onClick={cambioLogin}>
+              <a onClick={()=>setBody(bodyLogin)}>
                 <span> ¿Ya tienes una cuenta?¡Inicia Session aqui! </span>
               </a>
            
@@ -262,9 +294,6 @@ export default function Login() {
       </form>
     </div>
   );
-//   <Button onClick={registroInputs} variant="contained" color="default">
-//   <h2 className={StylesRegistro.seccion}>Registrarse</h2>
-// </Button>
   const [body, setBody] = useState(bodyLogin);
 
   return (

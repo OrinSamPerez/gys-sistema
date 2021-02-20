@@ -6,6 +6,7 @@ import "../styles/home.css"
 import NavBar from "../Components/NavBar";
 import Head from "next/head";
 import Login from "./Login";
+import EmailVerifcado from '../Components/EmailVerifcado'
 import { firebaseG, userInfo } from "../firebase.BD/firebase.conf";
 import { useState } from "react";
 function MyApp({ Component, pageProps }) {
@@ -18,11 +19,12 @@ function MyApp({ Component, pageProps }) {
       </Head>
       {firebaseG.auth().onAuthStateChanged((user) => setUserName(user))}
 
-      
       {userName ? (
+        userName.emailVerified === true?
         <NavBar userInfo={userInfo()}>
           <Component {...pageProps} />
         </NavBar>
+        :<EmailVerifcado />
       ) : (
         <Login />
       )}

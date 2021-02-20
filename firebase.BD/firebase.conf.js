@@ -15,9 +15,78 @@ if (!firebase.apps.length) {
 }
 
 const db = firebase.firestore();
-export const loginWithEmail = (email, password) => {
-  return firebase.auth().createUserWithEmailAndPassword(email, password);
+export const  loginWithEmail = async (email, password, values) => {
+  await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+  if(values.imageLogo != null){
+    if(values.imageEmpresa != null){
+      const ref =  firebase.storage().ref(`/ImagesLogos/${values.imageLogo.name}`);
+      ref.put(values.imageLogo).then(data=>{
+        data.ref.getDownloadURL().then(async (imgUrl)=>{
+          values.imageLogo = imgUrl;
+          const refEmpresa =firebase.storage().ref(`/ImagesEmpresa/${values.imageEmpresa.name}`)
+          refEmpresa.put(values.imageEmpresa).then(async dataEmpresa =>{
+            dataEmpresa.ref.getDownloadURL().then(async (urlEmpresa)=>{
+              values.imageEmpresa = urlEmpresa
+              await  db.collection(email).doc("datosUsuario").set(values);
+              const max = (values.numberEmpresa.length - 4)
+              const number = values.numberEmpresa.substr(max, values.numberEmpresa.length)
+              const empresaLink = values.nameEmpresa.replace(/\s+/g, '');
+              const direccion = values.direccionEmpresa.replace(/\s+/g, '');
+              await db.collection('Empresas').doc(`${empresaLink}-${direccion}-${number}`).set(values)
+            })
+          })
+      
+        })
+      })
+    }
+    else{
+      const ref =  firebase.storage().ref(`/ImagesLogos/${values.imageLogo.name}`);
+      ref.put(values.imageLogo).then(data=>{
+        data.ref.getDownloadURL().then(async (imgUrl)=>{
+          values.imageLogo = imgUrl;
+          await db.collection(email).doc("datosUsuario").set(values);
+          const max = (values.numberEmpresa.length - 4)
+          const number = values.numberEmpresa.substr(max, values.numberEmpresa.length)
+          const empresaLink = values.nameEmpresa.replace(/\s+/g, '');
+          const direccion = values.direccionEmpresa.replace(/\s+/g, '');
+          await db.collection('Empresas').doc(`${empresaLink}-${direccion}-${number}`).set(values)
+
+
+      
+        })
+      })
+    }
+  }
+  else if(values.imageEmpresa != null){
+    const refEmpresa =firebase.storage().ref(`/ImagesEmpresa/${values.imageEmpresa.name}`)
+          refEmpresa.put(values.imageEmpresa).then(async dataEmpresa =>{
+            dataEmpresa.ref.getDownloadURL().then(async (urlEmpresa)=>{
+              values.imageEmpresa = urlEmpresa
+              await db.collection(email).doc("datosUsuario").set(values);
+              const max = (values.numberEmpresa.length - 4)
+              const number = values.numberEmpresa.substr(max, values.numberEmpresa.length)
+              const empresaLink = values.nameEmpresa.replace(/\s+/g, '');
+              const direccion = values.direccionEmpresa.replace(/\s+/g, '');
+              await db.collection('Empresas').doc(`${empresaLink}-${direccion}-${number}`).set(values)
+
+            })
+          })
+  }
+  else{
+    db.collection(email).doc("datosUsuario").set(values);
+    const max = (values.numberEmpresa.length - 4)
+    const number = values.numberEmpresa.substr(max, values.numberEmpresa.length)
+    const empresaLink = values.nameEmpresa.replace(/\s+/g, '');
+    const direccion = values.direccionEmpresa.replace(/\s+/g, '');
+    db.collection('Empresas').doc(`${empresaLink}-${direccion}-${number}`).set(values)
+
+  }
+
+  
 };
+
+
 let userData = "";
 let userEmail = "";
 export const userInfo = () => {
@@ -38,15 +107,8 @@ export const userInfoData =  () => {
 
 }  
   
-
-export const loginCollection = (email, nameEmpresa, number, typeEmpresa, direccion) => {
-  return db.collection(email).doc("datosUsuario").set({
-    email,
-    nameEmpresa,
-    number,
-    typeEmpresa,
-    direccion
-  });
+export const loginCollection = async (email,values) => {
+  return await db.collection(email).doc("datosUsuario").set(values);
 };
 
 export const loginSingIn = (email, password) => {
