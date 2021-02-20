@@ -1,0 +1,62 @@
+.columnas{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+}
+.inputizq{
+width: 90%;
+height: 9px;
+margin-bottom: 1px;
+
+}
+.izq{
+text-align: left;
+margin-right: 15px;
+
+}
+.lado1{
+    padding-right: 20px;
+}
+.lado2{
+    padding-right: 25px;
+}
+.lado3{
+    padding-right: 11px;
+}
+.lado4{
+    padding-right: 16px;
+}
+.ld{
+    text-align: left;
+}
+.inputde{
+width: 80%;
+height: 9px;
+margin-bottom: 1px;
+
+}
+.selectde{
+width: 94%;
+height: 9px;
+margin-bottom: 1px;
+}
+.inputle{
+    width: 73%;
+    height: 9px;
+    margin-bottom: 1px;
+    
+}
+.lado5{
+    padding-right: 12px;
+}
+.lado6{
+    padding-right: 44px;
+}
+.lado7{
+    padding-right: 12px;
+}
+.selectle{
+    width: 50%;
+    height: 9px;
+    margin-bottom: 1px;
+    }

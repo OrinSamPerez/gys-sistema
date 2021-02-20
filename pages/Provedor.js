@@ -5,13 +5,11 @@ import FormsProveedor from '../Components/Forms/FormsProveedor'
 import {firebaseG} from '../firebase.BD/firebase.conf'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {makeStyles} from '@material-ui//core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import Drawer from "@material-ui/core/Drawer";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import React from 'react';
 const useStyles=makeStyles((theme)=>({
   ubicar:{textAlign:'center',
 justifyAlign:'center',
@@ -47,14 +45,40 @@ const estilo = useStyles()
       try{
         if(currentId === ""){
           await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc().set(objectProveedor)
-         }
+          toast.success('🙂 Proveedor Agregado Sastifactoriamente!', {
+            position: "top-right",
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            }); 
+        }
          else{ 
            await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc(currentId).update(objectProveedor)
            setCurrenId("");
+           toast.success('🙂 Proveedor Actualizado Sastifactoriamente!', {
+            position: "top-right",
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
    
           }
           }catch(error){
-            console.error(error);
+            toast.error('🙁 Error al Agregar o Actualizar un Proveedor ', {
+              position: "top-right",
+              autoClose: 10000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              });
          }
       
     })
@@ -64,6 +88,15 @@ const estilo = useStyles()
 
       firebaseG.auth().onAuthStateChanged(async (user) => {
         await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc(id).delete();
+        toast.success('🙂 Proveedor Eliminado Sastifactoriamente!', {
+          position: "top-right",
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
     })
     }
 }
@@ -71,6 +104,7 @@ const estilo = useStyles()
  
   return (
     <>
+    <ToastContainer />
     <div className="table">
       <h1>Proveedor</h1>
       <FormsProveedor {...{addProveedor, currentId,data}}/>

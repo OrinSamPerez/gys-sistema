@@ -5,13 +5,12 @@ import FormsCategoria from '../Components/Forms/FormsCategoria'
 import {firebaseG} from '../firebase.BD/firebase.conf'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {makeStyles} from '@material-ui//core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import Drawer from "@material-ui/core/Drawer";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import React from 'react';
+
 const useStyles=makeStyles((theme)=>({
   ubicar:{textAlign:'center',
 justifyAlign:'center',
@@ -20,6 +19,7 @@ paddingLeft:'40%'
 
 }
 }))
+
 
 const db =  firebaseG.firestore();
 export default function Provedor() {
@@ -47,14 +47,40 @@ const estilo = useStyles()
       try{
         if(currentId === ""){
           await db.collection(user.email).doc('Categoria').collection('Categoria').doc().set(objectCategoria)
-         }
+          toast.success('🙂 Categoria Agregada Sastifactoriamente!', {
+            position: "top-right",
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+        }
          else{ 
            await db.collection(user.email).doc('Categoria').collection('Categoria').doc(currentId).update(objectCategoria)
            setCurrenId("");
-   
+           toast.success('🙂 Categoria Actualizada Sastifactoriamente!', {
+            position: "top-right",
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
           }
           }catch(error){
-            console.error(error);
+            
+            toast.error('🙁 Error al Agregar o Actualizar una Categoria ', {
+              position: "top-right",
+              autoClose: 10000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              });
          }
       
     })
@@ -64,6 +90,15 @@ const estilo = useStyles()
 
       firebaseG.auth().onAuthStateChanged(async (user) => {
         await db.collection(user.email).doc('Categoria').collection('Categoria').doc(id).delete();
+        toast.success('🙂 Categoria Eliminada Sastifactoriamente!', {
+          position: "top-right",
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
     })
     }
 }
@@ -71,7 +106,9 @@ const estilo = useStyles()
  
   return (
     <>
+    <ToastContainer />
     <div className="table">
+    
       <h1>Categorias</h1>
       <FormsCategoria {...{addCategoria, currentId,data}}/>
       <br></br>

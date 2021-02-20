@@ -21,7 +21,7 @@ export default function Provedor() {
       setData(docs);
     });
     })
-  }
+  } 
   useEffect(()=>{
     getData()
   },[])

@@ -19,7 +19,7 @@ export default function FormsFacturacion(props){
   setTimeout(()=>{
     setHora(horaActual)
 },1000)
-
+ 
   const getDataProductoAñadidos =()=>{ 
     firebaseG.auth().onAuthStateChanged(async (user) => {
      db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').onSnapshot((querySnapshot)=>{
@@ -191,36 +191,71 @@ export default function FormsFacturacion(props){
     }
 
     return(
+       <>
+    
+    <form onSubmit={handleSubmit}>
+    <div className="columnas">
+    
     <div>
-        <span>Fecha actual {fecha} </span>
-        <span> Hora actual{hora}</span>
-        <form onSubmit={handleSubmit}>
-           <label>Seleccionar cliente</label>
-           <select>
+    <h3 className="ld">Desde</h3>
+    <input className="inputizq" placeholder="Nombre de la Empresa"/> 
+    <input className="inputizq" placeholder="Correo de la Empresa"/> 
+    <input  className="inputizq" placeholder="Direccion de la Empresa"/> 
+    <input className="inputizq" placeholder="Telefono de la Empresa"/>
+    <input className="inputizq" placeholder="NIF de la Empresa"/>
+    <input className="inputizq" placeholder="NCIF de la Empresa"/>
+    </div>
+    <div>
+    <h3 className="ld">Cliente</h3>
+    <label className="ld">Seleccionar cliente</label>
+           <select className="selectde" >
                <option value="selec" >Selec</option>
            </select>
-           <labe>Cliente</labe>
-           <input type="text" required value={values.nombreClienteFactura} onChange={handleInputChange} placeholder="Cliente" name="nombreClienteFactura"/>
-           <input type="email"  value={values.correoClienteFactura} onChange={handleInputChange} placeholder="Correo Cliente" name="correoClienteFactura"/>
-           <input type="text" value={values.dirrecionCliente} onChange={handleInputChange} placeholder="Dirrecion Cliente" name="dirrecionCliente"/>
-           <input type="text" value={values.plazoPagoFactura} onChange={handleInputChange} placeholder="Plazo Factura" name="plazoPagoFactura"/>
-           <input type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/>
-           {metodoPago.length === 0?
-           <Link href="/Configuracion">
-            <Button variant="contained" color="default">
-              Añadir metodo de pago
-            </Button>
-           </Link>
-           :<select id="tipoPagoFactura"  onChange={handleInputChange} name="tipoPagoFactura"> {metodoPago.map(pago => 
+    <label className="lado1">Nombre</label>
+    <input className="inputde" type="text" required value={values.nombreClienteFactura} onChange={handleInputChange} placeholder="Nombre del Cliente" name="nombreClienteFactura"/>
+    <label className="lado2">Correo</label>
+    <input className="inputde" type="email"  value={values.correoClienteFactura} onChange={handleInputChange} placeholder="Correo del Cliente" name="correoClienteFactura"/>
+    <label className="lado3">Direccion</label>
+    <input className="inputde" type="text" value={values.dirrecionCliente} onChange={handleInputChange} placeholder="Dirrecion del Cliente" name="dirrecionCliente"/>
+    <label className="lado4">Telefono</label>
+    <input className="inputde" placeholder="Telefono de Cliente"/>
+    </div>
+  
+  
+   </div>
+    
+   <hr></hr>
+    <div className="columnas">
+    <div>
+    <label className="lado5">No. Factura</label>
+    <input className="inputle" placeholder="Numero de factura"/>
+    <label className="lado6">Fecha</label>
+    <input className="inputle" value={`${fecha}  ${hora}`}/>
+    <label >Forma de pago</label>
+    <select className="selectle" id="tipoPagoFactura"  onChange={handleInputChange} name="tipoPagoFactura"> {metodoPago.map(pago => 
                <option value={pago}>{pago}</option>
            )}
-           </select>}
-            
-           <select id="estadoPago" onChange={handleInputChange} name="estadoPago" >
+           </select>
+    </div>
+    <div>
+    <label>Plazo de Pago</label>
+    <input className="inputle" type="text" value={values.plazoPagoFactura} onChange={handleInputChange} placeholder="Plazo Factura" name="plazoPagoFactura"/>
+    <label className="lado7">Vencimiento</label>
+    <input className="inputle" type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/>
+    <label>Estado de Pago</label>
+    <select className="selectle" id="estadoPago" onChange={handleInputChange} name="estadoPago" >
                <option value="Pagada">Pagada</option>
                <option value="A plazo">No pagada</option>
            </select>
-            <div className="añdirProducto">
+     </div>
+    </div>
+        
+           
+    
+    </form>
+    
+     <br></br>
+     <div className="añdirProducto">
                 <div>
                     <label>Seleccionar producto</label>
                     <input className="buscarProducto" type="text" onChange={buscarProducto} placeholder={productAdd}/>
@@ -246,7 +281,7 @@ export default function FormsFacturacion(props){
           <Button onClick={handleSubmit} variant="text" color="default">
              Crear Factura
            </Button> 
-        </form> 
+        
         <style jsx>{`
         .ProductoSelect{
             position:fixed;
@@ -259,6 +294,6 @@ export default function FormsFacturacion(props){
             width:50%;
         }
         `}</style>
-     </div>
-    )
+        </>
+    );
 } 
