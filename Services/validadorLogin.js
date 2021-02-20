@@ -18,6 +18,8 @@ export const  validadorLogin = (password,email, nameEmpresa,  confPassword)=>{
       ]
     let i = 0;
     let texto;
+    console.log(nameEmpresa)
+    console.log(nameEmpresa.length)
     console.log(password, confPassword)
     if(charName <= nameEmpresa.length){
         alert('si es mayor')
