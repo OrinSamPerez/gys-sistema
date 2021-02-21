@@ -3,6 +3,9 @@ import Button from "@material-ui/core/Button";
 import FormsFacturacion from '../Components/Forms/FormsFacturacion'
 import {firebaseG} from '../firebase.BD/firebase.conf'
 import DeleteIcon from '@material-ui/icons/Delete';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import React from 'react';
 const db =  firebaseG.firestore();
 export default function Provedor() {
   const [ data, setData ] = useState([ ])
@@ -48,7 +51,15 @@ export default function Provedor() {
 
       firebaseG.auth().onAuthStateChanged(async (user) => {
         await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc(id).delete();
-       
+        toast.success('🙂 Producto Eliminado Sastifactoriamente!', {
+          position: "top-right",
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
     })
     }
 }
@@ -65,30 +76,34 @@ data.map(total=>{
 
   return (
     <>
+    <ToastContainer />
     <div className="table">
       <h1>Factura</h1>
       
       <FormsFacturacion {...{addFactura, currentId, data,TOTAL, SUBTOTAL,ITBIS}}/>
-      <div>
-        <table>
+      <div >
+        <table >
+        <thead>
         <tr>
-          <td>Cantidad</td>
-          <td>Producto</td>
-          <td>Precio</td>
-          <td>SubTotal</td>
-          <td>ITBIS</td>
-          <td>Descuento</td>
-          <td>Total</td>
+          <td >Producto</td>
+          <td >Cantidad</td>
+          <td >Precio</td>
+          <td >SubTotal</td>
+          <td >ITBIS</td>
+          <td >Descuento</td>
+          <td >Total</td>
+          <td></td>
         </tr>
+        </thead>
           {data.map(datos =>
             (<tr key={datos.id } >
-              <td># {datos.cantidad}</td>
-              <td>{datos.producto}</td>
-              <td>RD$ {datos.precio}</td>
-              <td>RD$ {datos.subTotal}</td>
-              <td>RD$ {datos.itbis}</td>
-              <td>% {datos.descuento}</td>
-              <td>RD$ {datos.total}</td>
+              <td >{datos.producto}</td>
+              <td ># {datos.cantidad}</td>
+              <td >RD$ {datos.precio}</td>
+              <td >RD$ {datos.subTotal}</td>
+              <td >RD$ {datos.itbis}</td>
+              <td >% {datos.descuento}</td>
+              <td >RD$ {datos.total}</td>
               <td>
                 <li>
                   <Button onClick={() => onDelete(datos.id)} variant="text" color="secondary">
@@ -98,18 +113,30 @@ data.map(total=>{
               </td>
             </tr>)
           )}  
-          <div className="flexionar">
-            <h3>SUBTOTAL <h2> RD${SUBTOTAL} </h2> </h3>
-            <h3>ITBIS <h2> RD${ITBIS} </h2> </h3>
-            <h3>TOTAL <h2> RD${TOTAL} </h2> </h3>
-          </div>
+          
         </table>
       </div>
+      
     </div>
+   
+    <div >
+         
+            <h3 className="ldoiz">SUBTOTAL:  <small className="smalliz">RD${SUBTOTAL}</small> </h3> 
+            <h3 className="ldoiz">+ ITBIS:  <small className="smalliz">RD${ITBIS}</small>  </h3>
+            <h3 className="ldoiz">- DESCUENTO: <small className="smalliz"> RD$ </small></h3>
+            <h3 className="ldoiz">TOTAL: <small className="smalliz"> RD${TOTAL} </small> </h3>
+          </div>
       <style jsx>{`
-      .flexionar{
-        display:flex;
+      
+      .ldoiz {
+        text-align: left;
+        font-size:13px;
+        padding-left:75%;
       }
+      .smalliz{
+        font-size:12px;
+      }
+      
       `}</style>
     </>
   );
