@@ -1,19 +1,70 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import FormsProducto from '../Components/Forms/FormsProducto'
-import {firebaseG} from '../firebase.BD/firebase.conf';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import SearchIcon from '@material-ui/icons/Search';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import React from 'react';
+import FormsProducto from "../Components/Forms/FormsProducto";
+import { firebaseG } from "../firebase.BD/firebase.conf";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { makeStyles } from "@material-ui//core/styles";
+import SearchIcon from "@material-ui/icons/Search";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import DraftsIcon from "@material-ui/icons/Drafts";
+import SendIcon from "@material-ui/icons/Send";
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import {reporte} from "../Services/reporte"
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 const db =  firebaseG.firestore();
+const StyledMenu = withStyles({
+  paper: {
+    border: "1px solid #d3d4d5",
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "center",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "center",
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    "&:focus": {
+      backgroundColor: theme.palette.primary.main,
+      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
 export default function Provedor() {
   const [ data, setData ] = useState([ ])
   const [ currentId, setCurrenId] = useState("")
+  const [anchorEl, setAnchorEl] = useState(null);
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const getData =()=>{
 
    firebaseG.auth().onAuthStateChanged(async (user) => {
@@ -108,15 +159,66 @@ export default function Provedor() {
       </label>
       </div>
       <div className="center-table">
-        <Button variant="contained" color="secondary">
-          Descargar tabla
-          <GetAppIcon />
-        </Button>
+      <Button
+              aria-controls="customized-menu"
+              aria-haspopup="true"
+              variant="contained"
+              color="secondary"
+              onClick={handleClick}
+            >
+              <GetAppIcon />
+              Reportes
+            </Button>
+            <StyledMenu
+              id="customized-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <StyledMenuItem>
+                <ListItemIcon>
+                <Button>
+                <SendIcon fontSize="small" />
+                
+                </Button>
+                  
+                </ListItemIcon>
+                <ListItemText primary="Enviar al correo" />
+              </StyledMenuItem>
+              <StyledMenuItem>
+                <ListItemIcon>
+                <Button onClick={()=>reporte('#tProducto','Producto')}>
+                <PictureAsPdfIcon fontSize="small" />
+                
+                </Button>
+                  
+                </ListItemIcon>
+                <ListItemText primary="Descargar en PDF" />
+              </StyledMenuItem>
+              
+              <StyledMenuItem>
+              <ListItemIcon>
+                
+                <img className="img-excel" src="/excel.png" width="15px" height="15px"/>
+                <ReactHTMLTableToExcel
+                    id="test-table-xls-button"
+                    className="download-table-xls-button"
+                    table="tProducto"
+                    filename="Producto"
+                    sheet="tablexls"
+                    buttonText="Descargar en EXCEL"/>
+               
+                  
+                </ListItemIcon>
+               
+              </StyledMenuItem>
+            </StyledMenu>
       </div>
     </div>
      
     <div >
-        <table>
+        <table id="tProducto">
         <thead>
           <tr>
             <td>Producto</td>

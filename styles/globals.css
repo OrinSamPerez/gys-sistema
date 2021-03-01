@@ -22,13 +22,29 @@ h6{
 }
 .center-table{
   margin-bottom: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.btn-rep{
+  background: aqua;
+}
+.btn-rep:hover{
+  background: #ff3eaf;
 }
 button{
   background-color: white;
   border: 1px white;
   cursor: grab;
 }
+.download-table-xls-button{
+  font-size: 15px;
+  padding-left: 25px;
+  cursor:pointer;
+}
 
+.img-excel{
+ margin-left: 25px;
+}
 .table{
   justify-content: center;
   align-items: center;
