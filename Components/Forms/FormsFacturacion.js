@@ -19,7 +19,7 @@ export default function FormsFacturacion(props){
   const horaActual = (`${fechaA.getHours()}:${fechaA.getMinutes()}:${fechaA.getSeconds()}`)
   setTimeout(()=>{
     setHora(horaActual)
-},1000)
+},1000) 
  
   const getDataProductoAñadidos =()=>{ 
     firebaseG.auth().onAuthStateChanged(async (user) => {
@@ -190,6 +190,18 @@ export default function FormsFacturacion(props){
        
         
     }
+const [datosEmpresa, setdatosEmpresa] = useState({})
+    firebaseG.auth().onAuthStateChanged(async (user)=>{
+        if(user != null){
+          firebaseG.firestore().collection(user.email).doc('datosUsuario').get().then((doc)=>{
+            if(doc.exists){
+          
+            }
+            setdatosEmpresa(doc.data())
+        })
+    }
+})
+
 
     return(
        <>
@@ -197,14 +209,16 @@ export default function FormsFacturacion(props){
     <form onSubmit={handleSubmit}>
     <div className="columnas">
     
-    <div>
-    <h3 className="ld">Desde</h3>
-    <input className="inputizq" placeholder="Nombre de la Empresa"/> 
-    <input className="inputizq" placeholder="Correo de la Empresa"/> 
-    <input  className="inputizq" placeholder="Direccion de la Empresa"/> 
-    <input className="inputizq" placeholder="Telefono de la Empresa"/>
-    <input className="inputizq" placeholder="NIF de la Empresa"/>
-    <input className="inputizq" placeholder="NCIF de la Empresa"/>
+    <div className="ld">
+    <h3 >Desde</h3>
+    <label>Empresa: {datosEmpresa.nameEmpresa}</label> <br></br>
+    <label>Direccion: {datosEmpresa.direccionEmpresa}</label> <br></br>
+    <label>RNC: {datosEmpresa.rncEmpresa}</label><br></br>
+    <label>Correo: {datosEmpresa.emailEmpresa}</label> <br></br>
+    <label>Telefono: {datosEmpresa.numberEmpresa}</label><br></br>
+    <label>NCF: {datosEmpresa.ncfEmpresa}</label>
+    
+  
     </div>
     <div>
     <h3 className="ld">Cliente</h3>
@@ -229,7 +243,7 @@ export default function FormsFacturacion(props){
     <div className="columnas">
     <div>
     <label className="lado5">No. Factura</label>
-    <input className="inputle nfac" placeholder="Numero de factura"/>
+    <input className="inputle nfac" placeholder="Numero de factura" value={`${fechaA.getFullYear()}${fechaA.getDay()}${fechaA.getMonth()+1}${fechaA.getHours()}${fechaA.getMinutes()}${fechaA.getSeconds()}`} disabled/>
     <label className="lado6">Fecha</label>
     <input className="inputle fech" value={`${fecha}  ${hora}`}/>
     <label className="lado8">Forma de pago</label>
@@ -240,7 +254,11 @@ export default function FormsFacturacion(props){
     </div>
     <div>
     <label className="lado9">Plazo de Pago</label>
-    <input className="inputle" type="text" value={values.plazoPagoFactura} onChange={handleInputChange} placeholder="Plazo Factura" name="plazoPagoFactura"/>
+    <select className="selectles" id="plazoPagoFactura" onChange={handleInputChange} name="plazoPagoFactura" >
+               <option value="10 dias">10 dias</option>
+               <option value="15 dias">15 dias</option>
+               <option value="25 dias">25 dias</option>
+           </select>
     <label className="lado7">Vencimiento</label>
     <input className="inputle" type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/>
     <label className="lado10">Estado de Pago</label>
