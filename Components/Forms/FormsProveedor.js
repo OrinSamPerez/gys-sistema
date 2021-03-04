@@ -25,7 +25,7 @@ export default function FormsProveedor(props){
         e.preventDefault();
         props.addProveedor(values);  
         setValues({...valueInitial})
-    }
+    } 
     const getDataId = async (id) =>{
         firebaseG.auth().onAuthStateChanged(async (user) => {
             const doc = await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc(id).get();

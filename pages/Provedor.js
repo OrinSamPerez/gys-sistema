@@ -1,17 +1,28 @@
 import { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import FormsProveedor from '../Components/Forms/FormsProveedor'
-import {firebaseG} from '../firebase.BD/firebase.conf'
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {makeStyles} from '@material-ui//core/styles';
-import SearchIcon from '@material-ui/icons/Search';
-import Drawer from "@material-ui/core/Drawer";
+import FormsProveedor from "../Components/Forms/FormsProveedor";
+import { firebaseG } from "../firebase.BD/firebase.conf";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { makeStyles } from "@material-ui//core/styles";
+import SearchIcon from "@material-ui/icons/Search";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import DraftsIcon from "@material-ui/icons/Drafts";
+import SendIcon from "@material-ui/icons/Send";
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import {reporte} from "../Services/reporte"
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 const useStyles=makeStyles((theme)=>({
   ubicar:{textAlign:'center',
 justifyAlign:'center',
@@ -20,11 +31,49 @@ paddingLeft:'40%'
 
 }
 }))
+const StyledMenu = withStyles({
+  paper: {
+    border: "1px solid #d3d4d5",
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "center",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "center",
+    }}
+    {...props}
+  />
+));
 
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    "&:focus": {
+      backgroundColor: theme.palette.primary.main,
+      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
 const db =  firebaseG.firestore();
 export default function Provedor() {
   const [ data, setData ] = useState([ ])
   const [ currentId, setCurrenId] = useState("")
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 const estilo = useStyles()
   const getData =()=>{
 
@@ -47,14 +96,40 @@ const estilo = useStyles()
       try{
         if(currentId === ""){
           await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc().set(objectProveedor)
-         }
+          toast.success('🙂 Proveedor Agregado Sastifactoriamente!', {
+            position: "top-right",
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            }); 
+        }
          else{ 
            await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc(currentId).update(objectProveedor)
            setCurrenId("");
+           toast.success('🙂 Proveedor Actualizado Sastifactoriamente!', {
+            position: "top-right",
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
    
           }
           }catch(error){
-            console.error(error);
+            toast.error('🙁 Error al Agregar o Actualizar un Proveedor ', {
+              position: "top-right",
+              autoClose: 10000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              });
          }
       
     })
@@ -64,6 +139,15 @@ const estilo = useStyles()
 
       firebaseG.auth().onAuthStateChanged(async (user) => {
         await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc(id).delete();
+        toast.success('🙂 Proveedor Eliminado Sastifactoriamente!', {
+          position: "top-right",
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
     })
     }
 }
@@ -71,6 +155,7 @@ const estilo = useStyles()
  
   return (
     <>
+    <ToastContainer />
     <div className="table">
       <h1>Proveedor</h1>
       <FormsProveedor {...{addProveedor, currentId,data}}/>
@@ -85,10 +170,61 @@ const estilo = useStyles()
       </div>
       
       <div className="center-table">
-        <Button variant="contained" color="secondary">
-          Descargar tabla
-          <GetAppIcon />
-        </Button>
+      <Button
+              aria-controls="customized-menu"
+              aria-haspopup="true"
+              variant="contained"
+              color="secondary"
+              onClick={handleClick}
+            >
+              <GetAppIcon />
+              Reportes
+            </Button>
+            <StyledMenu
+              id="customized-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <StyledMenuItem>
+                <ListItemIcon>
+                <Button>
+                <SendIcon fontSize="small" />
+                
+                </Button>
+                  
+                </ListItemIcon>
+                <ListItemText primary="Enviar al correo" />
+              </StyledMenuItem>
+              <StyledMenuItem>
+                <ListItemIcon>
+                <Button onClick={()=>reporte('#tProveedor','Proveedor')}>
+                <PictureAsPdfIcon fontSize="small" />
+                
+                </Button>
+                  
+                </ListItemIcon>
+                <ListItemText primary="Descargar en PDF" />
+              </StyledMenuItem>
+              
+              <StyledMenuItem>
+              <ListItemIcon>
+                
+                <img className="img-excel" src="/excel.png" width="15px" height="15px"/>
+                <ReactHTMLTableToExcel
+                    id="test-table-xls-button"
+                    className="download-table-xls-button"
+                    table="tProveedor"
+                    filename="Proveedor"
+                    sheet="tablexls"
+                    buttonText="Descargar en EXCEL"/>
+               
+                  
+                </ListItemIcon>
+               
+              </StyledMenuItem>
+            </StyledMenu>
       </div>
     </div>
      
@@ -97,7 +233,7 @@ const estilo = useStyles()
       
       
       <div className="scroll">
-        <table >
+        <table id="tProveedor">
         <thead>
           <tr>
             <td>Proveedor</td>

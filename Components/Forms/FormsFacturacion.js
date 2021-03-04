@@ -5,8 +5,9 @@ import SendIcon from '@material-ui/icons/Send';
 import Link from 'next/head'
 import {agregarProductoFactura} from '../../Services/functionFactura'
 import {getFecha} from '../../Services/getFecha';
-
-
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import Fab from '@material-ui/core/Fab'
+import NoteAddIcon from '@material-ui/icons/NoteAdd';
 const db =  firebaseG.firestore();
 const metodoPago = ['Efectivo','Tarjeta de credito']
 export default function FormsFacturacion(props){
@@ -19,7 +20,7 @@ export default function FormsFacturacion(props){
   setTimeout(()=>{
     setHora(horaActual)
 },1000)
-
+ 
   const getDataProductoAñadidos =()=>{ 
     firebaseG.auth().onAuthStateChanged(async (user) => {
      db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').onSnapshot((querySnapshot)=>{
@@ -191,74 +192,155 @@ export default function FormsFacturacion(props){
     }
 
     return(
+       <>
+    
+    <form onSubmit={handleSubmit}>
+    <div className="columnas">
+    
     <div>
-        <span>Fecha actual {fecha} </span>
-        <span> Hora actual{hora}</span>
-        <form onSubmit={handleSubmit}>
-           <label>Seleccionar cliente</label>
-           <select>
+    <h3 className="ld">Desde</h3>
+    <input className="inputizq" placeholder="Nombre de la Empresa"/> 
+    <input className="inputizq" placeholder="Correo de la Empresa"/> 
+    <input  className="inputizq" placeholder="Direccion de la Empresa"/> 
+    <input className="inputizq" placeholder="Telefono de la Empresa"/>
+    <input className="inputizq" placeholder="NIF de la Empresa"/>
+    <input className="inputizq" placeholder="NCIF de la Empresa"/>
+    </div>
+    <div>
+    <h3 className="ld">Cliente</h3>
+    <label className="ld">Seleccionar cliente</label>
+           <select className="selectde" >
                <option value="selec" >Selec</option>
            </select>
-           <labe>Cliente</labe>
-           <input type="text" required value={values.nombreClienteFactura} onChange={handleInputChange} placeholder="Cliente" name="nombreClienteFactura"/>
-           <input type="email"  value={values.correoClienteFactura} onChange={handleInputChange} placeholder="Correo Cliente" name="correoClienteFactura"/>
-           <input type="text" value={values.dirrecionCliente} onChange={handleInputChange} placeholder="Dirrecion Cliente" name="dirrecionCliente"/>
-           <input type="text" value={values.plazoPagoFactura} onChange={handleInputChange} placeholder="Plazo Factura" name="plazoPagoFactura"/>
-           <input type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/>
-           {metodoPago.length === 0?
-           <Link href="/Configuracion">
-            <Button variant="contained" color="default">
-              Añadir metodo de pago
-            </Button>
-           </Link>
-           :<select id="tipoPagoFactura"  onChange={handleInputChange} name="tipoPagoFactura"> {metodoPago.map(pago => 
+    <label className="lado1">Nombre</label>
+    <input className="inputde" type="text" required value={values.nombreClienteFactura} onChange={handleInputChange} placeholder="Nombre del Cliente" name="nombreClienteFactura"/>
+    <label className="lado2">Correo</label>
+    <input className="inputde" type="email"  value={values.correoClienteFactura} onChange={handleInputChange} placeholder="Correo del Cliente" name="correoClienteFactura"/>
+    <label className="lado3">Direccion</label>
+    <input className="inputde" type="text" value={values.dirrecionCliente} onChange={handleInputChange} placeholder="Dirrecion del Cliente" name="dirrecionCliente"/>
+    <label className="lado4">Telefono</label>
+    <input className="inputde" placeholder="Telefono de Cliente"/>
+    </div>
+  
+  
+   </div>
+    
+   <hr></hr>
+    <div className="columnas">
+    <div>
+    <label className="lado5">No. Factura</label>
+    <input className="inputle nfac" placeholder="Numero de factura"/>
+    <label className="lado6">Fecha</label>
+    <input className="inputle fech" value={`${fecha}  ${hora}`}/>
+    <label className="lado8">Forma de pago</label>
+    <select className="selectle" id="tipoPagoFactura"  onChange={handleInputChange} name="tipoPagoFactura"> {metodoPago.map(pago => 
                <option value={pago}>{pago}</option>
            )}
-           </select>}
-            
-           <select id="estadoPago" onChange={handleInputChange} name="estadoPago" >
+           </select>
+    </div>
+    <div>
+    <label className="lado9">Plazo de Pago</label>
+    <input className="inputle" type="text" value={values.plazoPagoFactura} onChange={handleInputChange} placeholder="Plazo Factura" name="plazoPagoFactura"/>
+    <label className="lado7">Vencimiento</label>
+    <input className="inputle" type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/>
+    <label className="lado10">Estado de Pago</label>
+    <select className="selectles" id="estadoPago" onChange={handleInputChange} name="estadoPago" >
                <option value="Pagada">Pagada</option>
                <option value="A plazo">No pagada</option>
            </select>
-            <div className="añdirProducto">
+     </div>
+    </div>
+        
+           
+    
+    </form>
+    
+     <br></br>
+     <div className="muestra">
                 <div>
                     <label>Seleccionar producto</label>
                     <input className="buscarProducto" type="text" onChange={buscarProducto} placeholder={productAdd}/>
-                    <div className="ProductoSelect">
+                    </div>
+                    <div>
+                    <label className="labelcant">Cantidad</label>
+                <input className="inputcant" type="number" id="cantidadIn" min="1" max={cantidadMax} />
+               
+                <span className="span">Producto Seleccionado: {productoSeleccionado}, Cantidad maxima: {cantidadMax}</span>
+                </div>
+                </div>
+                <div className="añdirProducto">
+                    <div className="todosproductos">
                         {dataAgregarProducto.map(producto=>
                             <>
-                            <Button  onClick={()=>añdirProductoClick(producto.nombreProducto)}  variant="text" color="default">
+                            <Button  onClick={()=>añdirProductoClick(producto.nombreProducto)}  variant="container" color="default">
                                 {producto.nombreProducto}
                             </Button>
+                            
                             <br></br>
+                             
                             </>)
                         }
                     
                     </div>
-                </div>
-                <input type="number" id="cantidadIn" min="1" max={cantidadMax} />
-                <span>Producto Seleccionado {productoSeleccionado}, Cantidad maxima #{cantidadMax}</span>
-                 
+                    <div><Button onClick={addProducto} variant="text" color="default" title="Agregar Producto">
+              <Fab > <AddCircleOutlineIcon style={{fontSize:20}} color="secondary"/> </Fab> 
+            </Button>   
             </div>
-            <Button onClick={addProducto} variant="text" color="default">
-              Agregar Producto
-            </Button>
-          <Button onClick={handleSubmit} variant="text" color="default">
-             Crear Factura
-           </Button> 
-        </form> 
-        <style jsx>{`
-        .ProductoSelect{
-            position:fixed;
+            <div> 
+          <Button onClick={handleSubmit} variant="text" color="default" title="Crear Factura">
+            <Fab> <NoteAddIcon style={{fontSize:20}} color="secondary"/></Fab>
+           </Button></div>
+                  
+                    </div>
+                
+               
+               
+                 
+            
+         
+            
+                   
+            
         
+        <style jsx>{`
+        .span{
+            margin-top: 4px;
+            font-size:15px;
+        }
+        .muestra{
+            display:flex;
+        }
+        .inputcant{
+            height:23px;
+            width:15%;
         }
         .añdirProducto{
-            display:flex;
+            display:grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            
         }
         .buscarProducto{
             width:50%;
+            height:23px
         }
+        .todosproductos{
+            text-align:left;
+            width: 330px; 
+            height: 100px;
+            background: transparent;
+            border: 3px solid #b6b8bb;
+            border-radius: 5px;
+            margin-bottom: 1px;
+            display: block; 
+            overflow: scroll;
+        }
+        .labelcant{
+            margin-top: 7px;
+
+            
+        }
+        
         `}</style>
-     </div>
-    )
+        </>
+    );
 } 

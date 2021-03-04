@@ -24,7 +24,7 @@ input{
     
     
 }
-
+  
 label{
     font-size: 13px ;
     font-family: Arial, Helvetica, sans-serif;
@@ -47,7 +47,7 @@ label{
 /* Hasta aqui */
 /* Forms productos */
 .inputd-producto{
-    width: 15%;
+    width: 12%;
     border-radius: 5px;
    
     margin-bottom: 5px;
@@ -55,7 +55,7 @@ label{
   
    
    margin-top: 5px;
-   margin-right: 60px;
+   margin-right: 50px;
 
 
 }
@@ -63,7 +63,7 @@ label{
 
 
 select{
-    width: 15%;
+    width: 12%;
     border-radius: 5px;
     padding: 8px;
     margin-bottom: 5px;
@@ -81,17 +81,18 @@ select{
     margin-bottom: 5px;
     border: 3px solid #b6b8bb;
   
-   margin-right: 15px;
+   margin-right: 21px;
    margin-top: 5px; 
 }
 .rellenar{
-    margin-left: 32px;
+    margin-left: 30px;
 }
 .rellenar1{
-    margin-left:10px;
+    margin-left:8px;
 }
 .rellenar3{
-    padding-right: 14px;
+    padding-right: 12px;
     
 }
+
 /* Hasta aqui */

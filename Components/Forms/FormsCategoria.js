@@ -5,6 +5,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Fab from '@material-ui/core/Fab'
 
+
 const db =  firebaseG.firestore();
 
 export default function FormsCategoria(props){
@@ -25,7 +26,9 @@ export default function FormsCategoria(props){
         firebaseG.auth().onAuthStateChanged(async (user) => {
             const doc = await db.collection(user.email).doc('Categoria').collection('Categoria').doc(id).get();
             setValues({...doc.data()})
+           
         })
+       
     }
 
     useEffect(()=>{
@@ -39,7 +42,8 @@ export default function FormsCategoria(props){
 
     return(
     <div >
-        <form className="form-agregar" onSubmit={handleSubmit}>
+    
+        <form  onSubmit={handleSubmit}>
         {props.currentId === ""? (<h2>Registrar Categoria</h2> ) : (<h2>Actualizar Categoria</h2>)}
         <div> 
          <label >Descripcion </label> <input className="input " type="text" required value={values.descripcionCategoria} onChange={handleInputChange} placeholder="Descripcion de la Categoria" name="descripcionCategoria"/>

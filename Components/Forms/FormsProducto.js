@@ -91,7 +91,6 @@ export default function FormsProducto(props) {
       .storage()
       .ref(`/imagesProducto/${file.name}`);
     const task = ref.put(file);
-    console.log(task)
     return task;
   };
   const handleInputChange = (e) => {
