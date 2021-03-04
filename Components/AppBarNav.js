@@ -5,6 +5,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import { makeStyles } from '@material-ui/core/styles';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
 import {firebaseG} from '../firebase.BD/firebase.conf'
+import swal from 'sweetalert';
 import Badge from '@material-ui/core/Badge';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,7 +28,13 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 const exitApp = ()=>{
-console.log('hola')
+    swal('¿Seguro, que deseas salir de la apliacion?',{
+        buttons:['Cancelar','Salir']
+    }).then(result =>{
+        if(result === true){
+            firebaseG.auth().signOut();
+        }
+    })
 }
 
 export default function AppBarNav({user}){
@@ -49,7 +56,7 @@ export default function AppBarNav({user}){
                 </div>
                 <div>
 
-                    <Avatar className={classes.purple}><h1>{avatar}</h1></Avatar>
+                    <Avatar className={classes.purple}><h1>{avatar.toUpperCase()}</h1></Avatar>
                 </div>
                 <div>
                     <Button onClick={exitApp} color="default">

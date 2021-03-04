@@ -1,9 +1,9 @@
+import SettingsIcon from '@material-ui/icons/Settings';
 export default function Configuracion(){
     return(
-
-
-        <h1>Configuracion</h1>
-    
+        <>
+            <div><SettingsIcon style={{fontSize:40}}/></div>
+        </>   
   
     )
 }
