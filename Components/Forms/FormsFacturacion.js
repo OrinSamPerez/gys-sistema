@@ -190,7 +190,8 @@ export default function FormsFacturacion(props){
        
         
     }
-const [datosEmpresa, setdatosEmpresa] = useState({})
+const [datosEmpresa, setdatosEmpresa] = useState([])
+if(datosEmpresa.length === 0 ){
     firebaseG.auth().onAuthStateChanged(async (user)=>{
         if(user != null){
           firebaseG.firestore().collection(user.email).doc('datosUsuario').get().then((doc)=>{
@@ -200,8 +201,9 @@ const [datosEmpresa, setdatosEmpresa] = useState({})
             setdatosEmpresa(doc.data())
         })
     }
-})
+    })
 
+}
 
     return(
        <>
@@ -244,7 +246,7 @@ const [datosEmpresa, setdatosEmpresa] = useState({})
     <div>
     <label className="lado5">No. Factura</label>
     <input className="inputle nfac" placeholder="Numero de factura" value={`${fechaA.getFullYear()}${fechaA.getDay()}${fechaA.getMonth()+1}${fechaA.getHours()}${fechaA.getMinutes()}${fechaA.getSeconds()}`} disabled/>
-    <label className="lado6">Fecha</label>
+    <label className="lado6">Fecha</label> 
     <input className="inputle fech" value={`${fecha}  ${hora}`}/>
     <label className="lado8">Forma de pago</label>
     <select className="selectle" id="tipoPagoFactura"  onChange={handleInputChange} name="tipoPagoFactura"> {metodoPago.map(pago => 

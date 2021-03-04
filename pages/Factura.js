@@ -33,8 +33,7 @@ export default function Provedor() {
 
     firebaseG.auth().onAuthStateChanged(async (user) => {
       try{       
-          await db.collection(user.email).doc('Factura').collection('Factura').doc().set(objectFactura) 
-          window.print()
+          await db.collection(user.email).doc('Factura').collection('Factura').doc().set(objectFactura)
           data.map(async dato=>{
               await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc(dato.id).delete()
               })
