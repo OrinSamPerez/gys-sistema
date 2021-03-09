@@ -12,11 +12,13 @@
     "@material-ui/data-grid": "^4.0.0-alpha.17",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
+    "chart.js": "^2.9.4",
     "firebase": "^8.2.8",
     "jspdf": "^2.3.0",
     "jspdf-autotable": "^3.5.14",
     "next": "10.0.5",
     "react": "17.0.1",
+    "react-chartjs-2": "^2.11.1",
     "react-dom": "17.0.1",
     "react-html-table-to-excel": "^2.0.0",
     "react-toastify": "^7.0.3"

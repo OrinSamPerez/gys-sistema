@@ -1,0 +1,39 @@
+.columnas{
+display:grid;
+grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.btn-informes{
+    width: 200px;
+    height: 200px;
+    background: aqua;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.btn-informes:hover{
+    width: 250px;
+    height: 200px;
+    background: #ff3eaf;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+.center{
+    text-align: center;
+}
+.modal-informe1{
+    position: absolute;  
+    margin-left: 400px;
+    margin-top: 100px;
+    width: 50%;
+    height: 50%;
+    
+    font-size: 15px;
+}
+.fondo-informe{
+background: white;
+
+}
+

@@ -187,25 +187,18 @@ const estilo = useStyles()
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
+             
               <StyledMenuItem>
+               <Button onClick={()=>reporte('#tProveedor','Proveedor')}>
                 <ListItemIcon>
-                <Button>
-                <SendIcon fontSize="small" />
-                
-                </Button>
-                  
-                </ListItemIcon>
-                <ListItemText primary="Enviar al correo" />
-              </StyledMenuItem>
-              <StyledMenuItem>
-                <ListItemIcon>
-                <Button onClick={()=>reporte('#tProveedor','Proveedor')}>
+               
                 <PictureAsPdfIcon fontSize="small" />
                 
-                </Button>
+               
                   
                 </ListItemIcon>
                 <ListItemText primary="Descargar en PDF" />
+                 </Button>
               </StyledMenuItem>
               
               <StyledMenuItem>
@@ -229,7 +222,7 @@ const estilo = useStyles()
     </div>
      
         
-       
+        
       
       
       <div className="scroll">

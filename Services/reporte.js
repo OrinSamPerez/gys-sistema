@@ -27,7 +27,7 @@ export const reporte= (idTable, nameTable)=>{
               html: idTable ,
               
             })
-            
+             
             docu.save(`${nameTable}.pdf`)
           }
         })
