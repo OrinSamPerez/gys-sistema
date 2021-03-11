@@ -81,11 +81,20 @@ export default function Provedor() {
   useEffect(()=>{
     getData()
   },[])
-  const addProducto =  (objectProducto)=>{
+  const addProducto =  (objectProducto)=>{ 
     firebaseG.auth().onAuthStateChanged(async (user) => {
       try{
         if(currentId === ""){
-          await db.collection(user.email).doc('Producto').collection('Producto').doc().set(objectProducto)
+          await db.collection(user.email).doc('Producto').collection('Producto').doc(objectProducto.id_Producto).set(objectProducto)
+          await db.collection(user.email).doc('Stock').collection('Stock').doc(objectProducto.id_Producto).set({
+            id:objectProducto.id_Producto,
+            Descripcion:objectProducto.nombreProducto,
+            ExistenciaInciales:objectProducto.cantidadProducto,
+            Entrada:objectProducto.cantidadProducto,
+            Salida_Inicial:0,
+            Stock:objectProducto.cantidadProducto
+          })
+
           toast.success('🙂 Producto Agregado Sastifactoriamente!', {
             position: "top-right",
             autoClose: 10000,
@@ -98,6 +107,15 @@ export default function Provedor() {
          }
          else{ 
            await db.collection(user.email).doc('Producto').collection('Producto').doc(currentId).update(objectProducto)
+           await db.collection(user.email).doc('Stock').collection('Stock').doc(currentId).update({
+   
+            Descripcion:objectProducto.nombreProducto,
+            ExistenciaInciales:objectProducto.cantidadProducto,
+            Entrada:objectProducto.cantidadProducto,
+            Salida_Inicial:0,
+            Stock:objectProducto.cantidadProducto
+          })
+
            setCurrenId("");
            toast.success('🙂 Producto Actualizado Sastifactoriamente!', {
             position: "top-right",
@@ -129,6 +147,7 @@ export default function Provedor() {
 
       firebaseG.auth().onAuthStateChanged(async (user) => {
         await db.collection(user.email).doc('Producto').collection('Producto').doc(id).delete();
+        await db.collection(user.email).doc('Stock').collection('Stock').doc(id).delete();
         toast.success('🙂 Producto Eliminado Sastifactoriamente!', {
           position: "top-right",
           autoClose: 10000,
@@ -253,7 +272,7 @@ export default function Provedor() {
                 </td>
                 <td>
                 <li>
-                  <Button variant="text" onClick={() => setCurrenId(datos.id)} color="primary">
+                  <Button variant="text" onClick={() => setCurrenId(datos.id_Producto)} color="primary">
                     <EditIcon />
                   </Button>
                 </li>

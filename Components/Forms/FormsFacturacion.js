@@ -67,7 +67,7 @@ export default function FormsFacturacion(props){
         ITBISFactura:'',
         subTotal:'',
         Total:'',
-        productoFactura:[],
+        productoFactura:[], 
         tipoPagoFactura:'',
         dirrecionCliente:'',
         ncfFactura:'',
@@ -147,6 +147,7 @@ export default function FormsFacturacion(props){
             setProductoSeleccionado(dato.nombreProducto)
             setCantidadMax(dato.cantidadProducto)
             const datoProductos = {
+                id:dato.id_Producto,
                 producto:dato.nombreProducto,
                 descuento:dato.descuentoProducto,
                 precio:dato.precioVentaProducto,
@@ -166,6 +167,7 @@ export default function FormsFacturacion(props){
             setProductAdd(dato.nombreProducto)
             setProductoSeleccionado(dato.nombreProducto)
             const datoProductos = {
+                id:dato.id_Producto,
                 producto:dato.nombreProducto,
                 descuento:dato.descuentoProducto,
                 precio:dato.precioVentaProducto,

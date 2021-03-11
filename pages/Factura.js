@@ -10,22 +10,36 @@ const db =  firebaseG.firestore();
 export default function Provedor() {
   const [ data, setData ] = useState([ ])
   const [ currentId, setCurrenId] = useState("")
+const [dataProducto, setDataProducto]=useState([])
 
+const getData =()=>{
 
-  const getData =()=>{
+  firebaseG.auth().onAuthStateChanged(async (user) => {
+   db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').onSnapshot((querySnapshot)=>{
+     const docs = [];
+     querySnapshot.forEach(doc =>{
+       docs.push({...doc.data(),id:doc.id})
+       
+     })
+     setData(docs);
+   });
+   })
+ }  
+ const getDataProduto =()=>{
 
-   firebaseG.auth().onAuthStateChanged(async (user) => {
-    db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').onSnapshot((querySnapshot)=>{
-      const docs = [];
-      querySnapshot.forEach(doc =>{
-        docs.push({...doc.data(),id:doc.id})
-        
-      })
-      setData(docs);
-    });
-    })
-  } 
+  firebaseG.auth().onAuthStateChanged(async (user) => {
+   db.collection(user.email).doc('Producto').collection('Producto').onSnapshot((querySnapshot)=>{
+     const docs = [];
+     querySnapshot.forEach(doc =>{
+       docs.push({...doc.data(),id:doc.id})
+       
+     })
+     setDataProducto(docs);
+   });
+   })
+ } 
   useEffect(()=>{
+    getDataProduto()
     getData()
   },[])
   const addFactura =  (objectFactura)=>{
@@ -35,7 +49,17 @@ export default function Provedor() {
       try{       
           await db.collection(user.email).doc('Factura').collection('Factura').doc().set(objectFactura)
           data.map(async dato=>{
-              await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc(dato.id).delete()
+              dataProducto.filter(async word => {
+               if (word.nombreProducto === dato.producto){
+                 const cantidadUpdate =   word.cantidadProducto - dato.cantidad
+                 await db.collection(user.email).doc('Producto').collection('Producto').doc(dato.id).update({cantidadProducto:cantidadUpdate})
+                 await db.collection(user.email).doc('Stock').collection('Stock').doc(dato.id).update({Stock:cantidadUpdate,Salida_Inicial:dato.cantidad})
+                 await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc(dato.id).delete()
+                } 
+                
+
+              })
+
               })
        
          

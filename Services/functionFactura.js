@@ -14,7 +14,7 @@ export function agregarProductoFactura(cantidadIn,cantidadMax, valuesProductos){
         if(valuesProductos.descuento === 0){
             firebaseG.auth().onAuthStateChanged(async (user) => {
                 try{
-                    await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc().set(valuesProductos)               
+                    await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc(valuesProductos.id).set(valuesProductos)               
                 }catch(error){
                       console.error(error);
                    }
@@ -26,7 +26,7 @@ export function agregarProductoFactura(cantidadIn,cantidadMax, valuesProductos){
             valuesProductos.total =  valuesProductos.total - descuento 
             firebaseG.auth().onAuthStateChanged(async (user) => {
                 try{
-                    await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc().set(valuesProductos)               
+                    await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc(valuesProductos.id).set(valuesProductos)               
                 }catch(error){
                       console.error(error);
                    }

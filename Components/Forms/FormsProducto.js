@@ -10,6 +10,7 @@ import { getFecha } from "../../Services/getFecha";
 import Fab from '@material-ui/core/Fab'
 import CloseIcon from "@material-ui/icons/Close";
 const db = firebaseG.firestore();
+ const fechaDate = new Date();
 
 export default function FormsProducto(props) {
   const [fecha, setFecha] = useState(getFecha);
@@ -23,6 +24,7 @@ export default function FormsProducto(props) {
     precioCompraProducto:1,
     precioVentaProducto:1,
     descuentoProducto:0,
+    id_Producto:''
   };
   const DRAG_IMAGE_STATES = {
     ERROR: -1,
@@ -154,10 +156,9 @@ export default function FormsProducto(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const nameProveedor = document.getElementById("nameProveedor").value;
-    //const nameCategoria = document.getElementById('nameCategoria').value
     values.imageProducto = image;
     values.proveedorProducto = nameProveedor;
-    // values.categoriaProducto = nameCategoria
+    values.id_Producto= `${fechaDate.getFullYear()}${fechaDate.getMonth()+1}${fechaDate.getDate()}${fechaDate.getHours()}${fechaDate.getSeconds()}-${values.nombreProducto}`;
     props.addProducto(values);
     setValues({ ...valueInitial });
     setImage(null);
