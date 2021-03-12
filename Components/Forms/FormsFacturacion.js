@@ -314,16 +314,6 @@ if(datosEmpresa.length === 0 ){
            </Button></div>
                   
                     </div>
-                
-               
-               
-                 
-            
-         
-            
-                   
-            
-        
         <style jsx>{`
         .span{
             margin-top: 4px;

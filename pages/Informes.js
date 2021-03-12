@@ -17,83 +17,103 @@ export default function Informes(){
     setOpen(false);
   };
     
-   const data={
-       labels:['Haiti', 'Cuba', 'Italia', 'Japon', 'China'],
-       datasets:[{
-           label:'Habitantes',
-           backgroundColor:'rgba(0,255,0,1)',
-           borderColor:'black',
-           borderWidth:1,
-           hoverBackgroundColor:'rgba(0,255,0,0.2)',
-           hoverborderColor:'#FF0000',
-           data:[525.25,126.19,325.69,4152,5200]
-       }]
-   };
-   const opciones={
-     maintainAspectRatio:false,
-      responsive:true 
-   }
-   const datas={
-    labels:['Platano', 'Yuca', 'Aguacate', 'Maiz', 'Papa'],
-    datasets:[{
-        label:'Productos mas Vendidos',
-        backgroundColor:'rgba(0,255,225)',
-        borderColor:'black',
-        borderWidth:1,
-        hoverBackgroundColor:'rgba(0, 255, 255, 0.603)',
-        hoverborderColor:'#FF0000',
-        data:[150,300,125, 250,400],
-        
-
-    }]
-};
    const opcione={
     maintainAspectRatio:false,
      responsive:true 
   }
-  const [datosInforme, setdatosInforme]= useState(data)
-  const [opcionesInforme, setopcionesInforme]=useState(opciones)
-  const [graficoInforme,setgraficoInforme]=useState(barras)
+  const [datosInformes, setDatosInformes] = useState({})
   const openInforme1=()=>{
     handleOpen()
-    setdatosInforme(datas)
-    setopcionesInforme(opcione)
+    setDatosInformes({})
+    setDatosInformes ( {
+        labels:['Platano', 'Yuca', 'Aguacate', 'Maiz', 'Papa'],
+        datasets:[{
+            label:'Productos mas Vendidos',
+            backgroundColor:'rgba(0,255,225)',
+            borderColor:'black',
+            borderWidth:1,
+            hoverBackgroundColor:'rgba(0, 255, 255, 0.603)',
+            hoverborderColor:'#FF0000',
+            data:[150,300,125, 250,400],
+            
+    
+        }]
+    })
     setgraficoInforme(barras)
+console.log(datosInformes)
   }
   const openInforme2=()=>{
     handleOpen()
-    setdatosInforme(data)
-    setopcionesInforme(opciones)
+    setDatosInformes({})
+    setDatosInformes({
+      labels:['Haiti', 'Cuba', 'Italia', 'Japon', 'China'],
+      datasets:[{
+          label:'Habitantes',
+          backgroundColor:'rgba(0,255,0,1)',
+          borderColor:'black',
+          borderWidth:1,
+          hoverBackgroundColor:'rgba(0,255,0,0.2)',
+          hoverborderColor:'#FF0000',
+          data:[525.25,126.19,325.69,4152,5200]
+      }]
+  })
+console.log(datosInformes)
     setgraficoInforme(barras)
   }
   const openInforme3=()=>{
+    setDatosInformes({})
     handleOpen()
-    setdatosInforme(data)
-    setopcionesInforme(opciones)
+    setDatosInformes ( {
+      labels:['Platano', 'Yuca', 'Aguacate', 'Maiz', 'Papa'],
+      datasets:[{
+          label:'Productos mas Vendidos',
+          backgroundColor:'rgba(0,255,225)',
+          borderColor:'black',
+          borderWidth:1,
+          hoverBackgroundColor:'rgba(0, 255, 255, 0.603)',
+          hoverborderColor:'#FF0000',
+          data:[150,300,125, 250,400],
+          
+  
+      }]
+  })
     setgraficoInforme(pastel)
   }
   const openInforme4=()=>{
+    setDatosInformes({})
+    setDatosInformes({})
     handleOpen()
-    setdatosInforme(data)
-    setopcionesInforme(opciones)
+    setDatosInformes({
+      labels:['Haiti', 'Cuba', 'Italia', 'Japon', 'China'],
+      datasets:[{
+          label:'Habitantes',
+          backgroundColor:'rgba(0,255,0,1)',
+          borderColor:'black',
+          borderWidth:1,
+          hoverBackgroundColor:'rgba(0,255,0,0.2)',
+          hoverborderColor:'#FF0000',
+          data:[525.25,126.19,325.69,4152,5200]
+      }]
+  })
     setgraficoInforme(pastel)
   }
   const barras=(
     <Bar
-    data={datosInforme}
+    data={datosInformes}
     width='100%'
     height='325px'
-    options={opcionesInforme}
+    options={opcione}
     />
   )
   const pastel=(
     <Pie
-    data={data}
+    data={datosInformes}
     width='100%'
     height='325px'
-    options={opciones}  
+    options={opcione}  
   />
   )
+  const [graficoInforme,setgraficoInforme]=useState(barras)
     return(
       <>
   <h1 className="center">Informes</h1>

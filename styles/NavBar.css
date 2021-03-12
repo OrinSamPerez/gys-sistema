@@ -28,6 +28,11 @@
     font-size: 23px;
    
 }
+.nav-main li:focus{
+    color:#ff3eaf;
+    font-size: 23px;
+   
+}
 
 .navBar-main{
     background-color: #003048;
