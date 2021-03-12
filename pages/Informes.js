@@ -2,22 +2,12 @@ import {Bar} from 'react-chartjs-2';
 import {Pie} from 'react-chartjs-2';
 import React from 'react';
 import {useState} from 'react';
-import Modal from '@material-ui/core/Modal';
+
 
 
 export default function Informes(){
  
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-    
-   const data={
+   const data1={
        labels:['Haiti', 'Cuba', 'Italia', 'Japon', 'China'],
        datasets:[{
            label:'Habitantes',
@@ -33,7 +23,7 @@ export default function Informes(){
      maintainAspectRatio:false,
       responsive:true 
    }
-   const datas={
+   const data2={
     labels:['Platano', 'Yuca', 'Aguacate', 'Maiz', 'Papa'],
     datasets:[{
         label:'Productos mas Vendidos',
@@ -47,92 +37,49 @@ export default function Informes(){
 
     }]
 };
-   const opcione={
-    maintainAspectRatio:false,
-     responsive:true 
-  }
-  const [datosInforme, setdatosInforme]= useState(data)
-  const [opcionesInforme, setopcionesInforme]=useState(opciones)
-  const [graficoInforme,setgraficoInforme]=useState(barras)
-  const openInforme1=()=>{
-    handleOpen()
-    setdatosInforme(datas)
-    setopcionesInforme(opcione)
-    setgraficoInforme(barras)
-  }
-  const openInforme2=()=>{
-    handleOpen()
-    setdatosInforme(data)
-    setopcionesInforme(opciones)
-    setgraficoInforme(barras)
-  }
-  const openInforme3=()=>{
-    handleOpen()
-    setdatosInforme(data)
-    setopcionesInforme(opciones)
-    setgraficoInforme(pastel)
-  }
-  const openInforme4=()=>{
-    handleOpen()
-    setdatosInforme(data)
-    setopcionesInforme(opciones)
-    setgraficoInforme(pastel)
-  }
-  const barras=(
-    <Bar
-    data={datosInforme}
-    width='100%'
-    height='325px'
-    options={opcionesInforme}
-    />
-  )
-  const pastel=(
-    <Pie
-    data={data}
-    width='100%'
-    height='325px'
-    options={opciones}  
-  />
-  )
+   
+ 
+  
+  
     return(
       <>
   <h1 className="center">Informes</h1>
   <div className="columnas">
   <div>
-  <button className="btn-informes" type="button" onClick={openInforme1} > PRODUCTOS MAS VENDIDOS</button>
-  <Modal
-          open={open}
-          onClose={handleClose}
-          
-        >
-    <div className="modal-informe1">
-   
-       <div className="fondo-informe">
-       
-        {graficoInforme}
-         
-        
-      </div>
-    </div> 
-  </Modal>
+  <button className="btn-informes" type="button"  > PRODUCTOS MAS VENDIDOS</button>
+  
   </div>
 <div>
-<button className="btn-informes" type="button" onClick={openInforme2}> Informe 2</button>
+<button className="btn-informes" type="button" > Informe 2</button>
 
          
     
  
 </div>
 <div>
-<button className="btn-informes" type="button" onClick={openInforme3} > Informe 3</button>
+<button className="btn-informes" type="button"  > Informe 3</button>
 </div>
 <div>
-<button className="btn-informes" type="button" onClick={openInforme4}> Informe 4</button>
+<button className="btn-informes" type="button"> Informe 4</button>
 </div>
 
 </div>
-
-
+<div>
+<Bar
+    data={data1}
+    width='100%'
+    height='325px'
+    options={opciones}
+    />
+</div>
+<div>
+<Pie
+    data={data2}
+    width='100%'
+    height='325px'
+    options={opciones}  
+    />
+</div>
 
 </>
     )
