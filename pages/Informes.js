@@ -1,22 +1,24 @@
-import {Bar} from 'react-chartjs-2';
+import {Bar, Line} from 'react-chartjs-2';
 import {Pie} from 'react-chartjs-2';
 import React from 'react';
-import {useState} from 'react';
+
+
+ 
 
 
 
 export default function Informes(){
  
    const data1={
-       labels:['Haiti', 'Cuba', 'Italia', 'Japon', 'China'],
+       labels:['Fresa', 'Arroz', 'Azucar', 'Guineo', 'Lechuga'],
        datasets:[{
-           label:'Habitantes',
-           backgroundColor:'rgba(0,255,0,1)',
+           label:'Productos mas vendidos (Unidades)',
+           backgroundColor:'rgba(0,255,255)',
            borderColor:'black',
-           borderWidth:1,
-           hoverBackgroundColor:'rgba(0,255,0,0.2)',
-           hoverborderColor:'#FF0000',
-           data:[525.25,126.19,325.69,4152,5200]
+           borderWidth:2,
+           hoverBackgroundColor:'rgba(0,255,255,0.63)',
+           hoverborderColor:'#ffffff',
+           data:[700,600,650,725,510]
        }]
    };
    const opciones={
@@ -26,45 +28,101 @@ export default function Informes(){
    const data2={
     labels:['Platano', 'Yuca', 'Aguacate', 'Maiz', 'Papa'],
     datasets:[{
-        label:'Productos mas Vendidos',
+        label:'Productos menos Vendidos (Unidades)',
         backgroundColor:'rgba(0,255,225)',
         borderColor:'black',
-        borderWidth:1,
+        borderWidth:2,
         hoverBackgroundColor:'rgba(0, 255, 255, 0.603)',
-        hoverborderColor:'#FF0000',
+        hoverborderColor:'#ffffff',
         data:[150,300,125, 250,400],
         
 
     }]
 };
+const meses=['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+const ventas=[10,20,30,40,50,60,70,50,42,95,78,100]
+    const data3={
+        labels:meses,
+        datasets:[{
+            label:'Ventas Mensuales (Ganancias)',
+            backgroundColor:'rgba(0,255,225)',
+            borderColor:'black',
+            borderWidth:2,
+            hoverBackgroundColor:'rgba(0, 255, 255, 0.603)',
+            hoverborderColor:'#ffffff',
+            data:ventas,
+            
+    
+        }]
+};
+const data4={
+    labels:['Platano', 'Yuca', 'Aguacate', 'Maiz', 'Papa','Fresa','Arroz','Guineo','Lechuga','Azucar'],
+    datasets:[{
+        label:'Productos Menos Vendidos (Unidades)',
+        backgroundColor: [
+            "#FF6384",
+            "#63FF84",
+            "#84FF63",
+            "#8463FF",
+            "#6384FF",
+            "#FF6310",
+            "#63FF25",
+            "#84FF55",
+            "#846363",
+            "#638490"
+        ],
+        borderColor:'white',
+        borderWidth:3,
+        hoverBackgroundColor: [
+            "#FF6384",
+            "#63FF84",
+            "#84FF63",
+            "#8463FF",
+            "#6384FF",
+            "#FF6310",
+            "#63FF25",
+            "#84FF55",
+            "#846363",
+            "#638490"
+        ],
+        hoverborderColor:'#ffffff',
+        data:[150,300,125, 250,400,700,600,725,510,650],
+        
+
+    }]
+};
+   const mostrarInforme = (idInforme)=>{
+   document.getElementById("informe1").style.display='none'
+   document.getElementById("informe2").style.display='none'
+   document.getElementById("informe3").style.display='none'
+   document.getElementById("informe4").style.display='none'
+   document.getElementById(idInforme).style.display='block'
    
+   }
  
   
   
     return(
       <>
-  <h1 className="center">Informes</h1>
-  <div className="columnas">
-  <div>
-  <button className="btn-informes" type="button"  > PRODUCTOS MAS VENDIDOS</button>
+  <h1 className="columnas-text">Informes</h1>
+  <section className="columnas" >
+  <div >
+  <button  type="button" onClick={()=>mostrarInforme("informe1")} > Productos Mas Vendidos</button>
   
   </div>
 <div>
-<button className="btn-informes" type="button" > Informe 2</button>
-
-         
-    
- 
-</div>
-<div>
-<button className="btn-informes" type="button"  > Informe 3</button>
-</div>
-<div>
-<button className="btn-informes" type="button"> Informe 4</button>
-</div>
+<button  type="button" onClick={()=>mostrarInforme("informe2")}> Productos Menos Vendidos</button>
 
 </div>
 <div>
+<button  type="button" onClick={()=>mostrarInforme("informe3")} > Ventas Mensuales</button>
+</div>
+<div>
+<button  type="button" onClick={()=>mostrarInforme("informe4")}> Total de Productos</button>
+</div>
+</section>
+
+<div id="informe1" >
 <Bar
     data={data1}
     width='100%'
@@ -72,15 +130,30 @@ export default function Informes(){
     options={opciones}
     />
 </div>
-<div>
-<Pie
+<div id="informe2" >
+<Bar
     data={data2}
     width='100%'
     height='325px'
     options={opciones}  
     />
 </div>
-
+<div id="informe3" >
+<Line
+    data={data3}
+    width='100%'
+    height='325px'
+    options={opciones}
+    />
+</div>
+<div id="informe4" >
+<Pie
+    data={data4}
+    width='100%'
+    height='325px'
+    options={opciones}  
+    />
+</div>
 </>
     )
 }

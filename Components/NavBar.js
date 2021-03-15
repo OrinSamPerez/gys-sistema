@@ -30,7 +30,7 @@ export default function NavBar({children, userInfo}) {
         <li>
         
           <Link href="/Factura">
-            <div className="imagenes"><DescriptionIcon/>  <a>Factura</a></div>
+            <div className="imagenes"><DescriptionIcon/>  <a>Facturacion</a></div>
           </Link>
         </li>
         <li>

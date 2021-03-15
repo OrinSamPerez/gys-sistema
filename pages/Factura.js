@@ -87,7 +87,7 @@ const getData =()=>{
     })
     }
 }
-
+ 
 let TOTAL = 0;
 let SUBTOTAL = 0;
 let ITBIS = 0;
