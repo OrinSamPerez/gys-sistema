@@ -16,7 +16,7 @@ const [datosStock, setDatosStock] = useState([])
          })
      }
  })
-
+ 
     return(
         <>
         

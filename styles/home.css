@@ -32,3 +32,55 @@ small{
   text-align: center; 
 
 }
+.columnasHome{
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  text-align: center;
+  margin-left: 30px;
+  margin-top: 30px;
+}
+.columnasHome button{
+
+    background: transparent;
+    margin-top: 1px;
+    align-items: center; 
+    cursor: pointer;
+    font-size: 15px;
+    font-family: Arial;
+    
+   }
+ .columnasHome button:hover{
+      color:#ff3eaf;
+      
+     }
+.columnasHome div{
+  cursor: pointer;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  padding-top: 30px;
+  box-shadow:-3px 5px 15px rgba(0, 0, 0, 0.39);
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  text-align: center;
+ 
+}
+.columnasHome div:hover{
+  width: 132px;
+  height: 132;
+  padding-top: 35px;
+  
+  
+}
+.columnasHome-text{
+  text-align: center;
+
+}
+.debajo{
+  margin-left: 18px;
+  margin-right: 18px;
+}
+.centrado{
+  text-align: center;
+  color:red
+}
