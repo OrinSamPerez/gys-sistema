@@ -44,10 +44,8 @@ export default function AppBarNav({user}){
         <nav className="main-navegacion">
              
             <div className="info-nav">
-                <div>
-                    <Badge badgeContent={4} color="secondary">
-                        <EmailIcon />
-                    </Badge>
+                <div title="Notificaciones">
+                        <EmailIcon style={{cursor:'pointer', color:'blue'}} />
                 </div>
                 <div>
                     <h3 className="nameAvatar" >

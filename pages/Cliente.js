@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Cliente() {
   //Hook referentes a los getFacturas
   const [facturaADMIN,setFacturaADMIN] = useState([])
+  const [dataCliente, setDataCliente] = useState([])
   //Extrayendo todos los datos facturas
 
   //Facturas de admin
@@ -71,6 +72,13 @@ export default function Cliente() {
           docs.push({...doc.data(),id:doc.id})
         })
         setFacturaADMIN(docs)
+      })
+      db.collection(user.email).doc('Clientes').collection('Clientes').onSnapshot(documents =>{
+        const docsCliente = [];
+        documents.forEach(doc=>{
+          docsCliente.push({...doc.data(), id:doc.id})
+        })
+        setDataCliente(docsCliente)
       })
     }
   })
@@ -112,6 +120,15 @@ export default function Cliente() {
       </Tabs>
       <TabPanel value={value} index={0}>
         <h2>Clientes Registrados</h2>
+        {
+          dataCliente.length === 0? <h3>No existen clientes</h3>
+          :dataCliente.map(row=>
+            <div>
+              <span>{row.nombreCliente}</span>
+              <span>{row.id}</span>
+            </div>
+          )
+        }
       </TabPanel>
       <TabPanel value={value} index={1}>
         <h2>Todas las facturas</h2>

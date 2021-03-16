@@ -7,9 +7,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
 const db =  firebaseG.firestore();
+const fecha = new Date()
 export default function Provedor() {
-  const [ data, setData ] = useState([ ])
-  const [ currentId, setCurrenId] = useState("")
+const [ data, setData ] = useState([ ])
+const [ dataStock, setDataStock ] = useState([ ])
+const [ currentId, setCurrenId] = useState("")
 const [dataProducto, setDataProducto]=useState([])
 
 const getData =()=>{
@@ -19,57 +21,54 @@ const getData =()=>{
      const docs = [];
      querySnapshot.forEach(doc =>{
        docs.push({...doc.data(),id:doc.id})
-       
      })
      setData(docs);
    });
+   db.collection(user.email).doc('Stock').collection('Stock').onSnapshot((querySnapshot)=>{
+    const docsStock = [];
+    querySnapshot.forEach(doc =>{
+      docsStock.push({...doc.data(),id:doc.id})
+    })
+    setDataStock(docsStock);
+  })
+  db.collection(user.email).doc('Producto').collection('Producto').onSnapshot((querySnapshot)=>{
+    const docs = [];
+    querySnapshot.forEach(doc =>{
+      docs.push({...doc.data(),id:doc.id})
+    })
+    setDataProducto(docs);
+  })
    })
- }  
- const getDataProduto =()=>{
+}  
 
-  firebaseG.auth().onAuthStateChanged(async (user) => {
-   db.collection(user.email).doc('Producto').collection('Producto').onSnapshot((querySnapshot)=>{
-     const docs = [];
-     querySnapshot.forEach(doc =>{
-       docs.push({...doc.data(),id:doc.id})
-       
-     })
-     setDataProducto(docs);
-   });
-   })
- } 
   useEffect(()=>{
-    getDataProduto()
     getData()
   },[])
   const addFactura =  (objectFactura)=>{
-    console.log(objectFactura)
-
+    objectFactura.horaActual = fecha.getHours()+fecha.getMinutes()+fecha.getSeconds()
     firebaseG.auth().onAuthStateChanged(async (user) => {
-      try{       
+     if(user != null){
           await db.collection(user.email).doc('Factura').collection('Factura').doc().set(objectFactura)
           data.map(async dato=>{
               dataProducto.filter(async word => {
-               if (word.nombreProducto === dato.producto){
-                 const cantidadUpdate =   word.cantidadProducto - dato.cantidad
-                 await db.collection(user.email).doc('Producto').collection('Producto').doc(dato.id).update({cantidadProducto:cantidadUpdate})
-                 await db.collection(user.email).doc('Stock').collection('Stock').doc(dato.id).update({Stock:cantidadUpdate,Salida_Inicial:dato.cantidad})
-                 await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc(dato.id).delete()
+                    if (word.id_Producto === dato.id){
+                      const cantidadUpdate =   word.cantidadProducto - dato.cantidad
+                      dataStock.filter(async stock=>{
+                          if (stock.id === dato.id){
+                            const salida = parseInt(dato.cantidad) + parseInt(stock.Salida_Inicial)
+                            await db.collection(user.email).doc('Producto').collection('Producto').doc(dato.id).update({cantidadProducto:cantidadUpdate})
+                            await db.collection(user.email).doc('Stock').collection('Stock').doc(dato.id).update({Stock: cantidadUpdate,Salida_Inicial:salida})
+                           await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc(dato.id).delete()
+                          }
+                        })
                 } 
-                
-
               })
-
               })
-       
-         
-          }
-          catch(error){
-            console.error(error);
-         }
-      
+     }
     })
-  }
+}
+
+
   const onDelete = (id) => {
     if (window.confirm("¿Seguro que deseas eliminar?")) {
 

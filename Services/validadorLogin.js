@@ -14,7 +14,6 @@ export const  validadorLogin = (password,email, nameEmpresa,  confPassword)=>{
       const Domain = [
           'gmail.com',
           'hotmail.com',
-          'outlook.com'
       ]
     let i = 0;
     let texto;

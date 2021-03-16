@@ -60,7 +60,7 @@ export default function FormsFacturacion(props){
         rncEmpresa:'',
         telefonoEmpresa:'',
         fechaActual:fecha,
-        horaActual:hora,
+        horaActual:'',
         plazoPagoFactura:'',
         vencimientoFactura:'',
         estadoPago:'',
@@ -71,6 +71,7 @@ export default function FormsFacturacion(props){
         tipoPagoFactura:'',
         dirrecionCliente:'',
         ncfFactura:'',
+        telefonoCliente:'',
 
 
     }
@@ -82,6 +83,8 @@ export default function FormsFacturacion(props){
     const [cantidadMax, setCantidadMax ] = useState(1)
     const [productoSeleccionado,setProductoSeleccionado]=useState('')
     const [productAdd, setProductAdd]= useState('Añadir producto')
+    const [dataCliente, setDataCliente] = useState([])
+    const [dataBuscarCliente,setDataBuscarCliente] = useState([])
     const handleInputChange = (e)=>{
         const { name , value } = e.target;
         setValues({...values, [name]:value}) 
@@ -97,6 +100,15 @@ export default function FormsFacturacion(props){
            })
            setData(docs);
          });
+
+         db.collection(user.email).doc('Clientes').collection('Clientes').onSnapshot(documentos =>{
+             const docsCliente = []
+             documentos.forEach(doc =>{
+                 docsCliente.push({...doc.data(),id:doc.id})
+             })
+             setDataCliente(docsCliente)
+         })
+
          })
        }
        useEffect(()=>{
@@ -104,7 +116,18 @@ export default function FormsFacturacion(props){
        },[])
 
     const handleSubmit = (e)=>{
-        e.preventDefault();
+        e.preventDefault()
+        if(values.nombreClienteFactura != ""){
+            firebaseG.auth().onAuthStateChanged(async user =>{
+                db.collection(user.email).doc('Clientes').collection('Clientes').doc().set({
+                    nombreCliente:values.nombreClienteFactura,
+                    correoCliente:values.correoClienteFactura,
+                    dirrecionCliente:values.dirrecionCliente,
+                    telefonoCliente:values.telefonoCliente
+
+                })
+            })
+        }
         const estadoPago = document.getElementById("estadoPago").value;
         const tipoPagoFactura = document.getElementById("tipoPagoFactura").value;
         values.tipoPagoFactura = tipoPagoFactura
@@ -139,7 +162,7 @@ export default function FormsFacturacion(props){
         const result = dataProducto.filter(word =>{
             const PalabraProducto = word.nombreProducto; 
             const caracterPalabrasActual = PalabraProducto.substr(0,numeroPalabraBuscar) 
-            return caracterPalabrasActual === palabraBuscar
+            return caracterPalabrasActual.toLowerCase()  === palabraBuscar.toLowerCase() 
 
         } )
         setDataAgregarProducto(result)
@@ -205,8 +228,25 @@ if(datosEmpresa.length === 0 ){
     }
     })
 
+} 
+const buscarCliente = (e)=>{
+    const cliente = e.target.value;
+    let numeroPalabraBuscar = cliente.length;
+    const result = dataCliente.filter(word => {
+        const PalabraCliente = word.nombreCliente; 
+        const caracterPalabrasActual = PalabraCliente.substr(0,numeroPalabraBuscar) 
+        return caracterPalabrasActual.toLowerCase() === cliente.toLowerCase()
+           
+    })
+    setDataBuscarCliente(result)
+    console.log(dataBuscarCliente)
 }
-
+const clienteClick = (dato)=>{
+    values.nombreClienteFactura = dato.nombreCliente
+    values.correoClienteFactura = dato.correoCliente;
+    values.dirrecionCliente = dato.dirrecionCliente;
+    values.telefonoCliente = dato.telefonoCliente
+}
     return(
        <>
     
@@ -226,10 +266,23 @@ if(datosEmpresa.length === 0 ){
     </div>
     <div>
     <h3 className="ld">Cliente</h3>
-    <label className="ld">Seleccionar cliente</label>
-           <select className="selectde" >
-               <option value="selec" >Selec</option>
-           </select>
+    <label>Buscar cliente</label>
+    <input className="inputde" type="text"onChange={buscarCliente}  placeholder="Buscar cliente aqui..." name="nombreClienteFactura"/>    
+    <div>
+        {
+            dataBuscarCliente.length === 0? console.log()
+            :dataBuscarCliente.map(row=>
+                <>
+                <div onClick={()=>clienteClick(row)}>
+                    <span >{row.nombreCliente}</span>
+                    <span>{row.id}</span>
+                </div>
+                <br></br>
+                </>
+            )
+            }
+    </div>
+
     <label className="lado1">Nombre</label>
     <input className="inputde" type="text" required value={values.nombreClienteFactura} onChange={handleInputChange} placeholder="Nombre del Cliente" name="nombreClienteFactura"/>
     <label className="lado2">Correo</label>
@@ -237,7 +290,7 @@ if(datosEmpresa.length === 0 ){
     <label className="lado3">Direccion</label>
     <input className="inputde" type="text" value={values.dirrecionCliente} onChange={handleInputChange} placeholder="Dirrecion del Cliente" name="dirrecionCliente"/>
     <label className="lado4">Telefono</label>
-    <input className="inputde" placeholder="Telefono de Cliente"/>
+    <input className="inputde" type="text" value={values.telefonoCliente} onChange={handleInputChange} name="telefonoCliente" placeholder="Telefono de Cliente"/>
     </div>
   
   

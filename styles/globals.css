@@ -100,12 +100,101 @@ button{
   text-align: center;
   background-color: white;
   width: 450px;
-  height: 500px;
+  height: auto;
   margin-left: auto;
   margin-top: 20px;
   margin-right: auto;
+  padding-left: 4px;
   padding-top: 20px;
+  padding-bottom: 20px;
 }
+.settingsAdmin label{
+  margin-left: 20px;
+}
+
 .settingsAdmin input{
   width: 190px;
+  text-align: center;
 }
+.imagenEmpresa{
+  margin-top: 10px;
+  width: 400px;
+  margin-bottom: 15px;
+  height: 200px;
+}
+.imagenEmpresa-div{
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  width: 400px;
+  height: 200px;
+  background-color: rgba(0, 47, 68, 0.473);
+  position: fixed;
+  padding-top: 60px;
+  top:55.5%;
+  left: 34.6%;
+}
+
+.logoEmpresa, .LogoEmpresa-div{
+  border-radius: 50%;
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
+}
+.LogoEmpresa-div{
+  position: fixed;
+  top: 27.5%;
+  padding-top: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  background-color: rgba(0, 47, 68, 0.473);
+  position: fixed;
+  color: white;
+  left: 46.3%;
+}
+.pagos-grid{
+  display: grid;
+  grid-template-columns: 50% 50%;
+  text-align: left;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+}
+.tipoEmpresa-configuracion{
+  width: 40%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.none-image{
+  display: none;
+}
+.progress {
+  color: white;
+  border: none;
+  margin-top: 20%;
+  margin-left: 40%;
+  }
+  .reduce-input {
+  width: 0%;
+  }
+  .contraseña{
+    width: 45%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: justify;
+    font-size: 12px;
+
+  }
+  .contraseña span{
+    color: red;
+    width: 30px;
+    height: 30px;
+  }
+  .contraseña:hover{
+    font-size: 14px;
+  }
+  .center-settings{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+  }

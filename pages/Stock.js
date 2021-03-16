@@ -19,6 +19,7 @@ const [datosStock, setDatosStock] = useState([])
 
     return(
         <>
+        
         <table>
             <thead>
                 <tr>
