@@ -122,6 +122,9 @@ button{
   margin-bottom: 15px;
   height: 200px;
 }
+.centro{
+  text-align: center;
+}
 .imagenEmpresa-div{
   cursor: pointer;
   margin-top: 10px;

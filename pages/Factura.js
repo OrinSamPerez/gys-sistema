@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import FormsFacturacion from '../Components/Forms/FormsFacturacion'
@@ -13,7 +14,7 @@ const [ data, setData ] = useState([ ])
 const [ dataStock, setDataStock ] = useState([ ])
 const [ currentId, setCurrenId] = useState("")
 const [dataProducto, setDataProducto]=useState([])
-
+ 
 const getData =()=>{
 
   firebaseG.auth().onAuthStateChanged(async (user) => {
@@ -90,22 +91,23 @@ const getData =()=>{
 let TOTAL = 0;
 let SUBTOTAL = 0;
 let ITBIS = 0;
+
 data.map(total=>{
    TOTAL +=  total.total
    SUBTOTAL +=  total.subTotal;
    ITBIS += total.itbis;
 
  })
-
+ const dproductosFactura = document.getElementById('dproductosFactura')
   return (
     <>
     <ToastContainer />
     <div className="table">
-      <h1>Factura</h1>
+      <h1>Facturacion</h1>
+      <div id="dproductosFactura">
+      <FormsFacturacion {...{addFactura, currentId, data,TOTAL, SUBTOTAL,ITBIS, dproductosFactura}}/>
       
-      <FormsFacturacion {...{addFactura, currentId, data,TOTAL, SUBTOTAL,ITBIS}}/>
-      <div >
-        <table >
+        <table className="tablas" >
         <thead>
         <tr>
           <td >Producto</td>
@@ -115,20 +117,20 @@ data.map(total=>{
           <td >ITBIS</td>
           <td >Descuento</td>
           <td >Total</td>
-          <td></td>
+          <td className="nmostrar"></td>
         </tr>
         </thead>
           {data.map(datos =>
             (<tr key={datos.id } >
               <td >{datos.producto}</td>
-              <td ># {datos.cantidad}</td>
+              <td > {datos.cantidad}</td>
               <td >RD$ {datos.precio}</td>
               <td >RD$ {datos.subTotal}</td>
               <td >RD$ {datos.itbis}</td>
-              <td >% {datos.descuento}</td>
+              <td > {datos.descuento}%</td>
               <td >RD$ {datos.total}</td>
-              <td>
-                <li>
+              <td className="nmostrar">
+                <li >
                   <Button onClick={() => onDelete(datos.id)} variant="text" color="secondary">
                     <DeleteIcon />
                   </Button>
@@ -138,17 +140,18 @@ data.map(total=>{
           )}  
           
         </table>
-      </div>
       
-    </div>
+    
    
-    <div >
-         
-            <h3 className="ldoiz">SUBTOTAL:  <small className="smalliz">RD${SUBTOTAL}</small> </h3> 
+          <div className="letras">
+         <h3 className="ldoiz">SUBTOTAL:  <small className="smalliz">RD${SUBTOTAL}</small> </h3> 
             <h3 className="ldoiz">+ ITBIS:  <small className="smalliz">RD${ITBIS}</small>  </h3>
-            <h3 className="ldoiz">- DESCUENTO: <small className="smalliz"> RD$ </small></h3>
+          {data.map(d =>( <h3 className="ldoiz">- DESCUENTO: <small className="smalliz"> RD${(d.precio * d.descuento)/100} </small></h3>))}
             <h3 className="ldoiz">TOTAL: <small className="smalliz"> RD${TOTAL} </small> </h3>
           </div>
+      </div>
+        
+    </div>
       <style jsx>{`
       
       .ldoiz {
