@@ -3,6 +3,7 @@ import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import CategoryIcon from '@material-ui/icons/Category';
+import Link from 'next/link'
 
 export default function Home() {
   const meses=['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
@@ -30,21 +31,31 @@ const opciones={
       <h1 className="center">Home</h1>
   <div className="columnasHome">
      <div>
-       <a href="/Producto"> <button className="btn-informes" type="button" > <OpenInBrowserIcon /> PRODUCTOS </button> </a>
+       <Link href="/Producto">
+          <a > <button className="btn-informes" type="button" > <OpenInBrowserIcon /> PRODUCTOS </button> </a>
+       </Link>
      
        <small className="debajo">15</small>
       </div>
       
     <div>
-       <a href="/Cliente"> <button className="btn-informes debajo"> <SupervisorAccountIcon/> CLIENTES</button></a>
+       <Link href="/Cliente">
+          <a > <button className="btn-informes debajo"> <SupervisorAccountIcon/> CLIENTES</button></a>
+       </Link>
         <small className="debajo">15</small>
     </div>
     <div>
-       <a href="/Provedor"> <button className="btn-informes" > <LocalShippingIcon/>  PROVEEDORES</button> </a>
+      <Link href="/Provedor">
+        <a > <button className="btn-informes" > <LocalShippingIcon/>  PROVEEDORES</button> </a>
+      </Link>
         <small className="debajo">15</small>
     </div>
     <div>
-       <a href="/Categoria"> <button className="btn-informes"> <CategoryIcon />  CATEGORIAS</button></a>
+      <Link href="/Categoria">
+        <a > 
+        <button className="btn-informes"> <CategoryIcon />  CATEGORIAS</button>
+        </a>
+      </Link>
         <small className="debajo">15</small>
     </div>
 

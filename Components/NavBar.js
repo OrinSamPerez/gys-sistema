@@ -10,6 +10,7 @@ import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
 import SettingsIcon from '@material-ui/icons/Settings';
 import CategoryIcon from '@material-ui/icons/Category';
+import NotesIcon from '@material-ui/icons/Notes';
 export default function NavBar({children, userInfo}) {
   return (
     <>
@@ -33,6 +34,7 @@ export default function NavBar({children, userInfo}) {
             <div className="imagenes"><DescriptionIcon/>  <a>Facturacion</a></div>
           </Link>
         </li>
+        
         <li>
        
         <Link href="/Categoria">
@@ -40,10 +42,18 @@ export default function NavBar({children, userInfo}) {
         </Link>
 
         </li>
+
         <li>
        
        <Link href="/Producto">
          <div className="imagenes"><OpenInBrowserIcon/>  <a>Producto</a></div>
+       </Link>
+
+       </li>
+       <li>
+       
+       <Link href="/InformacionFacturas">
+         <div className="imagenes"><NotesIcon />  <a>Facturas</a></div>
        </Link>
 
        </li>
