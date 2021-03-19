@@ -1,4 +1,4 @@
-.columnas{
+.colum{
     display: grid;
     grid-template-columns: 1fr 1fr;
     
@@ -8,26 +8,55 @@ width: 90%;
 height: 9px;
 margin-bottom: 1px;
 
-}
+} 
 .izq{
 text-align: left;
 margin-right: 15px;
 
 }
+.nver{
+    display: none;
+}
 .lado1{
-    padding-right: 20px;
+    padding-right: 10px;
 }
 .lado2{
-    padding-right: 25px;
+    padding-right: 17px;
 }
 .lado3{
-    padding-right: 11px;
+    padding-right: 1px;
 }
 .lado4{
-    padding-right: 16px;
+    padding-right: 6px;
 }
 .ld{
     text-align: left;
+}
+.ld input{
+   width: 70%;
+   height: 7px;
+ 
+}
+.labelClientes{
+    margin-left: 64px;
+    width: 80%; 
+    align-items: center;
+}
+.todosClientes{
+    margin-left: 75px;
+    align-items: center;
+    text-align:left;
+    width: 80%; 
+    height: 50px;
+    background: transparent;
+    border: 3px solid #b6b8bb;
+    border-radius: 5px;
+    margin-bottom: 1px;
+    display: block; 
+    overflow: scroll;
+}
+.todosClientes:hover{
+    cursor: pointer;
 }
 .inputde{
 width: 80%;
@@ -40,7 +69,7 @@ margin-bottom: 1px;
 width: 80%;
 height: 9px;
 margin-bottom: 1px;
-margin-left: 83px;
+margin-left: 75px;
 }
 .inputle{
     width: 65%;
@@ -56,20 +85,28 @@ margin-left: 83px;
     padding-left: 24px;
 }
 .lado7{
-    padding-right: 40px;
+    padding-left: 8px;
+    padding-right: 17px;
+   
 }
 .lado8{
     padding-right: 25px;
     padding-left: 30px;
 }
 .lado9{
-    padding-right: 30px;
+    padding-left: 8px;
+    padding-right: 18px;
 }
 .lado10{
-    padding-right: 30px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+#inputve{
+    width: 100%;
+    margin-bottom: 0px;
 }
 .selectle{
-    width: 65%;
+    width: 66%;
     height: 23px;
     padding: 0px;
     margin-left: 0px;
@@ -77,7 +114,7 @@ margin-left: 83px;
     margin-bottom: 1px;
     }
     .selectles{
-        width: 65%;
+        width: 72%;
         height: 23px;
         padding: 0px;
         margin-left: 0px;
@@ -88,6 +125,38 @@ margin-left: 83px;
     margin-left: 75px;
   
 }
+#fecha1{
+    width: 66%;
+    margin-bottom: 0px;
+}
+.f1{
+    padding-right: 48px;
+}
 .nfac{
     margin-left: 30px;
 }
+.ld1{
+    padding-right: 4.5px;
+}
+.in1{
+  padding-right: 31px;
+
+    
+}
+.in2{
+    padding-right: 16px;
+}
+.in3{
+    padding-right: 5.5px;
+}
+.nfactura{
+    padding-right: 15px;
+}
+.sel1{
+    padding-right: 5px;
+}
+#nfac1{
+    width: 55%;
+    margin-bottom: 0px;
+}
+

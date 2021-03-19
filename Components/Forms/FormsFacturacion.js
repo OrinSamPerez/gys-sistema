@@ -8,6 +8,7 @@ import {getFecha} from '../../Services/getFecha';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Fab from '@material-ui/core/Fab'
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
+import DescriptionIcon from '@material-ui/icons/Description';
 const db =  firebaseG.firestore();
 const metodoPago = ['Efectivo','Tarjeta de credito']
 export default function FormsFacturacion(props){
@@ -114,7 +115,68 @@ export default function FormsFacturacion(props){
        useEffect(()=>{
          getData()
        },[])
-
+    const imprimir=()=>{
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+        mywindow.document.write('<html><head>');
+        mywindow.document.write(
+        `<style>
+        .tablas{
+            width:100%;
+            border-collapse:collapse;
+            margin:16px 0 16px 0;}
+        .tablas th{
+            border:1px solid #ddd;
+            padding:4px;
+            background-color:#d4eefd;
+            text-align:left;
+            font-size:15px;}
+        .tablas td{
+            border:1px solid #ddd;
+            text-align:left;
+            padding:6px;}
+        .colum-factura{
+            display:grid;
+            grid-template-columns: 1fr 1fr;}
+        .nmostrar{
+            display:none}
+        .sinborde{
+            border:0;
+        }
+        .salto{
+            padding-right:75px;
+        }
+        .salto2{
+            padding-right:100px;
+        }
+        .salto3{
+            padding-right:120px; 
+        }
+        .salto4{
+            padding-right:105px; 
+        }
+        .margin{
+            padding-top:18px;
+        }
+        .letras{
+            font-size:12px;
+        }
+        .imgfact{
+            width:20px;
+            height:20px;
+        }
+        </style>`);
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(props.dproductosFactura.innerHTML);
+        mywindow.document.write('</body></html>');
+        mywindow.document.close(); // necesario para IE >= 10
+        mywindow.focus(); // necesario para IE >= 10
+        mywindow.print();
+        mywindow.close();
+        
+        return true;
+        
+    }
+    
     const handleSubmit = (e)=>{
         e.preventDefault()
         if(values.nombreClienteFactura != ""){
@@ -138,6 +200,10 @@ export default function FormsFacturacion(props){
         values.productoFactura = props.data
         props.addFactura(values);  
         setValues({...valueInitial})
+
+        imprimir()
+
+
     }
     const getDataId = async (id) =>{
         firebaseG.auth().onAuthStateChanged(async (user) => {
@@ -246,29 +312,31 @@ const clienteClick = (dato)=>{
     values.correoClienteFactura = dato.correoCliente;
     values.dirrecionCliente = dato.dirrecionCliente;
     values.telefonoCliente = dato.telefonoCliente
-}
+} 
     return(
        <>
-    
+     
     <form onSubmit={handleSubmit}>
-    <div className="columnas">
+    <h2 className=" nver"><DescriptionIcon className="imgfact"/> FACTURA</h2>
+    <div id="idPfactura" className="colum colum-factura">
     
     <div className="ld">
     <h3 >Desde</h3>
-    <label>Empresa: {datosEmpresa.nameEmpresa}</label> <br></br>
-    <label>Direccion: {datosEmpresa.direccionEmpresa}</label> <br></br>
-    <label>RNC: {datosEmpresa.rncEmpresa}</label><br></br>
-    <label>Correo: {datosEmpresa.emailEmpresa}</label> <br></br>
-    <label>Telefono: {datosEmpresa.numberEmpresa}</label><br></br>
-    <label>NCF: {datosEmpresa.ncfEmpresa}</label>
+    <br></br>
+    <label className="ld1">Empresa: </label> <input className="sinborde salto" value={datosEmpresa.nameEmpresa} disabled/>
+    <label >Direccion: </label><input className="sinborde"  value={datosEmpresa.direccionEmpresa} disabled/> <br></br>
+    <label className="in1">RNC: </label><input  className="sinborde" value={datosEmpresa.rncEmpresa} disabled/><br></br>
+    <label className="in2">Correo: </label><input className="sinborde salto2" value={datosEmpresa.emailEmpresa} disabled/>
+    <label className="in3">Telefono: </label><input className="sinborde" value={datosEmpresa.numberEmpresa} disabled/><br></br>
+    <label className="in1">NCF: </label><input className="sinborde" value={datosEmpresa.ncfEmpresa} disabled/>
     
   
     </div>
-    <div>
+    <div >
     <h3 className="ld">Cliente</h3>
-    <label>Buscar cliente</label>
-    <input className="inputde" type="text"onChange={buscarCliente}  placeholder="Buscar cliente aqui..." name="nombreClienteFactura"/>    
-    <div>
+    <label className="labelClientes nmostrar">Buscar cliente</label>
+    <input className="inputde labelClientes nmostrar" type="text"onChange={buscarCliente}  placeholder="Buscar cliente aqui..." name="nombreClienteFactura"/>    
+    <div className="todosClientes">
         {
             dataBuscarCliente.length === 0? console.log()
             :dataBuscarCliente.map(row=>
@@ -283,43 +351,43 @@ const clienteClick = (dato)=>{
             }
     </div>
 
-    <label className="lado1">Nombre</label>
-    <input className="inputde" type="text" required value={values.nombreClienteFactura} onChange={handleInputChange} placeholder="Nombre del Cliente" name="nombreClienteFactura"/>
-    <label className="lado2">Correo</label>
-    <input className="inputde" type="email"  value={values.correoClienteFactura} onChange={handleInputChange} placeholder="Correo del Cliente" name="correoClienteFactura"/>
-    <label className="lado3">Direccion</label>
-    <input className="inputde" type="text" value={values.dirrecionCliente} onChange={handleInputChange} placeholder="Dirrecion del Cliente" name="dirrecionCliente"/>
-    <label className="lado4">Telefono</label>
-    <input className="inputde" type="text" value={values.telefonoCliente} onChange={handleInputChange} name="telefonoCliente" placeholder="Telefono de Cliente"/>
+    <label className="lado1 ">Nombre:</label>
+    <input className="inputde sinborde salto2 margin" type="text" required value={values.nombreClienteFactura} onChange={handleInputChange} placeholder="Nombre del Cliente" name="nombreClienteFactura"/>
+    <label className="lado2 ">Correo:</label>
+    <input className="inputde sinborde salto2" type="email"  value={values.correoClienteFactura} onChange={handleInputChange} placeholder="Correo del Cliente" name="correoClienteFactura"/>
+    <label className="lado3">Direccion:</label>
+    <input className="inputde sinborde salto2" type="text" value={values.dirrecionCliente} onChange={handleInputChange} placeholder="Dirrecion del Cliente" name="dirrecionCliente"/>
+    <label className="lado4">Telefono:</label>
+    <input className="inputde sinborde" type="text" value={values.telefonoCliente} onChange={handleInputChange} name="telefonoCliente" placeholder="Telefono de Cliente"/>
     </div>
   
   
    </div>
     
    <hr></hr>
-    <div className="columnas">
-    <div>
-    <label className="lado5">No. Factura</label>
-    <input className="inputle nfac" placeholder="Numero de factura" value={`${fechaA.getFullYear()}${fechaA.getDay()}${fechaA.getMonth()+1}${fechaA.getHours()}${fechaA.getMinutes()}${fechaA.getSeconds()}`} disabled/>
-    <label className="lado6">Fecha</label> 
-    <input className="inputle fech" value={`${fecha}  ${hora}`}/>
-    <label className="lado8">Forma de pago</label>
-    <select className="selectle" id="tipoPagoFactura"  onChange={handleInputChange} name="tipoPagoFactura"> {metodoPago.map(pago => 
+    <div  className="colum colum-factura">
+    <div className="ld">
+    <label className="nfactura" >No. Factura:</label>
+    <input id="nfac1 " className="sinborde " placeholder="Numero de factura" value={`AC${fechaA.getFullYear()}${fechaA.getDay()}${fechaA.getMonth()+1}${fechaA.getHours()}${fechaA.getMinutes()}${fechaA.getSeconds()}`} disabled/><br></br>
+    <label className="f1" >Fecha:</label> 
+    <input id="fecha1 " className="sinborde" value={`${fecha}  ${hora}`}/> <br></br>
+    <label className="sel1" >Forma de pago:</label>
+    <select className="selectle sinborde" id="tipoPagoFactura"  onChange={handleInputChange} name="tipoPagoFactura"> {metodoPago.map(pago => 
                <option value={pago}>{pago}</option>
            )}
            </select>
     </div>
-    <div>
-    <label className="lado9">Plazo de Pago</label>
-    <select className="selectles" id="plazoPagoFactura" onChange={handleInputChange} name="plazoPagoFactura" >
+    <div className="ld ">
+    <label className="lado9">Plazo de Pago:</label>
+    <select className="selectles sinborde salto3" id="plazoPagoFactura" onChange={handleInputChange} name="plazoPagoFactura" >
                <option value="10 dias">10 dias</option>
                <option value="15 dias">15 dias</option>
                <option value="25 dias">25 dias</option>
            </select>
-    <label className="lado7">Vencimiento</label>
-    <input className="inputle" type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/>
-    <label className="lado10">Estado de Pago</label>
-    <select className="selectles" id="estadoPago" onChange={handleInputChange} name="estadoPago" >
+    <label className="lado7">Vencimiento:</label>
+    <input id="inputve " className="sinborde salto4" type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/>
+    <label className="lado10">Estado de Pago:</label>
+    <select className="selectles sinborde " id="estadoPago" onChange={handleInputChange} name="estadoPago" >
                <option value="Pagada">Pagada</option>
                <option value="A plazo">No pagada</option>
            </select>
@@ -333,17 +401,17 @@ const clienteClick = (dato)=>{
      <br></br>
      <div className="muestra">
                 <div>
-                    <label>Seleccionar producto</label>
-                    <input className="buscarProducto" type="text" onChange={buscarProducto} placeholder={productAdd}/>
+                    <label className="nmostrar">Seleccionar producto</label>
+                    <input className="buscarProducto nmostrar" type="text" onChange={buscarProducto} placeholder={productAdd}/>
                     </div>
                     <div>
-                    <label className="labelcant">Cantidad</label>
-                <input className="inputcant" type="number" id="cantidadIn" min="1" max={cantidadMax} />
+                    <label className="labelcant nmostrar">Cantidad</label>
+                <input className="inputcant nmostrar" type="number" id="cantidadIn" min="1" max={cantidadMax} />
                
-                <span className="span">Producto Seleccionado: {productoSeleccionado}, Cantidad maxima: {cantidadMax}</span>
+                <span className="span nmostrar">Producto Seleccionado: {productoSeleccionado}, Cantidad maxima: {cantidadMax}</span>
                 </div>
                 </div>
-                <div className="añdirProducto">
+                <div className="añdirProducto nmostrar">
                     <div className="todosproductos">
                         {dataAgregarProducto.map(producto=>
                             <>
@@ -365,7 +433,7 @@ const clienteClick = (dato)=>{
           <Button onClick={handleSubmit} variant="text" color="default" title="Crear Factura">
             <Fab> <NoteAddIcon style={{fontSize:20}} color="secondary"/></Fab>
            </Button></div>
-                  
+           
                     </div>
         <style jsx>{`
         .span{
@@ -406,6 +474,7 @@ const clienteClick = (dato)=>{
         }
         
         `}</style>
+        
         </>
     );
 } 
