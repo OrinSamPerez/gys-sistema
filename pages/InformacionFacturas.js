@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
@@ -10,6 +10,9 @@ import Paper from '@material-ui/core/Paper'
 import DescriptionIcon from '@material-ui/icons/Description';
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
+import ModalFactura  from '../Components/modalFactura' 
+import Modal from '@material-ui/core/Modal'
+
 const db = firebaseG.firestore();
 const auth = firebaseG.auth()
 function TabPanel(props) {
@@ -37,7 +40,7 @@ TabPanel.propTypes = {
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
 };
-
+ 
 function a11yProps(index) {
   return {
     id: `vertical-tab-${index}`,
@@ -60,7 +63,10 @@ const useStyles = makeStyles((theme) => ({
 export default function InformacionFacturas() {
   //Hook referentes a los getFacturas
   const [facturaADMIN,setFacturaADMIN] = useState([])
-  const [dataCliente, setDataCliente] = useState([])
+  const [facturasPagadas, setFacturasPagadas] = useState([])
+  const [facturasNoPagadas, setFacturasNoPagadas] = useState([])
+  const [idFactura, seIdFactura ] = useState('')
+  const [openM, setOpen] = useState(false)
   //Extrayendo todos los datos facturas
 
   //Facturas de admin
@@ -68,33 +74,25 @@ export default function InformacionFacturas() {
     if(user != null){
       db.collection(user.email).doc('Factura').collection('Factura').orderBy('fechaActual', 'desc').onSnapshot(documents =>{
         const docs = []
+        const pagadas = [];
+        const noPagadas = []
         documents.forEach(doc =>{
           docs.push({...doc.data(),id:doc.id})
+         if( doc.data().estadoPago === 'Pagada'){ pagadas.push({...doc.data(),id:doc.id})}
+         else( noPagadas.push({...doc.data(),id:doc.id}))
         })
         setFacturaADMIN(docs)
+        setFacturasPagadas(pagadas)
+        setFacturasNoPagadas(noPagadas)
       })
-      db.collection(user.email).doc('Clientes').collection('Clientes').onSnapshot(documents =>{
-        const docsCliente = [];
-        documents.forEach(doc=>{
-          docsCliente.push({...doc.data(), id:doc.id})
-        })
-        setDataCliente(docsCliente)
-      })
+      
     }
   })
 
-  //Facturas de Clientes
-  auth.onAuthStateChanged(user =>{
-    if(user != null){
-      db.collection(user.email).doc('Clientes-Facturas').collection('Clientes-Facturas').onSnapshot(documents =>{
-        const docs = []
-        documents.forEach(doc =>{
-          docs.push({...doc.data(),id:doc.id})
-        })
-        //console.log(docs)
-      })
-    }
-  })
+const verFactura = (id) =>{
+  seIdFactura(id)
+  setOpen(true)
+}
   //Finalizacion
   const classes = useStyles();
   const [value, setValue] = useState(0);
@@ -102,7 +100,6 @@ export default function InformacionFacturas() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
   return (
     <div className={classes.root}>
       <Tabs
@@ -113,34 +110,22 @@ export default function InformacionFacturas() {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Tab label="Clientes Registrados" {...a11yProps(0)} />
-        <Tab label="Todas las facturas" {...a11yProps(1)} />
-        <Tab label="Facturas pagadas" {...a11yProps(2)} />
-        <Tab label="Facturas por cobrar" {...a11yProps(3)} />
+        <Tab label="Todas las facturas" {...a11yProps(0)} />
+        <Tab label="Facturas pagadas" {...a11yProps(1)} />
+        <Tab label="Facturas por cobrar" {...a11yProps(2)} />
       </Tabs>
-      <TabPanel value={value} index={0}>
-        <h2>Clientes Registrados</h2>
-        {
-          dataCliente.length === 0? <h3>No existen clientes</h3>
-          :dataCliente.map(row=>
-            <div>
-              <span>{row.nombreCliente}</span>
-              <span>{row.id}</span>
-            </div>
-          )
-        }
-      </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel  value={value} index={0}>
         <h2>Todas las facturas</h2>
-          {
+        {
             facturaADMIN.length === 0?
            <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
             <Avatar>
                 <DescriptionIcon/>
+                <h3>No hay factura</h3>
             </Avatar>
           </Paper>
             :facturaADMIN.map(doc =>
-           <Paper title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'grab'}} elevation={3}>
+           <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'grab'}} elevation={3}>
               <Avatar>
                 <DescriptionIcon/>
               </Avatar>
@@ -150,30 +135,55 @@ export default function InformacionFacturas() {
                 {doc.estadoPago}
               </Button>
               
-              {/* //{console.log(doc)} */}
+          </Paper>
+            
+            )
+          }
+
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+      <h2>Facturas Pagadas</h2>
+        {
+          facturasPagadas.length === 0?
+           <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
+            <Avatar>
+                <DescriptionIcon/>
+            </Avatar>
+          </Paper>
+            :facturasPagadas.map(doc =>
+           <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'grab'}} elevation={3}>
+              <Avatar>
+                <DescriptionIcon/>
+              </Avatar>
+              <h3>Cliente:{doc.nombreClienteFactura}</h3>
+              <h3>Fecha:{doc.fechaActual}</h3>
+              <Button variant="outlined" color="primary">
+                {doc.estadoPago}
+              </Button>
+              
           </Paper>
             
             )
           }
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <h2>Facturas pagadas</h2>
+        <h2>Facturas por cobrar</h2>
         {
-            facturaADMIN.length === 0?
+          facturasNoPagadas.length === 0?
            <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
             <Avatar>
                 <DescriptionIcon/>
             </Avatar>
           </Paper>
-            :facturaADMIN.map(doc =>
-           <Paper title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'grab'}} elevation={3}>
+            :facturasNoPagadas.map(doc =>
+           <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'grab'}} elevation={3}>
               <Avatar>
                 <DescriptionIcon/>
               </Avatar>
               <h3>Cliente:{doc.nombreClienteFactura}</h3>
               <h3>Fecha:{doc.fechaActual}</h3>
               <Button variant="outlined" color="primary">
-                {doc.estadoPago}
+                No pagada
               </Button>
               
               {/* //{console.log(doc)} */}
@@ -182,9 +192,16 @@ export default function InformacionFacturas() {
             )
           }
       </TabPanel>
-      <TabPanel value={value} index={3}>
-        <h2>Facturas por cobrar</h2>
-      </TabPanel>
+      <Modal
+        open={openM}
+        >
+        <>
+          <Button onClick={()=>setOpen(false)} variant="contained" color="secondary">
+              Cerrar
+          </Button>
+        <ModalFactura  idFacturas={idFactura}/>
+        </>
+      </Modal>
       <style jsx>{`
         h2{text-align:center;}
       `}</style>

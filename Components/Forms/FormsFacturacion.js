@@ -273,6 +273,7 @@ export default function FormsFacturacion(props){
         const cantidadMax = valuesProductos.cantidad
         if(cantidadIn === ""){
             cantidadIn = 1
+   
             agregarProductoFactura(cantidadIn,cantidadMax,valuesProductos)
         }
         else{

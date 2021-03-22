@@ -3,7 +3,7 @@ const db = firebaseG.firestore();
 const Itbis = 18
 export function agregarProductoFactura(cantidadIn,cantidadMax, valuesProductos){
     console.log(cantidadMax)
-    if(cantidadIn <= cantidadMax){
+    if(parseInt(cantidadMax) <= parseInt(cantidadMax)){
         valuesProductos.cantidad = cantidadIn
         const valuePrecioCantidad = valuesProductos.precio * cantidadIn 
         valuesProductos.subTotal = valuePrecioCantidad

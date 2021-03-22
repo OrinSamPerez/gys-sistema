@@ -57,6 +57,7 @@ const StyledMenuItem = withStyles((theme) => ({
 export default function Provedor() {
   const [ data, setData ] = useState([ ])
   const [ currentId, setCurrenId] = useState("")
+  const [ imageId, setImage] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -106,13 +107,12 @@ export default function Provedor() {
             }); 
          }
          else{ 
-           await db.collection(user.email).doc('Producto').collection('Producto').doc(currentId).update(objectProducto)
-           await db.collection(user.email).doc('Stock').collection('Stock').doc(currentId).update({
-   
+           objectProducto.imageProducto=imageId
+           await db.collection(user.email).doc('Producto').collection('Producto').doc(objectProducto.id_Producto).update(objectProducto)
+           await db.collection(user.email).doc('Stock').collection('Stock').doc(objectProducto.id_Producto).update({
             Descripcion:objectProducto.nombreProducto,
             ExistenciaInciales:objectProducto.cantidadProducto,
             Entrada:objectProducto.cantidadProducto,
-            Salida_Inicial:0,
             Stock:objectProducto.cantidadProducto
           })
 
@@ -161,7 +161,10 @@ export default function Provedor() {
     }
 }
 
- 
+ const editar = (id, imageProducto)=>{
+  setCurrenId(id)
+   setImage(imageProducto)
+ }
   return (
     <>
     <ToastContainer />
@@ -272,7 +275,7 @@ export default function Provedor() {
                 </td>
                 <td>
                 <li>
-                  <Button variant="text" onClick={() => setCurrenId(datos.id_Producto)} color="primary">
+                  <Button variant="text" onClick={()=>editar(datos.id, datos.imageProducto)} color="primary">
                     <EditIcon />
                   </Button>
                 </li>

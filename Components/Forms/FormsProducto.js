@@ -163,7 +163,7 @@ export default function FormsProducto(props) {
     setValues({ ...valueInitial });
     setImage(null);
   };
-  const handleDeleteImg = () => {
+  const handleDeleteImg = () => { 
     const refDelete = firebaseG
       .storage()
       .ref()
