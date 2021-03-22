@@ -70,6 +70,7 @@ export default function InformacionFacturas() {
   //Extrayendo todos los datos facturas
 
   //Facturas de admin
+if(facturaADMIN.length === 0){
   auth.onAuthStateChanged(user =>{
     if(user != null){
       db.collection(user.email).doc('Factura').collection('Factura').orderBy('fechaActual', 'desc').onSnapshot(documents =>{
@@ -89,6 +90,7 @@ export default function InformacionFacturas() {
     }
   })
 
+}
 const verFactura = (id) =>{
   seIdFactura(id)
   setOpen(true)

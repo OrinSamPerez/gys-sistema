@@ -106,7 +106,7 @@ export default function Provedor() {
             .collection("Categoria")
             .doc()
             .set(objectCategoria);
-          toast.success("🙂 Categoria Agregada Sastifactoriamente!", {
+          toast.success("🙂 Categoria Agregada Sastifactoriamente!", { 
             position: "top-right",
             autoClose: 10000,
             hideProgressBar: false,
