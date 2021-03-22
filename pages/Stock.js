@@ -14,6 +14,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import {busquedaId, busquedaDescripcion} from '../Services/busqueda'
 const StyledMenu = withStyles({
     paper: {
       border: "1px solid #d3d4d5",
@@ -67,18 +68,35 @@ const [datosStock, setDatosStock] = useState([])
          })
      }
  })
- 
+  const buscar = (e)=>{
+    const resultadoBusquedaId = busquedaId(datosStock, e.target.value)
+    const resultadoDescripcion = busquedaDescripcion(datosStock, e.target.value)
+    if(resultadoBusquedaId.length === 5 && resultadoDescripcion === 5){
+      setDatosStock([])
+      setDatosStock(resultadoBusquedaId)
+
+    }
+    if(resultadoBusquedaId.length != 0){
+      setDatosStock([])
+      setDatosStock(resultadoBusquedaId)
+    }
+    if(resultadoDescripcion.length != 0){
+      setDatosStock([])
+      setDatosStock(resultadoDescripcion)
+    }
+  }
     return(
         <>
         <h1 className="centro">Stock</h1>
         <div className="grid">
       
       <div >
-      <label className="buscar">
-      <input id="search" type="text"  placeholder="Buscar" />
+      <label className="buscar" onChange={buscar}>
+      <input id="search" type="text"  placeholder="Buscar por id o descripcion" />
      <button className="button"> <i className="icon">  <SearchIcon /></i></button>
       </label>
       </div>
+
       
       <div className="center-table">
       <Button
