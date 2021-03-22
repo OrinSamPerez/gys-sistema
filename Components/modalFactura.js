@@ -12,7 +12,7 @@ export default function ModalFactura(props){
       await  db.collection(user.email).doc('Factura').collection('Factura').doc(props.idFacturas).get().then((doc)=>{
             
                 setDatos(doc.data())
-                console.log(datos)
+                console.log(datos.nombreClienteFactura)
            
                 
            
