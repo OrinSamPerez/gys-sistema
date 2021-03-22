@@ -69,7 +69,7 @@ const getData =()=>{
     })
 }
 
-
+ 
   const onDelete = (id) => {
     if (window.confirm("¿Seguro que deseas eliminar?")) {
 

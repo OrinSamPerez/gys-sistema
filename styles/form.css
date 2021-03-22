@@ -96,3 +96,11 @@ select{
 }
 
 /* Hasta aqui */
+.fcliente{
+    display: grid;
+    grid-template-columns: 1fr ;
+}
+#lcliente{
+    margin-left: 3px;
+    margin-right: 23px;
+}

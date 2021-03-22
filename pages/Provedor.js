@@ -28,7 +28,7 @@ const useStyles=makeStyles((theme)=>({
 justifyAlign:'center',
 alignItems:'center',
 paddingLeft:'40%'
-
+ 
 }
 }))
 const StyledMenu = withStyles({
