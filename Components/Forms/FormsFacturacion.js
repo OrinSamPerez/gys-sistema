@@ -190,6 +190,7 @@ export default function FormsFacturacion(props){
                 })
             })
         }
+        
         const estadoPago = document.getElementById("estadoPago").value;
         const tipoPagoFactura = document.getElementById("tipoPagoFactura").value;
         values.tipoPagoFactura = tipoPagoFactura

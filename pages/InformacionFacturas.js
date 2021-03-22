@@ -199,7 +199,7 @@ const verFactura = (id) =>{
           <Button onClick={()=>setOpen(false)} variant="contained" color="secondary">
               Cerrar
           </Button>
-        <ModalFactura  idFacturas={idFactura}/>
+        <ModalFactura  idFacturas={idFactura} />
         </>
       </Modal>
       <style jsx>{`
