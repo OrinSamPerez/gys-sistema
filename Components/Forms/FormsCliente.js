@@ -4,7 +4,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
-
+import swal from 'sweetalert';
 const db =  firebaseG.firestore();
 export default function FormsClientes(props){
 
@@ -24,8 +24,16 @@ export default function FormsClientes(props){
 
     const handleSubmit=(e)=>{
       e.preventDefault()
-      props.addClientes(values)
-      setValues({...valueInitial}) 
+      if(values.nombreCliente != ''){
+          if(values.correoCliente != ''){
+              if(values.direccionCliente != ''){
+                  if(values.telefonoCliente != ''){
+                    props.addClientes(values)
+                    setValues({...valueInitial}) 
+                  }else{ swal("¡Alerta!", "No puedes dejar el numero de telefono vacio", "info")}
+              }else{ swal("¡Alerta!", "No puedes dejar la direccion del cliente vacia", "info")}
+          }else{ swal("¡Alerta!", "No puedes dejar el correo vacio", "info")}
+      }else{ swal("¡Alerta!", "No puedes dejar el nombre del cliente vacio", "info")}
     }
 
     const getDataId = async (id) =>{

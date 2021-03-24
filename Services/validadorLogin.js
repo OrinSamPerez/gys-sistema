@@ -21,14 +21,12 @@ export const  validadorLogin = (password,email, nameEmpresa,  confPassword)=>{
     console.log(nameEmpresa.length)
     console.log(password, confPassword)
     if(charName <= nameEmpresa.length){
-        alert('si es mayor')
         const charEmail = email.indexOf("@")
         const numberChar =  email.substring(charEmail, charEmail + 1 )
         if(numberChar === "@" ){
             console.log(password, confPassword)
             const domain =  email.substring(charEmail + 1 ) 
             const result = Domain.filter(word => word === domain )
-            console.log(result)
             Domain.forEach(element => {
                 if(domain === element ){
                     if(password.length <= numberMaxPassword && password.length >=  numberMinPassword ){
@@ -49,11 +47,11 @@ export const  validadorLogin = (password,email, nameEmpresa,  confPassword)=>{
                                                                 for(i=0; i<texto.length; i++){
                                                                    if (letras.indexOf(texto.charAt(i),0)!=-1){
                                                                       if(password === confPassword){
-                                                                            enviar = email
-                                                                            console.log('si')
+                                                                            return enviar = email
+                                                                            
                                                                       }
                                                                       else if(password != confPassword){
-                                                                          return alert(password, confPassword)
+                                                                          return 'Contraseña-no'
                                                                           
                                                                       }
                                                                    }
@@ -61,32 +59,30 @@ export const  validadorLogin = (password,email, nameEmpresa,  confPassword)=>{
                                                                 
                                                             }
                                                         }
-                                                     }
+                                                     }return 'contraseña-insegura'
                                                      
                                                 }
                                             }
                                         }
-                                        return alert('La contraseña debe contener, por lo menos una letra minuscula y mayucula');
                                         
                                     }
                                 }
                              }
-                             return alert('la contraseña de contener, numeros');
+                             return  'contraseña-insegura'
                         }
-                                               }
+                    }
                     else{
-                        alert('La contraseña tiene que mayor a 8 y menor a 12') 
-
+                        'contraseña-mal'
                     }
                 }
             });
         }
         else{
-            return alert('El correo no cotinene un @')
+            return '@'
         }
     }
     else{
-        return alert('Nombre muy corto')
+        return 'nombre-corto'
     }
     return enviar
 

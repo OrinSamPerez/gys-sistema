@@ -190,7 +190,7 @@ export default function FormsFacturacion(props){
                 })
             })
         }
-        
+        values.numeroFactura = (`AC${fechaA.getFullYear()}${fechaA.getDay()}${fechaA.getMonth()+1}${fechaA.getHours()}${fechaA.getMinutes()}${fechaA.getSeconds()}`)
         const estadoPago = document.getElementById("estadoPago").value;
         const tipoPagoFactura = document.getElementById("tipoPagoFactura").value;
         values.tipoPagoFactura = tipoPagoFactura
@@ -307,7 +307,6 @@ const buscarCliente = (e)=>{
            
     })
     setDataBuscarCliente(result)
-    console.log(dataBuscarCliente)
 }
 const clienteClick = (dato)=>{
     values.nombreClienteFactura = dato.nombreCliente

@@ -21,6 +21,7 @@ import SendIcon from "@material-ui/icons/Send";
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import {busquedaStock} from '../Services/busqueda'
 import {reporte} from "../Services/reporte"
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 const useStyles=makeStyles((theme)=>({
@@ -65,7 +66,7 @@ const db =  firebaseG.firestore();
 export default function Provedor() {
   const [ data, setData ] = useState([ ])
   const [ currentId, setCurrenId] = useState("")
-
+const [dataBuscar, setDataBuscar] = useState([])
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -134,10 +135,11 @@ const estilo = useStyles()
       
     })
   }
-  const onDelete = (id) => {
+  const onDelete = (id,nombreProveedor, direccionProveedor,correoProveedor, telefonoProveedor, pagoProveedor,  cargoProveedor) => {
     if (window.confirm("¿Seguro que deseas eliminar?")) {
 
       firebaseG.auth().onAuthStateChanged(async (user) => {
+        await db.collection(user.email).doc('Proveedor-Inactivos').collection('Proveedor-Inactivos').doc(id).set({id,nombreProveedor, direccionProveedor,correoProveedor, telefonoProveedor, pagoProveedor,  cargoProveedor});
         await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc(id).delete();
         toast.success('🙂 Proveedor Eliminado Sastifactoriamente!', {
           position: "top-right",
@@ -151,7 +153,10 @@ const estilo = useStyles()
     })
     }
 }
-
+const buscar = (e)=>{
+  const resultadoDescripcion = busquedaStock(data, e.target.value)
+  setDataBuscar(resultadoDescripcion)
+}
  
   return (
     <>
@@ -164,7 +169,7 @@ const estilo = useStyles()
       
       <div >
       <label className="buscar">
-      <input id="search" type="text"  placeholder="Buscar" />
+      <input id="search" type="text" onChange={buscar}  placeholder="Buscar" />
      <button className="button"> <i className="icon">  <SearchIcon /></i></button>
       </label>
       </div>
@@ -243,29 +248,55 @@ const estilo = useStyles()
          
          
           
-          {data.map(datos =>
-            (<tr key={datos.id } >
-              <td >{datos.nombreProveedor}</td>
-              <td>{datos.direccionProveedor}</td>
-              <td>{datos.correoProveedor}</td>
-              <td>{datos.telefonoProveedor}</td>
-              <td>{datos.pagoProveedor}</td>
-              <td>{datos.cargoProveedor}</td>
-              <td>
-               <td> <li>
-                  <Button onClick={() => onDelete(datos.id)} variant="text" color="secondary">
-                    <DeleteIcon />
-                  </Button>
-                </li></td>
-               <td> <li>
-                  <Button variant="text" onClick={() => setCurrenId(datos.id)} color="primary">
-                    <EditIcon />
-                  </Button>
-                </li></td>
-              </td>
-            </tr>)
-          )} 
-          
+          {
+            dataBuscar.length === 0?
+                data.map(datos =>
+                (<tr key={datos.id } >
+                  <td >{datos.nombreProveedor}</td>
+                  <td>{datos.direccionProveedor}</td>
+                  <td>{datos.correoProveedor}</td>
+                  <td>{datos.telefonoProveedor}</td>
+                  <td>{datos.pagoProveedor}</td>
+                  <td>{datos.cargoProveedor}</td>
+                  <td>
+                  <td> <li>
+                      <Button onClick={() => onDelete(datos.id, datos.nombreProveedor, datos.direccionProveedor,datos.correoProveedor, datos.telefonoProveedor, datos.pagoProveedor,  datos.cargoProveedor )} variant="text" color="secondary">
+                        <DeleteIcon />
+                      </Button>
+                    </li></td>
+                  <td> <li>
+                      <Button variant="text" onClick={() => setCurrenId(datos.id)} color="primary">
+                        <EditIcon />
+                      </Button>
+                    </li></td>
+                  </td>
+                </tr>)
+              )
+              
+            :
+            dataBuscar.map(datos =>
+                (<tr key={datos.id } >
+                  <td >{datos.nombreProveedor}</td>
+                  <td>{datos.direccionProveedor}</td>
+                  <td>{datos.correoProveedor}</td>
+                  <td>{datos.telefonoProveedor}</td>
+                  <td>{datos.pagoProveedor}</td>
+                  <td>{datos.cargoProveedor}</td>
+                  <td>
+                  <td> <li>
+                      <Button onClick={() => onDelete(datos.id, datos.nombreProveedor, datos.direccionProveedor,datos.correoProveedor, datos.telefonoProveedor, datos.pagoProveedor,  datos.cargoProveedor)} variant="text" color="secondary">
+                        <DeleteIcon />
+                      </Button>
+                    </li></td>
+                  <td> <li>
+                      <Button variant="text" onClick={() => setCurrenId(datos.id)} color="primary">
+                        <EditIcon />
+                      </Button>
+                    </li></td>
+                  </td>
+                </tr>)
+              )
+          }
       
         </table>
       

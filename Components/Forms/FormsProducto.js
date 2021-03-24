@@ -8,6 +8,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Link from "next/link";
 import { getFecha } from "../../Services/getFecha";
 import Fab from '@material-ui/core/Fab'
+import swal from 'sweetalert';
 import CloseIcon from "@material-ui/icons/Close";
 const db = firebaseG.firestore();
  const fechaDate = new Date();
@@ -158,10 +159,16 @@ export default function FormsProducto(props) {
     const nameProveedor = document.getElementById("nameProveedor").value;
     values.imageProducto = image;
     values.proveedorProducto = nameProveedor;
-    values.id_Producto= `${fechaDate.getFullYear()}${fechaDate.getMonth()+1}${fechaDate.getDate()}${fechaDate.getHours()}${fechaDate.getSeconds()}-${values.nombreProducto}`;
-    props.addProducto(values);
-    setValues({ ...valueInitial });
-    setImage(null);
+    if(values.nombreProducto != ''){
+      if(values.proveedorProducto != ''){
+        if(values.categoriaProducto != ''){
+          values.id_Producto= `${fechaDate.getFullYear()}${fechaDate.getMonth()+1}${fechaDate.getDate()}${fechaDate.getHours()}${fechaDate.getSeconds()}-${values.nombreProducto}`;
+          props.addProducto(values);
+          setValues({ ...valueInitial });
+          setImage(null);
+        }else{ swal("¡Alerta!", "No puedes dejar la categoria vacia", "info")}
+      }else{ swal("¡Alerta!", "No puedes dejar el nombre proveedor vacio", "info")}
+    }else{ swal("¡Alerta!", "No puedes dejar el nombre del producto vacio", "info")}
   };
   const handleDeleteImg = () => { 
     const refDelete = firebaseG

@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button'
 import ModalFactura  from '../Components/modalFactura' 
 import Modal from '@material-ui/core/Modal'
 import SearchIcon from "@material-ui/icons/Search";
-
+import { busquedaCliente, busquedaFecha, busquedaNoFactura} from '../Services/busqueda'
 const db = firebaseG.firestore();
 const auth = firebaseG.auth()
 function TabPanel(props) {
@@ -68,7 +68,10 @@ export default function InformacionFacturas() {
   const [facturasNoPagadas, setFacturasNoPagadas] = useState([])
   const [idFactura, seIdFactura ] = useState('')
   const [openM, setOpen] = useState(false)
-  //Extrayendo todos los datos facturas
+
+  const [buscarAllFacturas,setBuscarAllFacturas] = useState([])
+  const [buscarXPFacturas,setBuscarXPFacturas] = useState([])
+  const [buscarPFacturas,setBuscarPFacturas] = useState([])
 
   //Facturas de admin
 if(facturaADMIN.length === 0){
@@ -103,6 +106,19 @@ const verFactura = (id) =>{
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  //Buscar todas las facturas
+  const buscarTodas = (e)=>{
+    const resultadoBusquedaNoF = busquedaNoFactura(facturaADMIN, e.target.value)
+      setBuscarAllFacturas(resultadoBusquedaNoF)
+  }
+  const buscarP = (e)=>{
+    const resultadoBusquedaNoF = busquedaNoFactura(facturasPagadas, e.target.value)
+    setBuscarXPFacturas(resultadoBusquedaNoF)
+  }
+  const buscarXP = (e)=>{
+    const resultadoBusquedaNoF = busquedaNoFactura(facturasNoPagadas, e.target.value)
+    setBuscarPFacturas(resultadoBusquedaNoF)
+  }
   return (
     <div className={classes.root}>
       <Tabs
@@ -121,17 +137,17 @@ const verFactura = (id) =>{
         <h2>Todas las facturas</h2>
         <div >
       <label className="buscar">
-      <input id="search" type="text"  placeholder="Buscar" />
+      <input id="search" type="text"  placeholder="Buscar" onChange={buscarTodas} />
      <button className="button"> <i className="icon">  <SearchIcon /></i></button>
       </label>
       </div>
-        {
+        {buscarAllFacturas.length === 0?
             facturaADMIN.length === 0?
            <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
             <Avatar>
                 <DescriptionIcon/>
-                <h3>No hay factura</h3>
             </Avatar>
+            <h3>No hay factura</h3>
           </Paper>
             :facturaADMIN.map(doc =>
            <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'pointer'}} elevation={3}>
@@ -147,25 +163,60 @@ const verFactura = (id) =>{
           </Paper>
             
             )
-          }
+          : buscarAllFacturas.map(doc =>
+           <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'pointer'}} elevation={3}>
+              <Avatar>
+                <DescriptionIcon/>
+              </Avatar>
+              <h4>No. Factura: <small>{doc.numeroFactura}</small> Cliente: <small> {doc.nombreClienteFactura}  </small>     Fecha:<small> {doc.fechaActual}</small></h4>
+              <div className="der">
+              <button id="bfac" variant="outlined"  color="primary">
+                {doc.estadoPago}
+              </button>
+              </div>
+          </Paper>
+            
+            )}
 
       </TabPanel>
       <TabPanel value={value} index={1}>
       <h2>Facturas Pagadas</h2>
       <div >
       <label className="buscar">
-      <input id="search" type="text"  placeholder="Buscar" />
+      <input id="search" type="text"  placeholder="Buscar" onChange={buscarP} />
      <button className="button"> <i className="icon">  <SearchIcon /></i></button>
       </label>
       </div>
-        {
+        {buscarXPFacturas.length === 0?
           facturasPagadas.length === 0?
            <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
             <Avatar>
                 <DescriptionIcon/>
             </Avatar>
+            <h3>No hay factura</h3>
           </Paper>
             :facturasPagadas.map(doc =>
+           <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'pointer'}} elevation={3}>
+              <Avatar>
+                <DescriptionIcon/>
+              </Avatar>
+              <h4>No. Factura: <small>{doc.numeroFactura}</small> Cliente: <small> {doc.nombreClienteFactura}  </small>     Fecha:<small> {doc.fechaActual}</small></h4>
+        
+              <div className="der">
+              <button id="bfac" variant="outlined" color="primary">
+                {doc.estadoPago}
+              </button>
+              </div>
+          </Paper>
+            
+            ):buscarXPFacturas.length === 0?
+           <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
+            <Avatar>
+                <DescriptionIcon/>
+            </Avatar>
+            <h3>No hay factura</h3>
+          </Paper>
+            :buscarXPFacturas.map(doc =>
            <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'pointer'}} elevation={3}>
               <Avatar>
                 <DescriptionIcon/>
@@ -186,18 +237,43 @@ const verFactura = (id) =>{
         <h2>Facturas por cobrar</h2>
         <div >
       <label className="buscar">
-      <input id="search" type="text"  placeholder="Buscar" />
+      <input id="search" type="text"  placeholder="Buscar" onChange={buscarXP} />
      <button className="button"> <i className="icon">  <SearchIcon /></i></button>
       </label>
       </div>
-        {
+        {buscarPFacturas.length === 0?
           facturasNoPagadas.length === 0?
            <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
             <Avatar>
                 <DescriptionIcon/>
             </Avatar>
+            <h3>No hay factura</h3>
           </Paper>
             :facturasNoPagadas.map(doc =>
+           <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'pointer'}} elevation={3}>
+              <Avatar>
+                <DescriptionIcon/>
+              </Avatar>
+              <h4>No. Factura: <small>{doc.numeroFactura}</small> Cliente: <small> {doc.nombreClienteFactura}  </small>     Fecha:<small> {doc.fechaActual}</small></h4>
+
+              <div className="der">
+              <button id="bfac" variant="outlined" color="primary">
+              {doc.estadoPago}
+                </button>
+              </div>
+              
+              {/* //{console.log(doc)} */}
+          </Paper>
+            
+            )
+            :buscarPFacturas.length === 0?
+           <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
+            <Avatar>
+                <DescriptionIcon/>
+            </Avatar>
+            <h3>No hay factura</h3>
+          </Paper>
+            :buscarPFacturas.map(doc =>
            <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'pointer'}} elevation={3}>
               <Avatar>
                 <DescriptionIcon/>

@@ -19,8 +19,11 @@ export default function FormsCategoria(props){
     }
     const handleSubmit = (e)=>{
         e.preventDefault();
-        props.addCategoria(values);  
-        setValues({...valueInitial})
+       values.descripcionCategoria === ''? 
+       swal("¡Alerta!", "No puedes dejar campos vacios!", "info")
+       : props.addCategoria(values);  
+       setValues({...valueInitial})
+
     }
     const getDataId = async (id) =>{
         firebaseG.auth().onAuthStateChanged(async (user) => {

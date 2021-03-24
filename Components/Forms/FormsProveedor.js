@@ -4,6 +4,7 @@ import {firebaseG} from '../../firebase.BD/firebase.conf'
 import EditIcon from '@material-ui/icons/Edit';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Fab from '@material-ui/core/Fab'
+import swal from 'sweetalert';
 
 const db =  firebaseG.firestore();
 
@@ -23,8 +24,20 @@ export default function FormsProveedor(props){
     }
     const handleSubmit = (e)=>{
         e.preventDefault();
-        props.addProveedor(values);  
-        setValues({...valueInitial})
+        if(values.nombreProveedor != ''){
+            if(values.direccionProveedor != ''){
+                if(values.correoProveedor != ''){
+                    if(values.telefonoProveedor != ''){
+                        if(values.pagoProveedor != ''){
+                            if(values.cargoProveedor != ''){
+                                props.addProveedor(values);  
+                                setValues({...valueInitial})
+                            }else{ swal("¡Alerta!", "No puedes dejar el a que cargo pertenece el proveedor vacio ", "info")}
+                        }else{ swal("¡Alerta!", "No puedes dejar la forma de pago vacia", "info")}
+                    }else{ swal("¡Alerta!", "No puedes dejar el telefono del proveedor vacio", "info")}
+                }else{ swal("¡Alerta!", "No puedes dejar el correo del proveedor vacio", "info")}
+            }else{ swal("¡Alerta!", "No puedes dejar la direccion del proveedor vacio", "info")}
+        }else{ swal("¡Alerta!", "No puedes dejar el nombre del proveedor vacio", "info")}
     } 
     const getDataId = async (id) =>{
         firebaseG.auth().onAuthStateChanged(async (user) => {

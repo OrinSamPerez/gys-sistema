@@ -12,6 +12,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import swal from 'sweetalert';
 export default function Login() {
   const valueInitial = { 
     nameEmpresa:"",
@@ -70,16 +71,32 @@ export default function Login() {
     const email = values.emailEmpresa;
     const nameEmpresa = values.nameEmpresa;
     const confPassword  = values.confPassword
-    const emailVerificado =  validadorLogin(password,email, nameEmpresa,  confPassword)
+    if(values.direccionEmpresa != ''){
+      if(values.numberEmpresa != ''){
+        const emailVerificado =  validadorLogin(password,email, nameEmpresa,  confPassword)
+        if(emailVerificado != email){
+          if(emailVerificado === 'nombre-corto'){
+            swal("¡Alerta!", "¡El nombre de la empresa es muy corto!", "error");
+          }  
+          if(emailVerificado === '@'){
+            swal("¡Alerta!", "¡Correo incorrecto!", "error");
+          } 
+          if(emailVerificado === 'contraseña-mal'){
+            swal("¡Alerta!", "¡Contraseña corta o gmuy grande, coloque una de entre 8 y 12", "error");
+        }
+        if(emailVerificado === 'contraseña-insegura'){
+          swal("¡Alerta!", "¡Contraseña insegura¡, Por favor escriba contraseña, que contenga numeros, miniscula y mayuscula", "error");
+        }
+        if(emailVerificado === 'Contraseña-no'){
+          swal("¡Alerta!", "Las contraseñas no coinciden", "error");
+        }
+        if(emailVerificado === email ){
+          setBody(bodyRegistroEmpresa)
     
-    
-    if(emailVerificado != email){
-      console.log('No se ha validado')
-    }
-    else if(emailVerificado === email ){
-      setBody(bodyRegistroEmpresa)
-
-    }
+        }
+      }
+    }else{swal("¡Alerta!", "El numero es obligatorio", "error");}
+    }else{swal("¡Alerta!", "La direccion es obligatoria", "error");}
   }
   const handleRegistro =async ()=>{
     loginWithEmail(values.emailEmpresa, values.passwordEmpresa, values)
@@ -114,25 +131,23 @@ export default function Login() {
               placeholder="NCF empresa "
             />
           </label>
-      </div>
+      </div> 
 
       <div className={StylesRegistro.flexion}>
         <div>
+        <label>
+              Metodos de pago que aceptaras
+              <FormControlLabel    onChange={handleInputChange} name="PUE" control={<Checkbox   name="PUE"  onChange={handleInputChange}  name="PUE" color="primary" />} name="PUE" label="(PUE)Pago en una sola exhibición" />
+              <FormControlLabel name="PUE"  onChange={handleInputChange} control={<Checkbox onChange={handleInputChange} name="ncfEmpresa" name="PPD" color="primary" />} name="PPD" label="(PPD)Pago en parcialidades o diferido" />  
+          </label>
+      </div>
+
+      <div>
           <label>
-        Formas de pago
-            
-          <FormControlLabel onChange={handleInputChange} name="PagoEnEfectivo"  control={<Checkbox onChange={handleInputChange} name="PagoEnEfectivo" id="efectivo" color="primary" />} label="Pago en efectivo" />
-          <FormControlLabel onChange={handleInputChange} name="PagoConTarjetaDeCréditooDébito" control={<Checkbox onChange={handleInputChange} name="PagoConTarjetaDeCréditooDébito" color="primary" />} label="Pago con tarjeta de crédito o débito" />
-        
-        </label>
-        </div>
-        <div>
-          <label>
-        Metodos de pago que aceptaras
-          <FormControlLabel onChange={handleInputChange} control={<Checkbox onChange={handleInputChange} name="PUE" color="primary" />} name="PUE" label="(PUE)Pago en una sola exhibición" />
-          <FormControlLabel onChange={handleInputChange} control={<Checkbox onChange={handleInputChange} name="PPD" color="primary" />} name="PPD" label="(PPD)Pago en parcialidades o diferido" />
-        
-        </label>
+              Formas de pago       
+              <FormControlLabel onChange={handleInputChange} name="PagoEnEfectivo"  control={<Checkbox  onChange={handleInputChange} name="PagoEnEfectivo" id="efectivo" color="primary" />} label="Pago en efectivo" />
+              <FormControlLabel onChange={handleInputChange} name="PagoConTarjetaDeCréditooDébito" control={<Checkbox onChange={handleInputChange} name="PagoConTarjetaDeCréditooDébito" color="primary" />} label="Pago con tarjeta de crédito o débito" />        
+      </label>
         </div>
       </div>
       <div>
@@ -221,7 +236,7 @@ export default function Login() {
   );
   const bodyRegistro = (
     <div className={StylesRegistro.container}>
-      <form onSubmit={handleValidador} className={StylesRegistro.formMain}>
+      <form id='mi-form' onSubmit={handleValidador} className={StylesRegistro.formMain}>
         <div className={StylesRegistro.formInfo}>
           <img src="/inventario.svg" />
           <h1>Registrarse aqui</h1>
@@ -291,8 +306,8 @@ export default function Login() {
               />
             </label>
           </div>
-         <Button onClick={handleValidador} variant="text " color="">
-           Siguiente <ArrowForwardIcon  color="secondary"/>
+          <Button onClick={handleValidador} variant="text " color="">
+            Siguiente <ArrowForwardIcon  color="secondary"/>
          </Button>
           <div className={StylesRegistro.links}>
             

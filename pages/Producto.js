@@ -23,6 +23,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import {reporte} from "../Services/reporte"
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import {busquedaProducto, busquedaId, busquedaFecha} from '../Services/busqueda'
 const db =  firebaseG.firestore();
 const StyledMenu = withStyles({
   paper: {
@@ -56,6 +57,7 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 export default function Provedor() {
   const [ data, setData ] = useState([ ])
+  const [datosBuscar,setDatosBuscar] = useState([])
   const [ currentId, setCurrenId] = useState("")
   const [ imageId, setImage] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null);
@@ -142,11 +144,13 @@ export default function Provedor() {
       
     })
   }
-  const onDelete = (id) => {
+  const onDelete = (id,nombreProducto, cantidadProducto , precioVentaProducto, precioCompraProducto,descuentoProducto, proveedorProducto, categoriaProducto, fechaProducto) => {
     if (window.confirm("¿Seguro que deseas eliminar?")) {
 
       firebaseG.auth().onAuthStateChanged(async (user) => {
+        await db.collection(user.email).doc('Productos-Inactivo').collection('Productos-Inactivo').doc(id).set({id,nombreProducto, cantidadProducto , precioVentaProducto, precioCompraProducto,descuentoProducto, proveedorProducto, categoriaProducto, fechaProducto});
         await db.collection(user.email).doc('Producto').collection('Producto').doc(id).delete();
+        await db.collection(user.email).doc('Stock-Inactivo').collection('Stock-Inactivo').doc(id).set({id,nombreProducto, cantidadProducto , precioVentaProducto, precioCompraProducto,descuentoProducto, proveedorProducto, categoriaProducto, fechaProducto});
         await db.collection(user.email).doc('Stock').collection('Stock').doc(id).delete();
         toast.success('🙂 Producto Eliminado Sastifactoriamente!', {
           position: "top-right",
@@ -160,7 +164,23 @@ export default function Provedor() {
     })
     }
 }
-
+const buscar = (e)=>{
+  const resultadoBusquedaId = busquedaId(data, e.target.value)
+  const resultadoDescripcion = busquedaProducto(data, e.target.value)
+  const resultadoFecha = busquedaFecha(data, e.target.value)
+  if(resultadoBusquedaId.length === 5 && resultadoDescripcion === 5){
+    setDatosBuscar(resultadoBusquedaId)
+  }
+  if(resultadoBusquedaId.length != 0){
+    setDatosBuscar(resultadoBusquedaId)
+  }
+  if(resultadoDescripcion.length != 0){
+    setDatosBuscar(resultadoDescripcion)
+  }
+  if(resultadoFecha.length != 0){
+    setDatosBuscar(resultadoFecha)
+  }
+}
  const editar = (id, imageProducto)=>{
   setCurrenId(id)
    setImage(imageProducto)
@@ -176,7 +196,7 @@ export default function Provedor() {
       <div className="grid">
       <div>
       <label className="buscar">
-      <input id="search" type="text"  placeholder="Buscar" />
+      <input id="search" type="text" onChange={buscar}  placeholder="Buscar" />
      <button className="button"> <i className="icon">  <SearchIcon /></i></button>
       </label>
       </div>
@@ -243,6 +263,7 @@ export default function Provedor() {
         <table id="tProducto">
         <thead>
           <tr>
+            <td>ID</td>
             <td>Producto</td>
             <td>Cantidad</td>
             <td>Precio Venta</td>
@@ -256,8 +277,10 @@ export default function Provedor() {
           </tr>
           </thead>
 
-           {data.map(datos =>
+           {datosBuscar.length === 0?
+             data.map(datos =>
             (<tr key={datos.id } >
+              <td >{datos.id}</td>
               <td >{datos.nombreProducto}</td>
               <td>{datos.cantidadProducto}</td>
               <td>RD${datos.precioVentaProducto}</td>
@@ -268,7 +291,35 @@ export default function Provedor() {
               <td>{datos.fechaProducto}</td>
               <td>
                 <li>
-                  <Button onClick={() => onDelete(datos.id)} variant="text" color="secondary">
+                  <Button onClick={() => onDelete(datos.id, datos.nombreProducto, datos.cantidadProducto , datos.precioVentaProducto, datos.precioCompraProducto,datos.descuentoProducto, datos.proveedorProducto, datos.categoriaProducto, datos.fechaProducto  )} variant="text" color="secondary">
+                    <DeleteIcon />
+                  </Button>
+                </li>
+                </td>
+                <td>
+                <li>
+                  <Button variant="text" onClick={()=>editar(datos.id, datos.imageProducto)} color="primary">
+                    <EditIcon />
+                  </Button>
+                </li>
+              </td>
+            </tr>)
+          )
+          :
+          datosBuscar.map(datos =>
+            (<tr key={datos.id } >
+              <td >{datos.id}</td>
+              <td >{datos.nombreProducto}</td>
+              <td>{datos.cantidadProducto}</td>
+              <td>RD${datos.precioVentaProducto}</td>
+              <td>RD${datos.precioCompraProducto}</td>
+              <td>%{datos.descuentoProducto}</td>
+              <td>{datos.proveedorProducto}</td>
+              <td>{datos.categoriaProducto}</td>
+              <td>{datos.fechaProducto}</td>
+              <td>
+                <li>
+                  <Button onClick={() => onDelete(datos.id, datos.nombreProducto, datos.cantidadProducto , datos.precioVentaProducto, datos.precioCompraProducto,datos.descuentoProducto, datos.proveedorProducto, datos.categoriaProducto, datos.fechaProducto)} variant="text" color="secondary">
                     <DeleteIcon />
                   </Button>
                 </li>

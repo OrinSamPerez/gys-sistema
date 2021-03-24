@@ -21,8 +21,10 @@ import SendIcon from "@material-ui/icons/Send";
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import {busquedaCategoria} from '../Services/busqueda'
 import {reporte} from "../Services/reporte"
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import swal from 'sweetalert';
 var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
 const StyledMenu = withStyles({
   paper: {
@@ -67,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
 const db = firebaseG.firestore();
 export default function Provedor() {
   const [data, setData] = useState([]);
+  const [dataBuscar, setDataBuscar]= useState([])
   const [currentId, setCurrenId] = useState("");
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -148,9 +151,15 @@ export default function Provedor() {
   };
   
   
-  const onDelete = (id) => {
+  const onDelete = (id, descripcionCategoria) => {
     if (window.confirm("¿Seguro que deseas eliminar?")) {
       firebaseG.auth().onAuthStateChanged(async (user) => {
+        await db
+          .collection(user.email)
+          .doc("Categoria-Inactivos")
+          .collection("Categoria-Inactivos")
+          .doc(id)
+          .set({id, descripcionCategoria});
         await db
           .collection(user.email)
           .doc("Categoria")
@@ -163,13 +172,17 @@ export default function Provedor() {
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
-          draggable: true,
+          draggable: true, 
           progress: undefined,
         });
       });
     }
   };
-
+  const buscar = (e)=>{
+    const busqueda = busquedaCategoria(data, e.target.value)
+    setDataBuscar(busqueda)
+  }
+    
   return (
     <>
       <ToastContainer />
@@ -180,7 +193,7 @@ export default function Provedor() {
         <div className="grid">
           <div>
             <label className="buscar">
-              <input id="search" type="text" placeholder="Buscar" />
+              <input id="search" type="text" onChange={buscar} placeholder="Buscar" />
               <button className="button">
                 {" "}
                 <i className="icon">
@@ -261,7 +274,8 @@ export default function Provedor() {
               </tr>
             </thead>
 
-            {data.map((datos) => (
+            {dataBuscar.length === 0?
+              data.map((datos) => (
               <tr key={datos.id}>
                 <td>{datos.descripcionCategoria}</td>
                 <td>
@@ -269,7 +283,38 @@ export default function Provedor() {
                     {" "}
                     <li>
                       <Button
-                        onClick={() => onDelete(datos.id)}
+                        onClick={() => onDelete(datos.id,datos.descripcionCategoria)}
+                        variant="text"
+                        color="secondary"
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </li>
+                  </td>
+                  <td>
+                    {" "}
+                    <li>
+                      <Button
+                        variant="text"
+                        onClick={() => setCurrenId(datos.id)}
+                        color="primary"
+                      >
+                        <EditIcon />
+                      </Button>
+                    </li>
+                  </td>
+                </td>
+              </tr>
+            ))
+            :dataBuscar.map((datos) => (
+              <tr key={datos.id}>
+                <td>{datos.descripcionCategoria}</td>
+                <td>
+                  <td>
+                    {" "}
+                    <li>
+                      <Button
+                        onClick={() => onDelete(datos.id, datos.descripcionCategoria)}
                         variant="text"
                         color="secondary"
                       >

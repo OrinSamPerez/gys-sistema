@@ -19,13 +19,13 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import {reporte} from "../Services/reporte"
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
-
-
+import {busquedaCliente,busquedaId} from '../Services/busqueda'
 const db = firebaseG.firestore();
 export default function  Cliente() {
   const [data, setData] = useState([]);
   const [ currentId, setCurrenId] = useState("")
   const [anchorEl, setAnchorEl] = useState(null);
+  const [datosBuscar, setDatosBuscar]=useState([])
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -126,10 +126,11 @@ export default function  Cliente() {
    })
   }
 
-  const onDelete = (id) => {
+  const onDelete = (id, nombreCliente, correoCliente, direccionCliente, telefonoCliente) => {
     if (window.confirm("¿Seguro que deseas eliminar?")) {
 
       firebaseG.auth().onAuthStateChanged(async (user) => {
+        await db.collection(user.email).doc('Clientes-Inactivos').collection('Clientes-Inactivos').doc(id).set({id, nombreCliente, correoCliente, direccionCliente:direccionCliente, telefonoCliente});
         await db.collection(user.email).doc('Clientes').collection('Clientes').doc(id).delete();
         toast.success('🙂 Cliente Eliminado Sastifactoriamente!', {
           position: "top-right",
@@ -143,7 +144,20 @@ export default function  Cliente() {
     })
     }
 }
+const buscar = (e)=>{
+  const resultadoBusquedaId = busquedaId(data, e.target.value)
+  const resultadoDescripcion = busquedaCliente(data, e.target.value)
+  if(resultadoBusquedaId.length === 5 && resultadoDescripcion === 5){
+    setDatosBuscar(resultadoBusquedaId)
 
+  }
+  if(resultadoBusquedaId.length != 0){
+    setDatosBuscar(resultadoBusquedaId)
+  }
+  if(resultadoDescripcion.length != 0){
+    setDatosBuscar(resultadoDescripcion)
+  }
+}
   
   return (
     <>
@@ -156,7 +170,7 @@ export default function  Cliente() {
       
       <div >
       <label className="buscar">
-      <input id="search" type="text"  placeholder="Buscar" />
+      <input id="search" type="text" onChange={buscar}  placeholder="Buscar" />
      <button className="button"> <i className="icon">  <SearchIcon /></i></button>
       </label>
       </div>
@@ -221,6 +235,7 @@ export default function  Cliente() {
         <table id="tCliente">
         <thead>
           <tr>
+            <td>ID</td>
             <td>Nombre</td>
             <td>Correo</td>
             <td>Direccion</td>
@@ -233,8 +248,10 @@ export default function  Cliente() {
          
          
           
-          {data.map(datos =>
+          {datosBuscar.length === 0?
+            data.map(datos =>
             (<tr key={datos.id } >
+              <td >{datos.id}</td>
               <td >{datos.nombreCliente}</td>
               <td>{datos.correoCliente}</td>
               <td>{datos.direccionCliente}</td>
@@ -242,7 +259,7 @@ export default function  Cliente() {
               
               <td>
                <td> <li>
-                  <Button onClick={() => onDelete(datos.id)} variant="text" color="secondary">
+                  <Button onClick={() => onDelete(datos.id,datos.nombreCliente,  datos.correoCliente,datos.direccionCliente,datos.telefonoCliente )} variant="text" color="secondary">
                     <DeleteIcon />
                   </Button>
                 </li></td>
@@ -255,7 +272,32 @@ export default function  Cliente() {
               </td>
               
             </tr>)
-          )} 
+          ):
+          datosBuscar.map(datos =>
+            (<tr key={datos.id } >
+              <td >{datos.id}</td>
+              <td >{datos.nombreCliente}</td>
+              <td>{datos.correoCliente}</td>
+              <td>{datos.direccionCliente}</td>
+              <td>{datos.telefonoCliente}</td>
+              
+              <td>
+               <td> <li>
+                  <Button onClick={() => onDelete(datos.id,datos.nombreCliente,  datos.correoCliente,datos.direccionCliente,datos.telefonoCliente )} variant="text" color="secondary">
+                    <DeleteIcon />
+                  </Button>
+                </li></td>
+               <td> <li>
+                  <Button variant="text" onClick={() => setCurrenId(datos.id)} color="primary">
+                    <EditIcon />
+                  </Button>
+                </li></td>
+               
+              </td>
+              
+            </tr>)
+          )
+          } 
           
       
         </table>
