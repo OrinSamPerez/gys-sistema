@@ -12,6 +12,7 @@ import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import ModalFactura  from '../Components/modalFactura' 
 import Modal from '@material-ui/core/Modal'
+import SearchIcon from "@material-ui/icons/Search";
 
 const db = firebaseG.firestore();
 const auth = firebaseG.auth()
@@ -70,6 +71,7 @@ export default function InformacionFacturas() {
   //Extrayendo todos los datos facturas
 
   //Facturas de admin
+if(facturaADMIN.length === 0){
   auth.onAuthStateChanged(user =>{
     if(user != null){
       db.collection(user.email).doc('Factura').collection('Factura').orderBy('fechaActual', 'desc').onSnapshot(documents =>{
@@ -89,6 +91,7 @@ export default function InformacionFacturas() {
     }
   })
 
+}
 const verFactura = (id) =>{
   seIdFactura(id)
   setOpen(true)
@@ -116,6 +119,12 @@ const verFactura = (id) =>{
       </Tabs>
       <TabPanel  value={value} index={0}>
         <h2>Todas las facturas</h2>
+        <div >
+      <label className="buscar">
+      <input id="search" type="text"  placeholder="Buscar" />
+     <button className="button"> <i className="icon">  <SearchIcon /></i></button>
+      </label>
+      </div>
         {
             facturaADMIN.length === 0?
            <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
@@ -125,16 +134,16 @@ const verFactura = (id) =>{
             </Avatar>
           </Paper>
             :facturaADMIN.map(doc =>
-           <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'grab'}} elevation={3}>
+           <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'pointer'}} elevation={3}>
               <Avatar>
                 <DescriptionIcon/>
               </Avatar>
-              <h3>Cliente:{doc.nombreClienteFactura}</h3>
-              <h3>Fecha:{doc.fechaActual}</h3>
-              <Button variant="outlined" color="primary">
+              <h4>No. Factura: <small>{doc.numeroFactura}</small> Cliente: <small> {doc.nombreClienteFactura}  </small>     Fecha:<small> {doc.fechaActual}</small></h4>
+              <div className="der">
+              <button id="bfac" variant="outlined"  color="primary">
                 {doc.estadoPago}
-              </Button>
-              
+              </button>
+              </div>
           </Paper>
             
             )
@@ -143,6 +152,12 @@ const verFactura = (id) =>{
       </TabPanel>
       <TabPanel value={value} index={1}>
       <h2>Facturas Pagadas</h2>
+      <div >
+      <label className="buscar">
+      <input id="search" type="text"  placeholder="Buscar" />
+     <button className="button"> <i className="icon">  <SearchIcon /></i></button>
+      </label>
+      </div>
         {
           facturasPagadas.length === 0?
            <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
@@ -151,16 +166,17 @@ const verFactura = (id) =>{
             </Avatar>
           </Paper>
             :facturasPagadas.map(doc =>
-           <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'grab'}} elevation={3}>
+           <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'pointer'}} elevation={3}>
               <Avatar>
                 <DescriptionIcon/>
               </Avatar>
-              <h3>Cliente:{doc.nombreClienteFactura}</h3>
-              <h3>Fecha:{doc.fechaActual}</h3>
-              <Button variant="outlined" color="primary">
+              <h4>No. Factura: <small>{doc.numeroFactura}</small> Cliente: <small> {doc.nombreClienteFactura}  </small>     Fecha:<small> {doc.fechaActual}</small></h4>
+        
+              <div className="der">
+              <button id="bfac" variant="outlined" color="primary">
                 {doc.estadoPago}
-              </Button>
-              
+              </button>
+              </div>
           </Paper>
             
             )
@@ -168,6 +184,12 @@ const verFactura = (id) =>{
       </TabPanel>
       <TabPanel value={value} index={2}>
         <h2>Facturas por cobrar</h2>
+        <div >
+      <label className="buscar">
+      <input id="search" type="text"  placeholder="Buscar" />
+     <button className="button"> <i className="icon">  <SearchIcon /></i></button>
+      </label>
+      </div>
         {
           facturasNoPagadas.length === 0?
            <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
@@ -176,15 +198,17 @@ const verFactura = (id) =>{
             </Avatar>
           </Paper>
             :facturasNoPagadas.map(doc =>
-           <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'grab'}} elevation={3}>
+           <Paper onClick={()=>verFactura(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'pointer'}} elevation={3}>
               <Avatar>
                 <DescriptionIcon/>
               </Avatar>
-              <h3>Cliente:{doc.nombreClienteFactura}</h3>
-              <h3>Fecha:{doc.fechaActual}</h3>
-              <Button variant="outlined" color="primary">
-                No pagada
-              </Button>
+              <h4>No. Factura: <small>{doc.numeroFactura}</small> Cliente: <small> {doc.nombreClienteFactura}  </small>     Fecha:<small> {doc.fechaActual}</small></h4>
+
+              <div className="der">
+              <button id="bfac" variant="outlined" color="primary">
+              {doc.estadoPago}
+                </button>
+              </div>
               
               {/* //{console.log(doc)} */}
           </Paper>
@@ -196,10 +220,13 @@ const verFactura = (id) =>{
         open={openM}
         >
         <>
-          <Button onClick={()=>setOpen(false)} variant="contained" color="secondary">
+        
+          <Button id="mover" onClick={()=>setOpen(false)} variant="contained" color="secondary">
               Cerrar
           </Button>
-        <ModalFactura  idFacturas={idFactura} />
+          
+          <div className="colorfondomodal"><ModalFactura  idFacturas={idFactura} /></div>
+        
         </>
       </Modal>
       <style jsx>{`

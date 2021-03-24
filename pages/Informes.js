@@ -1,5 +1,4 @@
 import {Bar, Line} from 'react-chartjs-2';
-import {Pie} from 'react-chartjs-2';
 import React from 'react';
 
 
@@ -55,47 +54,12 @@ const ventas=[10,20,30,40,50,60,70,50,42,95,78,100]
     
         }]
 };
-const data4={
-    labels:['Platano', 'Yuca', 'Aguacate', 'Maiz', 'Papa','Fresa','Arroz','Guineo','Lechuga','Azucar'],
-    datasets:[{
-        label:'Productos Menos Vendidos (Unidades)',
-        backgroundColor: [
-            "#FF6384",
-            "#63FF84",
-            "#84FF63",
-            "#8463FF",
-            "#6384FF",
-            "#FF6310",
-            "#63FF25",
-            "#84FF55",
-            "#846363",
-            "#638490"
-        ],
-        borderColor:'white',
-        borderWidth:3,
-        hoverBackgroundColor: [
-            "#FF6384",
-            "#63FF84",
-            "#84FF63",
-            "#8463FF",
-            "#6384FF",
-            "#FF6310",
-            "#63FF25",
-            "#84FF55",
-            "#846363",
-            "#638490"
-        ],
-        hoverborderColor:'#ffffff',
-        data:[150,300,125, 250,400,700,600,725,510,650],
-        
 
-    }]
-};
    const mostrarInforme = (idInforme)=>{
    document.getElementById("informe1").style.display='none'
    document.getElementById("informe2").style.display='none'
    document.getElementById("informe3").style.display='none'
-   document.getElementById("informe4").style.display='none'
+  
    document.getElementById(idInforme).style.display='block'
    
    }
@@ -117,9 +81,7 @@ const data4={
 <div>
 <button  type="button" onClick={()=>mostrarInforme("informe3")} > Ventas Mensuales</button>
 </div>
-<div>
-<button  type="button" onClick={()=>mostrarInforme("informe4")}> Total de Productos</button>
-</div>
+
 </section>
 
 <div id="informe1" >
@@ -146,14 +108,7 @@ const data4={
     options={opciones}
     />
 </div>
-<div id="informe4" >
-<Pie
-    data={data4}
-    width='100%'
-    height='325px'
-    options={opciones}  
-    />
-</div>
+
 </>
     )
 }

@@ -10,7 +10,8 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import PersonAddIcon from '@material-ui/icons/PersonAdd'; 
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function Login() {
   const valueInitial = { 
     nameEmpresa:"",
@@ -36,7 +37,17 @@ export default function Login() {
     e.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    loginSingIn(email, password)
+    loginSingIn(email, password).then(result =>{ console.log(result)}).catch(()=>{
+      toast.error("🙁 Error al ingresar correo o contraseña", {
+        position: "top-right",
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    })
   }
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
@@ -298,7 +309,7 @@ export default function Login() {
 
   return (
     <>
-
+        <ToastContainer />
     <div className="fondo-login" >
         {body}
     </div>

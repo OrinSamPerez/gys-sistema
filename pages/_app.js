@@ -5,6 +5,7 @@ import "../styles/form.css";
 import "../styles/home.css";
 import "../styles/factura.css";
 import "../styles/informes.css";
+import "../styles/modalFacturas.css"
 import NavBar from "../Components/NavBar";
 import Head from "next/head";
 import Login from "./Login";

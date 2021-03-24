@@ -56,35 +56,34 @@ const handleClose = () => {
     setAnchorEl(null);
   };
 const [datosStock, setDatosStock] = useState([])
- auth.onAuthStateChanged(user =>{
-     if(user != null){
-         db.collection(user.email).doc('Stock').collection('Stock').orderBy('id', 'asc').onSnapshot(docus =>{
-             const docs = []
-             docus.forEach(doc =>{
-                 docs.push({...doc.data(),id:doc.id})
-             })
-             setDatosStock(docs)
+const [datosBuscar, setDatosBuscar] = useState([])
+  auth.onAuthStateChanged(user =>{
+    if(user != null){
+        db.collection(user.email).doc('Stock').collection('Stock').orderBy('id', 'asc').onSnapshot(docus =>{
+            const docs = []
+            docus.forEach(doc =>{
+                docs.push({...doc.data(),id:doc.id})
+            })
+            setDatosStock(docs)
 
-         })
-     }
- })
+        })
+    }
+})
   const buscar = (e)=>{
     const resultadoBusquedaId = busquedaId(datosStock, e.target.value)
     const resultadoDescripcion = busquedaDescripcion(datosStock, e.target.value)
     if(resultadoBusquedaId.length === 5 && resultadoDescripcion === 5){
-      setDatosStock([])
-      setDatosStock(resultadoBusquedaId)
+      setDatosBuscar(resultadoBusquedaId)
 
     }
     if(resultadoBusquedaId.length != 0){
-      setDatosStock([])
-      setDatosStock(resultadoBusquedaId)
+      setDatosBuscar(resultadoBusquedaId)
     }
     if(resultadoDescripcion.length != 0){
-      setDatosStock([])
-      setDatosStock(resultadoDescripcion)
+      setDatosBuscar(resultadoDescripcion)
     }
   }
+  // console.log(datosBuscar)
     return(
         <>
         <h1 className="centro">Stock</h1>
@@ -116,7 +115,7 @@ const [datosStock, setDatosStock] = useState([])
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-             
+              
               <StyledMenuItem>
                <Button onClick={()=>reporte('#tStock','Stock')}>
                 <ListItemIcon>
@@ -161,7 +160,7 @@ const [datosStock, setDatosStock] = useState([])
                 </tr>
             </thead>
             <tbody>
-                {
+                {datosBuscar.length === 0?
                     datosStock.length === 0? 
                     <td> </td>
                     :datosStock.map(row=>
@@ -174,7 +173,16 @@ const [datosStock, setDatosStock] = useState([])
                         <td>{row.Stock}</td>
                     </tr>
                     )
-
+                    :datosBuscar.map(row=>
+                    <tr>
+                        <td>{row.id}</td>
+                        <td>{row.Descripcion}</td>
+                        <td>{row.ExistenciaInciales}</td>
+                        <td>{row.Entrada}</td>
+                        <td> {row.Salida_Inicial}</td>
+                        <td>{row.Stock}</td>
+                    </tr>
+                    )
                                      
                 }
             </tbody>

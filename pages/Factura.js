@@ -146,7 +146,7 @@ data.map(total=>{
           <div className="letras">
          <h3 className="ldoiz">SUBTOTAL:  <small className="smalliz">RD${SUBTOTAL}</small> </h3> 
             <h3 className="ldoiz">+ ITBIS:  <small className="smalliz">RD${ITBIS}</small>  </h3>
-          {data.map(d =>( <h3 className="ldoiz">- DESCUENTO: <small className="smalliz"> RD${(d.precio * d.descuento)/100} </small></h3>))}
+          {data.map(d =>( <h3 className="ldoiz">- DESCUENTO: <small className="smalliz"> RD${((d.precio * d.descuento)/100)*d.cantidad} </small></h3>))}
             <h3 className="ldoiz">TOTAL: <small className="smalliz"> RD${TOTAL} </small> </h3>
           </div>
       </div>
