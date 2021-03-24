@@ -66,7 +66,6 @@ export default function Login() {
   };
   const handleValidador =(e)=>{
     e.preventDefault();
-    console.log(values.nameEmpresa)
     const password =  values.passwordEmpresa;
     const email = values.emailEmpresa;
     const nameEmpresa = values.nameEmpresa;

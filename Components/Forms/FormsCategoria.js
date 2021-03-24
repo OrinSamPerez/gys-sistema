@@ -27,8 +27,10 @@ export default function FormsCategoria(props){
     }
     const getDataId = async (id) =>{
         firebaseG.auth().onAuthStateChanged(async (user) => {
-            const doc = await db.collection(user.email).doc('Categoria').collection('Categoria').doc(id).get();
-            setValues({...doc.data()})
+            if(user != null){
+                const doc = await db.collection(user.email).doc('Categoria').collection('Categoria').doc(id).get();
+                setValues({...doc.data()})
+            }
            
         })
        

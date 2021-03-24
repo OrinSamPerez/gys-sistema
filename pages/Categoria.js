@@ -83,7 +83,8 @@ export default function Provedor() {
   const estilo = useStyles();
   const getData = () => {
     firebaseG.auth().onAuthStateChanged(async (user) => {
-      db.collection(user.email)
+      if(user != null){
+        db.collection(user.email)
         .doc("Categoria")
         .collection("Categoria")
         .orderBy("descripcionCategoria", "desc")
@@ -94,6 +95,7 @@ export default function Provedor() {
           });
           setData(docs);
         });
+      }
     });
   };
   useEffect(() => {
@@ -101,32 +103,44 @@ export default function Provedor() {
   }, []);
   const addCategoria = (objectCategoria) => {
     firebaseG.auth().onAuthStateChanged(async (user) => {
-      try {
-        if (currentId === "") {
-          await db
-            .collection(user.email)
-            .doc("Categoria")
-            .collection("Categoria")
-            .doc()
-            .set(objectCategoria);
-          toast.success("🙂 Categoria Agregada Sastifactoriamente!", { 
-            position: "top-right",
-            autoClose: 10000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        } else {
-          await db
-            .collection(user.email)
-            .doc("Categoria")
-            .collection("Categoria")
-            .doc(currentId)
-            .update(objectCategoria);
-          setCurrenId("");
-          toast.success("🙂 Categoria Actualizada Sastifactoriamente!", {
+      if(user != null){
+        try {
+          if (currentId === "") {
+            await db
+              .collection(user.email)
+              .doc("Categoria")
+              .collection("Categoria")
+              .doc()
+              .set(objectCategoria);
+            toast.success("🙂 Categoria Agregada Sastifactoriamente!", { 
+              position: "top-right",
+              autoClose: 10000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          } else {
+            await db
+              .collection(user.email)
+              .doc("Categoria")
+              .collection("Categoria")
+              .doc(currentId)
+              .update(objectCategoria);
+            setCurrenId("");
+            toast.success("🙂 Categoria Actualizada Sastifactoriamente!", {
+              position: "top-right",
+              autoClose: 10000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+        } catch (error) {
+          toast.error("🙁 Error al Agregar o Actualizar una Categoria ", {
             position: "top-right",
             autoClose: 10000,
             hideProgressBar: false,
@@ -136,16 +150,6 @@ export default function Provedor() {
             progress: undefined,
           });
         }
-      } catch (error) {
-        toast.error("🙁 Error al Agregar o Actualizar una Categoria ", {
-          position: "top-right",
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
       }
     });
   };
@@ -154,27 +158,29 @@ export default function Provedor() {
   const onDelete = (id, descripcionCategoria) => {
     if (window.confirm("¿Seguro que deseas eliminar?")) {
       firebaseG.auth().onAuthStateChanged(async (user) => {
+       if(user != null){
         await db
-          .collection(user.email)
-          .doc("Categoria-Inactivos")
-          .collection("Categoria-Inactivos")
-          .doc(id)
-          .set({id, descripcionCategoria});
-        await db
-          .collection(user.email)
-          .doc("Categoria")
-          .collection("Categoria")
-          .doc(id)
-          .delete();
-        toast.success("🙂 Categoria Eliminada Sastifactoriamente!", {
-          position: "top-right",
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true, 
-          progress: undefined,
-        });
+        .collection(user.email)
+        .doc("Categoria-Inactivos")
+        .collection("Categoria-Inactivos")
+        .doc(id)
+        .set({id, descripcionCategoria});
+      await db
+        .collection(user.email)
+        .doc("Categoria")
+        .collection("Categoria")
+        .doc(id)
+        .delete();
+      toast.success("🙂 Categoria Eliminada Sastifactoriamente!", {
+        position: "top-right",
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true, 
+        progress: undefined,
+      });
+       }
       });
     }
   };

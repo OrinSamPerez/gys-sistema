@@ -45,7 +45,8 @@ export default function FormsProducto(props) {
   const [getCategoria, setGetCategoria] = useState([]);
   const getDataProveedor = () => {
     firebaseG.auth().onAuthStateChanged(async (user) => {
-      db.collection(user.email)
+      if(user != null){
+        db.collection(user.email)
         .doc("Proveedor")
         .collection("Proveedor")
         .onSnapshot((querySnapshot) => {
@@ -55,12 +56,14 @@ export default function FormsProducto(props) {
           });
           setGetProveedor(docs);
         });
+      }
     });
   };
 
   const getDataCategoria = () => {
     firebaseG.auth().onAuthStateChanged(async (user) => {
-      db.collection(user.email)
+      if(user != null){
+        db.collection(user.email)
         .doc("Categoria")
         .collection("Categoria")
         .onSnapshot((querySnapshot) => {
@@ -70,6 +73,7 @@ export default function FormsProducto(props) {
           });
           setGetCategoria(docs);
         });
+      }
     });
   };
 
@@ -88,7 +92,9 @@ export default function FormsProducto(props) {
 
   const uploadImage = (file) => {
     firebaseG.auth().onAuthStateChanged(async (user) => {
-      setEmail(user.email);
+      if(user != null){
+        setEmail(user.email);
+      }
     });
     const ref = firebaseG
       .storage()
@@ -103,13 +109,15 @@ export default function FormsProducto(props) {
 
   const getDataId = async (id) => {
     firebaseG.auth().onAuthStateChanged(async (user) => {
-      const doc = await db
+      if(user != null){
+        const doc = await db
         .collection(user.email)
         .doc("Producto")
         .collection("Producto")
         .doc(id)
         .get();
       setValues({ ...doc.data() });
+      }
     });
   };
   const handleDragEnter = (e) => {

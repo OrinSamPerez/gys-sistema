@@ -71,14 +71,16 @@ export default function Provedor() {
   const getData =()=>{
 
    firebaseG.auth().onAuthStateChanged(async (user) => {
-    db.collection(user.email).doc('Producto').collection('Producto').orderBy("fechaProducto", "desc").onSnapshot((querySnapshot)=>{
-      const docs = [];
-      querySnapshot.forEach(doc =>{
-        docs.push({...doc.data(),id:doc.id})
-        
-      })
-      setData(docs);
-    });
+    if(user != null){
+      db.collection(user.email).doc('Producto').collection('Producto').orderBy("fechaProducto", "desc").onSnapshot((querySnapshot)=>{
+        const docs = [];
+        querySnapshot.forEach(doc =>{
+          docs.push({...doc.data(),id:doc.id})
+          
+        })
+        setData(docs);
+      });
+    }
     })
   }
   useEffect(()=>{
@@ -86,52 +88,20 @@ export default function Provedor() {
   },[])
   const addProducto =  (objectProducto)=>{ 
     firebaseG.auth().onAuthStateChanged(async (user) => {
-      try{
-        if(currentId === ""){
-          await db.collection(user.email).doc('Producto').collection('Producto').doc(objectProducto.id_Producto).set(objectProducto)
-          await db.collection(user.email).doc('Stock').collection('Stock').doc(objectProducto.id_Producto).set({
-            id:objectProducto.id_Producto,
-            Descripcion:objectProducto.nombreProducto,
-            ExistenciaInciales:objectProducto.cantidadProducto,
-            Entrada:objectProducto.cantidadProducto,
-            Salida_Inicial:0,
-            Stock:objectProducto.cantidadProducto
-          })
-
-          toast.success('🙂 Producto Agregado Sastifactoriamente!', {
-            position: "top-right",
-            autoClose: 10000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            }); 
-         }
-         else{ 
-           objectProducto.imageProducto=imageId
-           await db.collection(user.email).doc('Producto').collection('Producto').doc(objectProducto.id_Producto).update(objectProducto)
-           await db.collection(user.email).doc('Stock').collection('Stock').doc(objectProducto.id_Producto).update({
-            Descripcion:objectProducto.nombreProducto,
-            ExistenciaInciales:objectProducto.cantidadProducto,
-            Entrada:objectProducto.cantidadProducto,
-            Stock:objectProducto.cantidadProducto
-          })
-
-           setCurrenId("");
-           toast.success('🙂 Producto Actualizado Sastifactoriamente!', {
-            position: "top-right",
-            autoClose: 10000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            }); 
-   
-          }
-          }catch(error){
-            toast.error('🙁 Error al Agregar o Actualizar un Producto ', {
+      if(user != null){
+        try{
+          if(currentId === ""){
+            await db.collection(user.email).doc('Producto').collection('Producto').doc(objectProducto.id_Producto).set(objectProducto)
+            await db.collection(user.email).doc('Stock').collection('Stock').doc(objectProducto.id_Producto).set({
+              id:objectProducto.id_Producto,
+              Descripcion:objectProducto.nombreProducto,
+              ExistenciaInciales:objectProducto.cantidadProducto,
+              Entrada:objectProducto.cantidadProducto,
+              Salida_Inicial:0,
+              Stock:objectProducto.cantidadProducto
+            })
+  
+            toast.success('🙂 Producto Agregado Sastifactoriamente!', {
               position: "top-right",
               autoClose: 10000,
               hideProgressBar: false,
@@ -139,28 +109,64 @@ export default function Provedor() {
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              });
-         }
-      
+              }); 
+           }
+           else{ 
+             objectProducto.imageProducto=imageId
+             await db.collection(user.email).doc('Producto').collection('Producto').doc(objectProducto.id_Producto).update(objectProducto)
+             await db.collection(user.email).doc('Stock').collection('Stock').doc(objectProducto.id_Producto).update({
+              Descripcion:objectProducto.nombreProducto,
+              ExistenciaInciales:objectProducto.cantidadProducto,
+              Entrada:objectProducto.cantidadProducto,
+              Stock:objectProducto.cantidadProducto
+            })
+  
+             setCurrenId("");
+             toast.success('🙂 Producto Actualizado Sastifactoriamente!', {
+              position: "top-right",
+              autoClose: 10000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              }); 
+     
+            }
+            }catch(error){
+              toast.error('🙁 Error al Agregar o Actualizar un Producto ', {
+                position: "top-right",
+                autoClose: 10000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });
+           }
+       
+      } 
     })
   }
   const onDelete = (id,nombreProducto, cantidadProducto , precioVentaProducto, precioCompraProducto,descuentoProducto, proveedorProducto, categoriaProducto, fechaProducto) => {
     if (window.confirm("¿Seguro que deseas eliminar?")) {
 
       firebaseG.auth().onAuthStateChanged(async (user) => {
-        await db.collection(user.email).doc('Productos-Inactivo').collection('Productos-Inactivo').doc(id).set({id,nombreProducto, cantidadProducto , precioVentaProducto, precioCompraProducto,descuentoProducto, proveedorProducto, categoriaProducto, fechaProducto});
-        await db.collection(user.email).doc('Producto').collection('Producto').doc(id).delete();
-        await db.collection(user.email).doc('Stock-Inactivo').collection('Stock-Inactivo').doc(id).set({id,nombreProducto, cantidadProducto , precioVentaProducto, precioCompraProducto,descuentoProducto, proveedorProducto, categoriaProducto, fechaProducto});
-        await db.collection(user.email).doc('Stock').collection('Stock').doc(id).delete();
-        toast.success('🙂 Producto Eliminado Sastifactoriamente!', {
-          position: "top-right",
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          });
+        if(user != null){
+          await db.collection(user.email).doc('Productos-Inactivo').collection('Productos-Inactivo').doc(id).set({id,nombreProducto, cantidadProducto , precioVentaProducto, precioCompraProducto,descuentoProducto, proveedorProducto, categoriaProducto, fechaProducto});
+          await db.collection(user.email).doc('Producto').collection('Producto').doc(id).delete();
+          await db.collection(user.email).doc('Stock-Inactivo').collection('Stock-Inactivo').doc(id).set({id,nombreProducto, cantidadProducto , precioVentaProducto, precioCompraProducto,descuentoProducto, proveedorProducto, categoriaProducto, fechaProducto});
+          await db.collection(user.email).doc('Stock').collection('Stock').doc(id).delete();
+          toast.success('🙂 Producto Eliminado Sastifactoriamente!', {
+            position: "top-right",
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+        }
     })
     }
 }

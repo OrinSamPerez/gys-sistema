@@ -18,27 +18,29 @@ const [dataProducto, setDataProducto]=useState([])
 const getData =()=>{
 
   firebaseG.auth().onAuthStateChanged(async (user) => {
-   db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').onSnapshot((querySnapshot)=>{
+  if(user != null ){
+    db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').onSnapshot((querySnapshot)=>{
+      const docs = [];
+      querySnapshot.forEach(doc =>{
+        docs.push({...doc.data(),id:doc.id})
+      })
+      setData(docs);
+    });
+    db.collection(user.email).doc('Stock').collection('Stock').onSnapshot((querySnapshot)=>{
+     const docsStock = [];
+     querySnapshot.forEach(doc =>{
+       docsStock.push({...doc.data(),id:doc.id})
+     })
+     setDataStock(docsStock);
+   })
+   db.collection(user.email).doc('Producto').collection('Producto').onSnapshot((querySnapshot)=>{
      const docs = [];
      querySnapshot.forEach(doc =>{
        docs.push({...doc.data(),id:doc.id})
      })
-     setData(docs);
-   });
-   db.collection(user.email).doc('Stock').collection('Stock').onSnapshot((querySnapshot)=>{
-    const docsStock = [];
-    querySnapshot.forEach(doc =>{
-      docsStock.push({...doc.data(),id:doc.id})
-    })
-    setDataStock(docsStock);
-  })
-  db.collection(user.email).doc('Producto').collection('Producto').onSnapshot((querySnapshot)=>{
-    const docs = [];
-    querySnapshot.forEach(doc =>{
-      docs.push({...doc.data(),id:doc.id})
-    })
-    setDataProducto(docs);
-  })
+     setDataProducto(docs);
+   })
+  }
    })
 }  
 

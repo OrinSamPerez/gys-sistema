@@ -69,14 +69,16 @@ export default function  Cliente() {
  const getData =()=>{
 
    firebaseG.auth().onAuthStateChanged(async (user) => {
-    db.collection(user.email).doc('Clientes').collection('Clientes').orderBy("nombreCliente", "desc").onSnapshot((querySnapshot)=>{
-      const docs = [];
-      querySnapshot.forEach(doc =>{
-        docs.push({...doc.data(),id:doc.id})
-        
-      })
-      setData(docs);
-    });
+    if(user != null){
+      db.collection(user.email).doc('Clientes').collection('Clientes').orderBy("nombreCliente", "desc").onSnapshot((querySnapshot)=>{
+        const docs = [];
+        querySnapshot.forEach(doc =>{
+          docs.push({...doc.data(),id:doc.id})
+          
+        })
+        setData(docs);
+      });
+    }
     })
   }
   useEffect(()=>{
@@ -85,43 +87,45 @@ export default function  Cliente() {
 
   const addClientes=(objectClientes)=>{
     firebaseG.auth().onAuthStateChanged(async (user) =>{
-      try{
-      if(currentId === ""){
-     await db.collection(user.email).doc('Clientes').collection('Clientes').doc().set(objectClientes)
-     toast.success('🙂 Cliente Agregado Sastifactoriamente!', {
-      position: "top-right",
-      autoClose: 10000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      }); 
-      }
-      else{ 
-        await db.collection(user.email).doc('Clientes').collection('Clientes').doc(currentId).update(objectClientes)
-        setCurrenId("");
-        toast.success('🙂 Cliente Actualizado Sastifactoriamente!', {
-         position: "top-right",
-         autoClose: 10000,
-         hideProgressBar: false,
-         closeOnClick: true,
-         pauseOnHover: true,
-         draggable: true,
-         progress: undefined,
-         });
-
-       }
-    }catch(error){
-      toast.error('🙁 Error al Agregar o Actualizar un Cliente ', {
-        position: "top-right",
-        autoClose: 10000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        });
+      if(user != null){
+        try{
+          if(currentId === ""){
+         await db.collection(user.email).doc('Clientes').collection('Clientes').doc().set(objectClientes)
+         toast.success('🙂 Cliente Agregado Sastifactoriamente!', {
+          position: "top-right",
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          }); 
+          }
+          else{ 
+            await db.collection(user.email).doc('Clientes').collection('Clientes').doc(currentId).update(objectClientes)
+            setCurrenId("");
+            toast.success('🙂 Cliente Actualizado Sastifactoriamente!', {
+             position: "top-right",
+             autoClose: 10000,
+             hideProgressBar: false,
+             closeOnClick: true,
+             pauseOnHover: true,
+             draggable: true,
+             progress: undefined,
+             });
+    
+           }
+        }catch(error){
+          toast.error('🙁 Error al Agregar o Actualizar un Cliente ', {
+            position: "top-right",
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+          }
       }
    })
   }
@@ -130,6 +134,7 @@ export default function  Cliente() {
     if (window.confirm("¿Seguro que deseas eliminar?")) {
 
       firebaseG.auth().onAuthStateChanged(async (user) => {
+       if(user != null){
         await db.collection(user.email).doc('Clientes-Inactivos').collection('Clientes-Inactivos').doc(id).set({id, nombreCliente, correoCliente, direccionCliente:direccionCliente, telefonoCliente});
         await db.collection(user.email).doc('Clientes').collection('Clientes').doc(id).delete();
         toast.success('🙂 Cliente Eliminado Sastifactoriamente!', {
@@ -141,6 +146,7 @@ export default function  Cliente() {
           draggable: true,
           progress: undefined,
           });
+       }
     })
     }
 }

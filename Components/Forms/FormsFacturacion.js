@@ -24,14 +24,16 @@ export default function FormsFacturacion(props){
  
   const getDataProductoAñadidos =()=>{ 
     firebaseG.auth().onAuthStateChanged(async (user) => {
-     db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').onSnapshot((querySnapshot)=>{
-       const docs = [];
-       querySnapshot.forEach(doc =>{
-         docs.push({...doc.data(),id:doc.id})
-         
-       })
-       setDataProductoAñadidos(docs);
-     });
+     if(user !=null){
+        db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').onSnapshot((querySnapshot)=>{
+            const docs = [];
+            querySnapshot.forEach(doc =>{
+              docs.push({...doc.data(),id:doc.id})
+              
+            })
+            setDataProductoAñadidos(docs);
+          });
+     }
      })
    }
    useEffect(()=>{
@@ -40,14 +42,16 @@ export default function FormsFacturacion(props){
   const getDataProducto =()=>{
 
         firebaseG.auth().onAuthStateChanged(async (user) => {
-        db.collection(user.email).doc('Producto').collection('Producto').orderBy("fechaProducto", "desc").onSnapshot((querySnapshot)=>{
-            const docs = [];
-            querySnapshot.forEach(doc =>{
-              docs.push({...doc.data(),id:doc.id})
-              
-            })
-            setDataProducto(docs)
-        });
+        if(user != null){
+            db.collection(user.email).doc('Producto').collection('Producto').orderBy("fechaProducto", "desc").onSnapshot((querySnapshot)=>{
+                const docs = [];
+                querySnapshot.forEach(doc =>{
+                  docs.push({...doc.data(),id:doc.id})
+                  
+                })
+                setDataProducto(docs)
+            });
+        }
         })
     }
     useEffect(()=>{
@@ -93,25 +97,28 @@ export default function FormsFacturacion(props){
     const getData =()=>{
 
         firebaseG.auth().onAuthStateChanged(async (user) => {
-         db.collection(user.email).doc('Producto').collection('Producto').orderBy("fechaProducto", "desc").onSnapshot((querySnapshot)=>{
-           const docs = [];
-           querySnapshot.forEach(doc =>{
-             docs.push({...doc.data(),id:doc.id})
-             
-           })
-           setData(docs);
-         });
-
-         db.collection(user.email).doc('Clientes').collection('Clientes').onSnapshot(documentos =>{
-             const docsCliente = []
-             documentos.forEach(doc =>{
-                 docsCliente.push({...doc.data(),id:doc.id})
-             })
-             setDataCliente(docsCliente)
-         })
-
-         })
-       }
+         if(user != null){
+            db.collection(user.email).doc('Producto').collection('Producto').orderBy("fechaProducto", "desc").onSnapshot((querySnapshot)=>{
+                const docs = [];
+                querySnapshot.forEach(doc =>{
+                  docs.push({...doc.data(),id:doc.id})
+                  
+                })
+                setData(docs);
+              });
+     
+              db.collection(user.email).doc('Clientes').collection('Clientes').onSnapshot(documentos =>{
+                  const docsCliente = []
+                  documentos.forEach(doc =>{
+                      docsCliente.push({...doc.data(),id:doc.id})
+                  })
+                  setDataCliente(docsCliente)
+              })
+     
+         }
+       
+        })
+    }
        useEffect(()=>{
          getData()
        },[])
@@ -181,15 +188,18 @@ export default function FormsFacturacion(props){
         e.preventDefault()
         if(values.nombreClienteFactura != ""){
             firebaseG.auth().onAuthStateChanged(async user =>{
-                db.collection(user.email).doc('Clientes').collection('Clientes').doc().set({
-                    nombreCliente:values.nombreClienteFactura,
-                    correoCliente:values.correoClienteFactura,
-                    dirrecionCliente:values.dirrecionCliente,
-                    telefonoCliente:values.telefonoCliente
-
-                })
+                if(user != null){
+                    db.collection(user.email).doc('Clientes').collection('Clientes').doc().set({
+                        nombreCliente:values.nombreClienteFactura,
+                        correoCliente:values.correoClienteFactura,
+                        dirrecionCliente:values.dirrecionCliente,
+                        telefonoCliente:values.telefonoCliente
+    
+                    })
+                }
             })
         }
+
         values.numeroFactura = (`AC${fechaA.getFullYear()}${fechaA.getDay()}${fechaA.getMonth()+1}${fechaA.getHours()}${fechaA.getMinutes()}${fechaA.getSeconds()}`)
         const estadoPago = document.getElementById("estadoPago").value;
         const tipoPagoFactura = document.getElementById("tipoPagoFactura").value;
@@ -206,10 +216,13 @@ export default function FormsFacturacion(props){
 
 
     }
+
     const getDataId = async (id) =>{
         firebaseG.auth().onAuthStateChanged(async (user) => {
-            const doc = await db.collection(user.email).doc('Factura').collection('Factura').doc(id).get();
-            setValues({...doc.data()})
+            if(user != null){
+                const doc = await db.collection(user.email).doc('Factura').collection('Factura').doc(id).get();
+                setValues({...doc.data()})
+            }
         })
     }
 
@@ -283,6 +296,7 @@ export default function FormsFacturacion(props){
        
         
     }
+
 const [datosEmpresa, setdatosEmpresa] = useState([])
 if(datosEmpresa.length === 0 ){
     firebaseG.auth().onAuthStateChanged(async (user)=>{

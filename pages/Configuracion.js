@@ -143,20 +143,22 @@ export default function Configuracion(){
                           });
                 }
                 }
-               await  db.collection(user.email).doc('datosUsuario').update(values)
-                await   db.collection(user.email).doc('datosUsuario').get().then(doc =>{
-                    toast.success('🙂 Actualizado Correctamente!', {
-                        position: "top-right",
-                        autoClose: 10000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        }); 
-                        setDatosUsuarios(doc.data())
-
-               })
+                if(user != null){
+                    await  db.collection(user.email).doc('datosUsuario').update(values)
+                    await   db.collection(user.email).doc('datosUsuario').get().then(doc =>{
+                        toast.success('🙂 Actualizado Correctamente!', {
+                            position: "top-right",
+                            autoClose: 10000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            }); 
+                            setDatosUsuarios(doc.data())
+    
+                   })
+                }
             setOpen(false)
             }
         })

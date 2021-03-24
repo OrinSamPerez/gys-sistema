@@ -79,14 +79,16 @@ const estilo = useStyles()
   const getData =()=>{
 
    firebaseG.auth().onAuthStateChanged(async (user) => {
-    db.collection(user.email).doc('Proveedor').collection('Proveedor').orderBy("nombreProveedor", "desc").onSnapshot((querySnapshot)=>{
-      const docs = [];
-      querySnapshot.forEach(doc =>{
-        docs.push({...doc.data(),id:doc.id})
-        
-      })
-      setData(docs);
-    });
+    if(user != null){
+      db.collection(user.email).doc('Proveedor').collection('Proveedor').orderBy("nombreProveedor", "desc").onSnapshot((querySnapshot)=>{
+        const docs = [];
+        querySnapshot.forEach(doc =>{
+          docs.push({...doc.data(),id:doc.id})
+          
+        })
+        setData(docs);
+      });
+    }
     })
   }
   useEffect(()=>{
@@ -94,35 +96,24 @@ const estilo = useStyles()
   },[])
   const addProveedor =  (objectProveedor)=>{
     firebaseG.auth().onAuthStateChanged(async (user) => {
-      try{
-        if(currentId === ""){
-          await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc().set(objectProveedor)
-          toast.success('🙂 Proveedor Agregado Sastifactoriamente!', {
-            position: "top-right",
-            autoClose: 10000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            }); 
-        }
-         else{ 
-           await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc(currentId).update(objectProveedor)
-           setCurrenId("");
-           toast.success('🙂 Proveedor Actualizado Sastifactoriamente!', {
-            position: "top-right",
-            autoClose: 10000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            });
-   
+      if(user != null){
+        try{
+          if(currentId === ""){
+            await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc().set(objectProveedor)
+            toast.success('🙂 Proveedor Agregado Sastifactoriamente!', {
+              position: "top-right",
+              autoClose: 10000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              }); 
           }
-          }catch(error){
-            toast.error('🙁 Error al Agregar o Actualizar un Proveedor ', {
+           else{ 
+             await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc(currentId).update(objectProveedor)
+             setCurrenId("");
+             toast.success('🙂 Proveedor Actualizado Sastifactoriamente!', {
               position: "top-right",
               autoClose: 10000,
               hideProgressBar: false,
@@ -131,25 +122,40 @@ const estilo = useStyles()
               draggable: true,
               progress: undefined,
               });
-         }
-      
+     
+            }
+            }catch(error){
+              toast.error('🙁 Error al Agregar o Actualizar un Proveedor ', {
+                position: "top-right",
+                autoClose: 10000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });
+           }
+        
+      }
     })
   }
   const onDelete = (id,nombreProveedor, direccionProveedor,correoProveedor, telefonoProveedor, pagoProveedor,  cargoProveedor) => {
     if (window.confirm("¿Seguro que deseas eliminar?")) {
 
       firebaseG.auth().onAuthStateChanged(async (user) => {
-        await db.collection(user.email).doc('Proveedor-Inactivos').collection('Proveedor-Inactivos').doc(id).set({id,nombreProveedor, direccionProveedor,correoProveedor, telefonoProveedor, pagoProveedor,  cargoProveedor});
-        await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc(id).delete();
-        toast.success('🙂 Proveedor Eliminado Sastifactoriamente!', {
-          position: "top-right",
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          });
+   if(user != null){
+    await db.collection(user.email).doc('Proveedor-Inactivos').collection('Proveedor-Inactivos').doc(id).set({id,nombreProveedor, direccionProveedor,correoProveedor, telefonoProveedor, pagoProveedor,  cargoProveedor});
+    await db.collection(user.email).doc('Proveedor').collection('Proveedor').doc(id).delete();
+    toast.success('🙂 Proveedor Eliminado Sastifactoriamente!', {
+      position: "top-right",
+      autoClose: 10000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+   }
     })
     }
 }
