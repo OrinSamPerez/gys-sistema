@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { firebaseG } from "../firebase.BD/firebase.conf";
+import { firebaseG } from "../BD-Firebase/firebase.conf";
 
 export const reporte= (idTable, nameTable)=>{
     var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")

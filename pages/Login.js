@@ -1,9 +1,8 @@
 import { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Styles from "../styles/Login.module.css";
-import { loginSingIn,loginWithEmail,loginCollection, firebaseG} from "../firebase.BD/firebase.conf";
+import { loginSingIn,loginWithEmail,loginCollection, firebaseG} from "../BD-Firebase/firebase.conf";
 import StylesRegistro from "../styles/Registro.module.css";
-import {validadorLogin} from "../Services/validadorLogin";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
@@ -11,16 +10,18 @@ import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import PersonAddIcon from '@material-ui/icons/PersonAdd'; 
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { ToastContainer, toast } from "react-toastify";
+import {correoValidador, contraseñaValidador} from '../Services/validadorConfiguracion'
 import "react-toastify/dist/ReactToastify.css";
+import {alertaError} from '../Components/Alertas'
 import swal from 'sweetalert';
 export default function Login() {
   const valueInitial = { 
-    nameEmpresa:"",
-    emailEmpresa:'',
-    numberEmpresa:'',
+    nombreEmpresa:"",
+    correoEmpresa:'',
+    numeroEmpresa:'',
     direccionEmpresa:'',
-    passwordEmpresa:'',
-    confPassword:'',
+    contraseñaEmpresa:'',
+    confContraseña:'',
     rncEmpresa:'',
     ncfEmpresa:'',
     PagoEnEfectivo:'',
@@ -28,85 +29,43 @@ export default function Login() {
     PUE:'',
     PPD:'',
     tipoEmpresa:'',
-    imageLogo:null,
-    imageEmpresa:null,
+    imagenLogo:null,
+    imagenEmpresa:null,
   }
 
 
   const [values, setValues] = useState(valueInitial);
+
   const singIn = (e) => {
     e.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    loginSingIn(email, password).then(result =>{ console.log(result)}).catch(()=>{
-      toast.error("🙁 Error al ingresar correo o contraseña", {
-        position: "top-right",
-        autoClose: 10000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    })
+    loginSingIn(email, password).then(result =>{ console.log(result)}).catch(()=>{  alertaError("🙁 Error al ingresar correo o contraseña") })
   }
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     setValues({...values, [name]:value}) 
-    if('nameEmpresa' === name ){ values.nameEmpresa= value;} if('emailEmpresa' === name ){ values.emailEmpresa= value;} 
-    if('numberEmpresa' === name ){ values.numberEmpresa= value;}if('direccionEmpresa' === name ){ values.direccionEmpresa= value;}
-    if('passwordEmpresa' === name ){ values.passwordEmpresa= value;} if('confPassword' === name ){ values.confPassword= value;} 
+    if('nombreEmpresa' === name ){ values.nombreEmpresa= value;} if('correoEmpresa' === name ){ values.correoEmpresa= value;} 
+    if('numeroEmpresa' === name ){ values.numeroEmpresa= value;}if('direccionEmpresa' === name ){ values.direccionEmpresa= value;}
+    if('contraseñaEmpresa' === name ){ values.contraseñaEmpresa= value;} if('confContraseña' === name ){ values.confContraseña= value;} 
     if('rncEmpresa' === name ){ values.rncEmpresa= value;}if('ncfEmpresa' === name ){ values.ncfEmpresa= value;}
     if('PagoEnEfectivo' === name ){ values.PagoEnEfectivo= value;}if('PagoConTarjetaDeCréditooDébito' === name ){ values.PagoConTarjetaDeCréditooDébito= value;}
     if('PUE' === name ){ values.PUE= value;} if('PPD' === name ){ values.PPD= value;} 
-    if('tipoEmpresa' === name ){ values.tipoEmpresa= value;}if('imageLogo' === name )
-    { values.imageLogo = files[0]}
-    if('imageEmpresa' === name ){ values.imageEmpresa  = files[0]}
+    if('tipoEmpresa' === name ){ values.tipoEmpresa= value;}if('imagenLogo' === name )
+    { values.imagenLogo = files[0]}
+    if('imagenEmpresa' === name ){ values.imagenEmpresa  = files[0]}
 
   };
-  const handleValidador =(e)=>{
-    e.preventDefault();
-    const password =  values.passwordEmpresa;
-    const email = values.emailEmpresa;
-    const nameEmpresa = values.nameEmpresa;
-    const confPassword  = values.confPassword
-    if(values.direccionEmpresa != ''){
-      if(values.numberEmpresa != ''){
-        const emailVerificado =  validadorLogin(password,email, nameEmpresa,  confPassword)
-        if(emailVerificado != email){
-          if(emailVerificado === 'nombre-corto'){
-            swal("¡Alerta!", "¡El nombre de la empresa es muy corto!", "error");
-          }  
-          if(emailVerificado === '@'){
-            swal("¡Alerta!", "¡Correo incorrecto!", "error");
-          } 
-          if(emailVerificado === 'contraseña-mal'){
-            swal("¡Alerta!", "¡Contraseña corta o gmuy grande, coloque una de entre 8 y 12", "error");
-        }
-        if(emailVerificado === 'contraseña-insegura'){
-          swal("¡Alerta!", "¡Contraseña insegura¡, Por favor escriba contraseña, que contenga numeros, miniscula y mayuscula", "error");
-        }
-        if(emailVerificado === 'Contraseña-no'){
-          swal("¡Alerta!", "Las contraseñas no coinciden", "error");
-        }
-        if(emailVerificado === email ){
-          setBody(bodyRegistroEmpresa)
-    
-        }
-      }
-    }else{swal("¡Alerta!", "El numero es obligatorio", "error");}
-    }else{swal("¡Alerta!", "La direccion es obligatoria", "error");}
-  }
-  const handleRegistro =async ()=>{
-    loginWithEmail(values.emailEmpresa, values.passwordEmpresa, values)
 
+  const handleRegistro =async ()=>{
+    loginWithEmail(values.correoEmpresa, values.contraseñaEmpresa, values)
   }
-  let empresaD = values.nameEmpresa
+
   const bodyRegistroEmpresa = (
     <div className={StylesRegistro.container}>
       <div className={StylesRegistro.formMainEmpresa}>
       <img src="/inventario.svg" />
-      <h3>{empresaD}¡Bienvenido  favor rellenar lo siguientes campos!</h3>
+      <h3>¡Bienvenido  favor rellenar lo siguientes campos!</h3>
       <div>
         <label>
         RNC Empresa
@@ -161,7 +120,7 @@ export default function Login() {
         </label>
       </div>
       <div className={StylesRegistro.botonImage}>
-      <input onChange={handleInputChange} name="imageLogo" accept="image/*" className={StylesRegistro.inputNone} id="contained-button-file" type="file" />
+      <input onChange={handleInputChange} name="imagenLogo" accept="image/*" className={StylesRegistro.inputNone} id="contained-button-file" type="file" />
         <label  htmlFor="contained-button-file">
           <Button variant="contained" color="primary" component="span">
             Subir Logo aqui
@@ -171,7 +130,7 @@ export default function Login() {
     
         </label>
         &nbsp;&nbsp;&nbsp;
-        <input onChange={handleInputChange} name="imageEmpresa" accept="image/*" className={StylesRegistro.inputNone} id="image-button-file" type="file" />
+        <input onChange={handleInputChange} name="imagenEmpresa" accept="image/*" className={StylesRegistro.inputNone} id="image-button-file" type="file" />
         <label htmlFor="image-button-file">
           <Button variant="contained" color="primary" component="span">
             Subir Imagen aqui
@@ -217,7 +176,7 @@ export default function Login() {
               <input
                 id="password"
                 type="password"
-                placeholder="Ingresa tu contraseña"
+                placeholder="Ingresa  tu contraseña"
               />
             </label>
           </div>
@@ -233,6 +192,26 @@ export default function Login() {
       </form>
     </div>
   );
+  const handleValidador =(e)=>{
+    e.preventDefault();
+    if(values.nombreEmpresa.length >=  4){
+      if(values.direccionEmpresa.length >= 2 ){
+        if(values.numeroEmpresa >= 2){
+         if(correoValidador(values.correoEmpresa) === true){
+            if(contraseñaValidador(values.contraseñaEmpresa)=== true){
+              if(values.contraseñaEmpresa ===values.confContraseña ){
+                setBody(bodyRegistroEmpresa)
+              }else{swal("¡Alerta!", "Las contraseñas no coinciden ", "info");}
+            }else{swal("¡Alerta!", "La contraseña es insegura, escriba contraseña que contenga mayuscula, minuscula, numeros y mayor a 8 caracteres  ", "info");}
+         }else{swal("¡Alerta!", "El correo solo debe admiten los siguentes dominios,@gmail.com, @hotmail.com ", "info");}
+        }else{swal("¡Alerta!", "EL numero telefonico es obligatorio ", "info");}
+      } else {swal("¡Alerta!", "La direccion es obligatoria ", "info");}
+    }
+    else{
+      swal("¡Alerta!", "El nombre de la empresa ingresado es muy corto", "info");
+    }
+    
+  }
   const bodyRegistro = (
     <div className={StylesRegistro.container}>
       <form id='mi-form' onSubmit={handleValidador} className={StylesRegistro.formMain}>
@@ -240,9 +219,10 @@ export default function Login() {
           <img src="/inventario.svg" />
           <h1>Registrarse aqui</h1>
           <div>
+          <label className="empresa-none"><input type="text"/></label>
             <label>
-              <input
-                name="nameEmpresa"
+            <input
+                name="nombreEmpresa"
                 type="text"
                 required
                 onChange={handleInputChange}
@@ -252,7 +232,7 @@ export default function Login() {
             <label>
               <input
                 type="email"
-                name="emailEmpresa"
+                name="correoEmpresa"
                 required
                 onChange={handleInputChange}
                 placeholder="Ingresa tu email aqui"
@@ -260,10 +240,11 @@ export default function Login() {
             </label>
           </div>
           <div>
+          <label className="empresa-none"><input type="text"/></label>
             <label>
               <input
                 id="number"
-                name="numberEmpresa"
+                name="numeroEmpresa"
                 required
                 type="text"
                 onChange={handleInputChange}
@@ -271,6 +252,7 @@ export default function Login() {
               />
             </label>
             <label>
+            <label className="empresa-none"><input type="text"/></label>
               <input
                 type="text"
                 required
@@ -283,11 +265,12 @@ export default function Login() {
             </label>
           </div>
           <div>
+          <label className="empresa-none"><input type="text"/></label>
             <label>
               <input
                 id="password-registro"
                 required
-                name="passwordEmpresa"
+                name="contraseñaEmpresa"
                 type="password"
                 onChange={handleInputChange}
                 placeholder="Ingresa tu contraseña"
@@ -295,11 +278,12 @@ export default function Login() {
             </label>
        
             <label>
+            <label className="empresa-none"><input type="text"/></label>
               <input
-                id="confPassword"
+                id="confContraseña"
                 onChange={handleInputChange}
                 required
-                name="confPassword"
+                name="confContraseña"
                 type="password"
                 placeholder="Confirma tu contraseña"
               />
@@ -319,6 +303,7 @@ export default function Login() {
       </form>
     </div>
   );
+
   const [body, setBody] = useState(bodyLogin);
 
   return (

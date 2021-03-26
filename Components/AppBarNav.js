@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
 import { makeStyles } from '@material-ui/core/styles';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
-import {firebaseG} from '../firebase.BD/firebase.conf'
+import {firebaseG} from '../BD-Firebase/firebase.conf'
 import swal from 'sweetalert';
 import Badge from '@material-ui/core/Badge';
 const useStyles = makeStyles((theme) => ({

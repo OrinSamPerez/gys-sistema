@@ -1,5 +1,5 @@
 import Button from "@material-ui/core/Button";
-import { firebaseG } from "../firebase.BD/firebase.conf";
+import { firebaseG } from "../BD-Firebase/firebase.conf";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import {closeApp }from "../Services/closeApp";
 

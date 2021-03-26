@@ -10,7 +10,7 @@ import NavBar from "../Components/NavBar";
 import Head from "next/head";
 import Login from "./Login";
 import EmailVerifcado from '../Components/EmailVerifcado'
-import { firebaseG, userInfo } from "../firebase.BD/firebase.conf";
+import { firebaseG, userInfo } from "../BD-Firebase/firebase.conf";
 import { useState } from "react";
 function MyApp({ Component, pageProps }) {
   const [userName, setUserName] = useState(null);
