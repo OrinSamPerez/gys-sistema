@@ -14,11 +14,9 @@ export default function Provedor() {
   const [data, setData] = useState([]);
   const [dataBuscar, setDataBuscar]= useState([])
   const [currentId, setCurrenId] = useState("");
-
-
 //Extraer datos
 const getData =()=>{
-  auth.onAuthStateChanged(async (user) => {
+  firebaseG.auth().onAuthStateChanged(async (user) => {
    if(user != null){
      db.collection(user.email).doc('Categoria').collection('Categoria').onSnapshot((querySnapshot)=>{
        const docs = [];
@@ -35,25 +33,22 @@ const getData =()=>{
    getData()
  },[])
 
-
   const addCategoria = async (objectCategoria) => {
     await addBD('Categoria', currentId,objectCategoria, "🙂 Categoria Agregada Sastifactoriamente!",'🙂 Categoria Actualizada Sastifactoriamente!', ' Error al Agregar o Actualizar una Categoria')
   };
-  
-  //Elimnar a base de datos
-const onDelete = (id, descripcionCategoria) =>{
-    const objetoEliminar ={id, descripcionCategoria}
-    borrarBD('Categoria',id, objetoEliminar, '🙂 Categoria Eliminada Sastifactoriamente!')
+  const onDelete = (id,descripcionCategoria) => {
+    const objetoEliminar ={id,descripcionCategoria}
+    borrarBD('Categoria',id, objetoEliminar, '🙂 Categoria Eliminado Sastifactoriamente!')
 }
-
   const buscar = (e)=>{
     const busqueda = busquedaCategoria(data, e.target.value)
     setDataBuscar(busqueda)
   }
-    
+  
   return (
     <>
       <BotonReporte title="Categoria" buscar={buscar} idTable={'#tCategoria'} form={<FormsCategoria {...{ addCategoria, currentId, data }} />}/>
+
 
         <div className="scroll">
           <table id="tCategoria">
@@ -76,7 +71,7 @@ const onDelete = (id, descripcionCategoria) =>{
                         variant="text"
                         color="secondary"
                       >
-                        <DeleteIcon />
+                        <DeleteIcon style={{color:'ff0000', backGround:'ff0000'}} />
                       </Button>
                     </li>
                   </td>
@@ -105,9 +100,9 @@ const onDelete = (id, descripcionCategoria) =>{
                       <Button
                         onClick={() => onDelete(datos.id, datos.descripcionCategoria)}
                         variant="text"
-                        color="secondary"
+                        color='ff0000'
                       >
-                        <DeleteIcon />
+                        <DeleteIcon style={{color:'ff0000', backGround:'ff0000'}} />
                       </Button>
                     </li>
                   </td>

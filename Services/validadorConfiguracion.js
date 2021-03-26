@@ -8,7 +8,7 @@ export function correoValidador(correo){
         else{return false}
     } else {
       return false
-    }
+    } 
 }
 
 export function contraseñaValidador(contraseña){

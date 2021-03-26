@@ -5,7 +5,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import {firebaseG} from '../firebase.BD/firebase.conf'
+import {firebaseG} from '../BD-Firebase/firebase.conf'
 import Paper from '@material-ui/core/Paper'
 import DescriptionIcon from '@material-ui/icons/Description';
 import Avatar from '@material-ui/core/Avatar'

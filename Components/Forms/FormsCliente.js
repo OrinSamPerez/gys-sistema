@@ -1,4 +1,4 @@
-import {firebaseG} from '../../firebase.BD/firebase.conf';
+import {firebaseG} from '../../BD-Firebase/firebase.conf';
 import {useState, useEffect} from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -44,7 +44,6 @@ export default function FormsClientes(props){
          }
       })
   }
-
   useEffect(()=>{
       if(props.currentId === ""){
           setValues({ ...valueInitial })
@@ -55,26 +54,26 @@ export default function FormsClientes(props){
   },[props.currentId])
     return(
         <>
-<div>
-    <form onSubmit={handleSubmit}>
-    {props.currentId === ""? (<h2>Registrar Cliente</h2> ) : (<h2>Actualizar Cliente</h2>)}
-     <div className="fcliente">
-     <div>
-      <label>Nombre:</label><input type="text" name="nombreCliente" onChange={handleInputChange} value={values.nombreCliente}/>
-      <label >Correo:</label><input   type="text" name="correoCliente" onChange={handleInputChange} value={values.correoCliente}/>
-      </div>
-      <div>
-      <label>Direccion:</label><input type="text" name="direccionCliente" onChange={handleInputChange} value={values.direccionCliente}/>
-      <label>Telefono:</label><input id="lcliente" type="text" name="telefonoCliente" onChange={handleInputChange} value={values.telefonoCliente}/>
-      </div>
-    </div>     
-      <Button onClick={handleSubmit} variant="text" color="default">
-         <Fab color="default" aria-label="">
-             {props.currentId === ""? (<><AddCircleOutlineIcon style={{fontSize:25}} color="secondary"/> {console.log('editar')} </>) : (<EditIcon color="primary" /> )}
-             </Fab>
-           </Button>
-    </form>
-</div>
-</>
+        <div>
+            <form onSubmit={handleSubmit}>
+                {props.currentId === ""? (<h2>Registrar Cliente</h2> ) : (<h2>Actualizar Cliente</h2>)}
+                <div className="fcliente">
+                    <div>
+                        <label>Nombre:</label><input type="text" name="nombreCliente" onChange={handleInputChange} value={values.nombreCliente}/>
+                        <label >Correo:</label><input   type="text" name="correoCliente" onChange={handleInputChange} value={values.correoCliente}/>
+                     </div>
+                    <div>
+                        <label>Direccion:</label><input type="text" name="direccionCliente" onChange={handleInputChange} value={values.direccionCliente}/>
+                        <label>Telefono:</label><input id="lcliente" type="text" name="telefonoCliente" onChange={handleInputChange} value={values.telefonoCliente}/>
+                    </div>
+                </div>     
+                <Button onClick={handleSubmit} variant="text" color="default">
+                <Fab color="default" aria-label="">
+                    {props.currentId === ""? (<><AddCircleOutlineIcon style={{fontSize:25}} color="secondary"/> {console.log('editar')} </>) : (<EditIcon color="primary" /> )}
+                    </Fab>
+                </Button>
+            </form>
+        </div>
+        </>
     )
 }

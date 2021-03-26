@@ -1,6 +1,6 @@
 import Button from "@material-ui/core/Button";
 import { useState, useEffect } from "react";
-import { firebaseG } from "../../firebase.BD/firebase.conf";
+import { firebaseG } from "../../BD-Firebase/firebase.conf";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import EditIcon from "@material-ui/icons/Edit";
 import Modal from "@material-ui/core/Modal";

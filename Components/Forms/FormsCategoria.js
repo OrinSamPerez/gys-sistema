@@ -50,10 +50,10 @@ export default function FormsCategoria(props){
                 <label >Descripcion </label> <input className="input " type="text" required value={values.descripcionCategoria} onChange={handleInputChange} placeholder="Descripcion de la Categoria" name="descripcionCategoria"/>
             </div>
             <Button onClick={handleSubmit} variant="text" color="default">
-                <Fab color="default" aria-label="">
-                    {props.currentId === ""? (<><AddCircleOutlineIcon style={{fontSize:25}} color="secondary"/></>) : (<EditIcon color="primary" /> )}
+            <Fab color="default" style={{width:'35px', height:'6px'}}>
+                {props.currentId === ""? (<><AddCircleOutlineIcon style={{fontSize:25, color:'green'}} /> {console.log('editar')} </>) : (<EditIcon style={{fontSize:25}} color="primary" /> )}
                 </Fab>
-           </Button>
+            </Button>
         </form> 
      </div>
     )

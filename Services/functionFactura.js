@@ -1,4 +1,4 @@
-import {firebaseG }from '../firebase.BD/firebase.conf';
+import {firebaseG }from '../BD-Firebase/firebase.conf';
 const db = firebaseG.firestore();
 const Itbis = 18
 export function agregarProductoFactura(cantidadIn,cantidadMax, valuesProductos){

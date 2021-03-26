@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button'
 import {useState, useEffect} from 'react';
-import {firebaseG} from '../../firebase.BD/firebase.conf'
+import {firebaseG} from '../../BD-Firebase/firebase.conf'
 import SendIcon from '@material-ui/icons/Send';
 import Link from 'next/head'
 import {agregarProductoFactura} from '../../Services/functionFactura'
@@ -332,22 +332,19 @@ const clienteClick = (dato)=>{
        <>
      
     <form onSubmit={handleSubmit}>
-    <h2 className=" nver"><DescriptionIcon className="imgfact"/> FACTURA</h2>
-    <div id="idPfactura" className="colum colum-factura">
-    
-    <div className="ld">
-    <h3 >Desde</h3>
-    <br></br>
-    <label className="ld1">Empresa: </label> <input className="sinborde salto" value={datosEmpresa.nameEmpresa} disabled/>
-    <label >Direccion: </label><input className="sinborde"  value={datosEmpresa.direccionEmpresa} disabled/> <br></br>
-    <label className="in1">RNC: </label><input  className="sinborde" value={datosEmpresa.rncEmpresa} disabled/><br></br>
-    <label className="in2">Correo: </label><input className="sinborde salto2" value={datosEmpresa.emailEmpresa} disabled/>
-    <label className="in3">Telefono: </label><input className="sinborde" value={datosEmpresa.numberEmpresa} disabled/><br></br>
-    <label className="in1">NCF: </label><input className="sinborde" value={datosEmpresa.ncfEmpresa} disabled/>
-    
-  
-    </div>
-    <div >
+         <h2 className=" nver"><DescriptionIcon className="imgfact"/> FACTURA</h2>
+        <div id="idPfactura" className="colum colum-factura">
+             <div className="ld">
+                <h3 >Desde</h3>
+                <br></br>
+                <label className="ld1">Empresa: </label> <input className="sinborde salto" value={datosEmpresa.nameEmpresa} disabled/>
+                <label >Direccion: </label><input className="sinborde"  value={datosEmpresa.direccionEmpresa} disabled/> <br></br>
+                <label className="in1">RNC: </label><input  className="sinborde" value={datosEmpresa.rncEmpresa} disabled/><br></br>
+                <label className="in2">Correo: </label><input className="sinborde salto2" value={datosEmpresa.emailEmpresa} disabled/>
+                <label className="in3">Telefono: </label><input className="sinborde" value={datosEmpresa.numberEmpresa} disabled/><br></br>
+                <label className="in1">NCF: </label><input className="sinborde" value={datosEmpresa.ncfEmpresa} disabled/>
+            </div>
+        <div >
     <h3 className="ld">Cliente</h3>
     <label className="labelClientes nmostrar">Buscar cliente</label>
     <input className="inputde labelClientes nmostrar" type="text"onChange={buscarCliente}  placeholder="Buscar cliente aqui..." name="nombreClienteFactura"/>    

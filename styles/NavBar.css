@@ -1,14 +1,18 @@
 .nav-main{
     text-align: left;
-    width: 285px;
+    width: 240px;
+    background: #2B2B2B;
+    margin: 0;
+    
 }
 .nav-main li {
     list-style: none;
-    padding: 8px;
+    padding: 8.05px;
     border-radius: 10px;
     font-size: 20px;
     cursor: pointer;
     margin-bottom:8px;
+    color: #F6F6F6;
 }
 .imagenes{
     width: 25px;
@@ -24,12 +28,12 @@
     border-radius: 50%;
 }
 .nav-main li:hover{
-    color:#ff3eaf;
+    color:#FFB400;
     font-size: 23px;
    
 }
 .nav-main li:focus{
-    color:#ff3eaf;
+    color:#FFB400;
     font-size: 23px;
    
 }
@@ -40,11 +44,12 @@
 .nav-main h1{
     text-align: center;
     font-size: 50px;
-    color:#00c7b6;
+    color:#FFB400;
 }
 .Logo {
     display: flex;
     margin: auto;
+   
 
 }
 .Logo img{
@@ -55,13 +60,15 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    position: absolute;
+    position: fixed;
     top:0%;
     width: 100%;
     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.452);
     height: 65px;
-
+    background:  #2B2B2B;
+    color:#F6F6F6;
 }
+
 .info-nav{
     margin-left: auto;
     margin-bottom:auto ;

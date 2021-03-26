@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import FormsFacturacion from '../Components/Forms/FormsFacturacion'
-import {firebaseG} from '../firebase.BD/firebase.conf'
+import {firebaseG} from '../BD-Firebase/firebase.conf'
 import DeleteIcon from '@material-ui/icons/Delete';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

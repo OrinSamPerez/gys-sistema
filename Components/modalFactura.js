@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {firebaseG} from '../firebase.BD/firebase.conf'
+import {firebaseG} from '../BD-Firebase/firebase.conf'
 import DescriptionIcon from '@material-ui/icons/Description';
 const db =  firebaseG.firestore();
 const auth =  firebaseG.auth();                                                                                                                                                                                                                                                         
