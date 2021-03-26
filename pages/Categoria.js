@@ -156,39 +156,46 @@ export default function Provedor() {
   
   
   const onDelete = (id, descripcionCategoria) => {
-    if (window.confirm("¿Seguro que deseas eliminar?")) {
-      firebaseG.auth().onAuthStateChanged(async (user) => {
-       if(user != null){
-        await db
-        .collection(user.email)
-        .doc("Categoria-Inactivos")
-        .collection("Categoria-Inactivos")
-        .doc(id)
-        .set({id, descripcionCategoria});
-      await db
-        .collection(user.email)
-        .doc("Categoria")
-        .collection("Categoria")
-        .doc(id)
-        .delete();
-      toast.success("🙂 Categoria Eliminada Sastifactoriamente!", {
-        position: "top-right",
-        autoClose: 10000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true, 
-        progress: undefined,
-      });
-       }
-      });
-    }
-  };
+    swal('¿Seguro, que deseas eliminar esta categoria?',{
+      buttons:['No','Si']
+  }).then(result =>{
+      if(result === true){
+        firebaseG.auth().onAuthStateChanged(async (user) => {
+          if(user != null){
+           await db
+           .collection(user.email)
+           .doc("Categoria-Inactivos")
+           .collection("Categoria-Inactivos")
+           .doc(id)
+           .set({id, descripcionCategoria});
+         await db
+           .collection(user.email)
+           .doc("Categoria")
+           .collection("Categoria")
+           .doc(id)
+           .delete();
+         toast.success("🙂 Categoria Eliminada Sastifactoriamente!", {
+           position: "top-right",
+           autoClose: 10000,
+           hideProgressBar: false,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true, 
+           progress: undefined,
+         });
+          }
+         });
+       
+     };
+      
+  })
+}
+     
   const buscar = (e)=>{
     const busqueda = busquedaCategoria(data, e.target.value)
     setDataBuscar(busqueda)
   }
-    
+  
   return (
     <>
       <ToastContainer />
@@ -215,10 +222,10 @@ export default function Provedor() {
               aria-controls="customized-menu"
               aria-haspopup="true"
               variant="contained"
-              color="secondary"
               onClick={handleClick}
+              backGround="#FFB400"
             >
-              <GetAppIcon />
+              <GetAppIcon style={{color:'#2B2B2B'}} />
               Reportes
             </Button>
             <StyledMenu
@@ -228,16 +235,6 @@ export default function Provedor() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <StyledMenuItem>
-                <ListItemIcon>
-                <Button>
-                <SendIcon fontSize="small" />
-                
-                </Button>
-                  
-                </ListItemIcon>
-                <ListItemText primary="Enviar al correo" />
-              </StyledMenuItem>
               <StyledMenuItem>
                 <ListItemIcon>
                 <Button onClick={()=>reporte('#tCategoria','Categoria')}>
@@ -293,7 +290,7 @@ export default function Provedor() {
                         variant="text"
                         color="secondary"
                       >
-                        <DeleteIcon />
+                        <DeleteIcon style={{color:'ff0000', backGround:'ff0000'}} />
                       </Button>
                     </li>
                   </td>
@@ -322,9 +319,9 @@ export default function Provedor() {
                       <Button
                         onClick={() => onDelete(datos.id, datos.descripcionCategoria)}
                         variant="text"
-                        color="secondary"
+                        color='ff0000'
                       >
-                        <DeleteIcon />
+                        <DeleteIcon style={{color:'ff0000', backGround:'ff0000'}} />
                       </Button>
                     </li>
                   </td>

@@ -14,6 +14,7 @@ import NotesIcon from '@material-ui/icons/Notes';
 export default function NavBar({children, userInfo}) {
   return (
     <>
+    
     <AppBarNav user={userInfo} />
     <Drawer  variant="permanent" anchor="left" color="primary">
       <ul className="nav-main">
@@ -25,16 +26,9 @@ export default function NavBar({children, userInfo}) {
         <li>
         <Link href="/">
             <div className="imagenes"><HomeIcon/>  <a>Casa</a></div>
-           
+            
           </Link>
         </li>
-        <li>
-        
-          <Link href="/Factura">
-            <div className="imagenes"><DescriptionIcon/>  <a>Facturacion</a></div>
-          </Link>
-        </li>
-        
         <li>
        
         <Link href="/Categoria">
@@ -42,7 +36,11 @@ export default function NavBar({children, userInfo}) {
         </Link>
 
         </li>
-
+        <li>
+          <Link href="/Provedor">
+            <div className="imagenes"><LocalShippingIcon/>  <a>Proveedores</a></div>    
+          </Link>
+        </li>
         <li>
        
        <Link href="/Producto">
@@ -51,6 +49,17 @@ export default function NavBar({children, userInfo}) {
 
        </li>
        <li>
+          <Link href="/Cliente">
+            <div className="imagenes"><SupervisorAccountIcon/>  <a>Clientes</a></div>
+          </Link>
+        </li>
+        <li>
+        
+          <Link href="/Factura">
+            <div className="imagenes"><DescriptionIcon/>  <a>Facturacion</a></div>
+          </Link>
+        </li>
+        <li>
        
        <Link href="/InformacionFacturas">
          <div className="imagenes"><NotesIcon />  <a>Facturas</a></div>
@@ -58,25 +67,19 @@ export default function NavBar({children, userInfo}) {
 
        </li>
         <li>
-          <Link href="/Cliente">
-            <div className="imagenes"><SupervisorAccountIcon/>  <a>Clientes</a></div>
+          <Link href="/Stock">
+            <div className="imagenes"><ImportContactsIcon/>  <a>Stock</a></div>
           </Link>
         </li>
-        <li>
-          <Link href="/Provedor">
-            <div className="imagenes"><LocalShippingIcon/>  <a>Proveedores</a></div>    
-          </Link>
-        </li>
+        
+
+       
         <li>
           <Link href="/Informes">
             <div className="imagenes"><ShowChartIcon />  <a>Informes</a></div>
           </Link>
         </li>
-        <li>
-          <Link href="/Stock">
-            <div className="imagenes"><ImportContactsIcon/>  <a>Stock</a></div>
-          </Link>
-        </li>
+      
         <li>
           <Link href="/Configuracion">
             <div className="imagenes"><SettingsIcon/>  <a>Configuracion</a></div>
@@ -87,6 +90,7 @@ export default function NavBar({children, userInfo}) {
       <main className="contaniner-principal">
         {children}
       </main>
+      
     </>
   );
 }
