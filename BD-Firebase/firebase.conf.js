@@ -17,23 +17,24 @@ if (!firebase.apps.length) {
 const db = firebase.firestore();
 export const  loginWithEmail = async (email, password, values) => {
   await firebase.auth().createUserWithEmailAndPassword(email, password);
-
-  if(values.imageLogo != null){
-    if(values.imageEmpresa != null){
-      const ref =  firebase.storage().ref(`/ImagesLogos/${values.imageLogo.name}`);
-      ref.put(values.imageLogo).then(data=>{
+  values.contraseñaEmpresa = 'vufyutvibugithdx7r76r7' 
+  values.confContraseña ='igu ytextsjtnybjvthcrscvdbfn'
+  if(values.imagenLogo != null){
+    if(values.imagenEmpresa != null){
+      const ref =  firebase.storage().ref(`/ImagesLogos/${values.imagenLogo.name}`);
+      ref.put(values.imagenLogo).then(data=>{
         data.ref.getDownloadURL().then(async (imgUrl)=>{
-          values.imageLogo = imgUrl;
-          const refEmpresa =firebase.storage().ref(`/ImagesEmpresa/${values.imageEmpresa.name}`)
-          refEmpresa.put(values.imageEmpresa).then(async dataEmpresa =>{
+          values.imagenLogo = imgUrl;
+          const refEmpresa =firebase.storage().ref(`/ImagesEmpresa/${values.imagenEmpresa.name}`)
+          refEmpresa.put(values.imagenEmpresa).then(async dataEmpresa =>{
             dataEmpresa.ref.getDownloadURL().then(async (urlEmpresa)=>{
-              values.imageEmpresa = urlEmpresa
+              values.imagenEmpresa = urlEmpresa
               await  db.collection(email).doc("datosUsuario").set(values);
-              const max = (values.numberEmpresa.length - 4)
-              const number = values.numberEmpresa.substr(max, values.numberEmpresa.length)
-              const empresaLink = values.nameEmpresa.replace(/\s+/g, '');
+              const max = (values.numeroEmpresa.length - 4)
+              const number = values.numeroEmpresa.substr(max, values.numeroEmpresa.length)
+              const empresaLink = values.nombreEmpresa.replace(/\s+/g, '');
               const direccion = values.direccionEmpresa.replace(/\s+/g, '');
-              await db.collection('Empresas').doc(`${empresaLink}-${direccion}-${number}`).set(values)
+              await db.collection('Empresas').doc(`${empresaLink}-${direccion}-${number}`).set(values.correoEmpresa)
             })
           })
       
@@ -41,16 +42,16 @@ export const  loginWithEmail = async (email, password, values) => {
       })
     }
     else{
-      const ref =  firebase.storage().ref(`/ImagesLogos/${values.imageLogo.name}`);
-      ref.put(values.imageLogo).then(data=>{
+      const ref =  firebase.storage().ref(`/ImagesLogos/${values.imagenLogo.name}`);
+      ref.put(values.imagenLogo).then(data=>{
         data.ref.getDownloadURL().then(async (imgUrl)=>{
-          values.imageLogo = imgUrl;
+          values.imagenLogo = imgUrl;
           await db.collection(email).doc("datosUsuario").set(values);
-          const max = (values.numberEmpresa.length - 4)
-          const number = values.numberEmpresa.substr(max, values.numberEmpresa.length)
-          const empresaLink = values.nameEmpresa.replace(/\s+/g, '');
+          const max = (values.numeroEmpresa.length - 4)
+          const number = values.numeroEmpresa.substr(max, values.numeroEmpresa.length)
+          const empresaLink = values.nombreEmpresa.replace(/\s+/g, '');
           const direccion = values.direccionEmpresa.replace(/\s+/g, '');
-          await db.collection('Empresas').doc(`${empresaLink}-${direccion}-${number}`).set(values)
+          await db.collection('Empresas').doc(`${empresaLink}-${direccion}-${number}`).set(values.correoEmpresa)
 
 
       
@@ -58,28 +59,29 @@ export const  loginWithEmail = async (email, password, values) => {
       })
     }
   }
-  else if(values.imageEmpresa != null){
-    const refEmpresa =firebase.storage().ref(`/ImagesEmpresa/${values.imageEmpresa.name}`)
-          refEmpresa.put(values.imageEmpresa).then(async dataEmpresa =>{
+  else if(values.imagenEmpresa != null){
+    const refEmpresa =firebase.storage().ref(`/ImagesEmpresa/${values.imagenEmpresa.name}`)
+          refEmpresa.put(values.imagenEmpresa).then(async dataEmpresa =>{
             dataEmpresa.ref.getDownloadURL().then(async (urlEmpresa)=>{
-              values.imageEmpresa = urlEmpresa
+              values.imagenEmpresa = urlEmpresa
               await db.collection(email).doc("datosUsuario").set(values);
-              const max = (values.numberEmpresa.length - 4)
-              const number = values.numberEmpresa.substr(max, values.numberEmpresa.length)
-              const empresaLink = values.nameEmpresa.replace(/\s+/g, '');
+              const max = (values.numeroEmpresa.length - 4)
+              const number = values.numeroEmpresa.substr(max, values.numeroEmpresa.length)
+              const empresaLink = values.nombreEmpresa.replace(/\s+/g, '');
               const direccion = values.direccionEmpresa.replace(/\s+/g, '');
-              await db.collection('Empresas').doc(`${empresaLink}-${direccion}-${number}`).set(values)
+              await db.collection('Empresas').doc(`${empresaLink}-${direccion}-${number}`).set(values.correoEmpresa)
 
             })
           })
   }
+  
   else{
     db.collection(email).doc("datosUsuario").set(values);
-    const max = (values.numberEmpresa.length - 4)
-    const number = values.numberEmpresa.substr(max, values.numberEmpresa.length)
-    const empresaLink = values.nameEmpresa.replace(/\s+/g, '');
+    const max = (values.numeroEmpresa.length - 4)
+    const number = values.numeroEmpresa.substr(max, values.numeroEmpresa.length)
+    const empresaLink = values.nombreEmpresa.replace(/\s+/g, '');
     const direccion = values.direccionEmpresa.replace(/\s+/g, '');
-    db.collection('Empresas').doc(`${empresaLink}-${direccion}-${number}`).set(values)
+    db.collection('Empresas').doc(`${empresaLink}-${direccion}-${number}`).set(values.correoEmpresa)
 
   }
 
