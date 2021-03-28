@@ -1,5 +1,7 @@
+import {useState} from 'react'
 import Drawer from "@material-ui/core/Drawer";
 import Link from "next/link";
+import {firebaseG} from '../BD-Firebase/firebase.conf'
 import AppBarNav from './AppBarNav';
 import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -11,7 +13,22 @@ import ShowChartIcon from '@material-ui/icons/ShowChart';
 import SettingsIcon from '@material-ui/icons/Settings';
 import CategoryIcon from '@material-ui/icons/Category';
 import NotesIcon from '@material-ui/icons/Notes';
+import Modal from '@material-ui/core/Modal';
+import EmpresaConf from './EmpresaConf'
+const db = firebaseG.firestore()
+const auth = firebaseG.auth()
 export default function NavBar({children, userInfo}) {
+  const [open, setOpen] = useState(false)
+auth.onAuthStateChanged(async user =>{
+  if(user != null){
+   await db.collection(user.email).doc('datosUsuario').get().then(doc =>{
+     if(doc.exists){
+       doc.data().estado === false?setOpen(true)
+       :setOpen(false)
+     }
+   })
+  }
+})
   return (
     <>
     
@@ -90,7 +107,13 @@ export default function NavBar({children, userInfo}) {
       <main className="contaniner-principal">
         {children}
       </main>
-      
+      <Modal
+        open={open}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+          <EmpresaConf/>
+      </Modal>
     </>
   );
 }
