@@ -8,10 +8,10 @@ import "react-toastify/dist/ReactToastify.css";
 import React from "react";
 import {busquedaProducto, busquedaId, busquedaFecha} from '../Services/busqueda'
 import BotonReporte from '../Components/BotonReporte'
-import {addBD, borrarBD} from '../BD-Firebase/CRUD'
+import {addBDStock, borrarBD, addBDProducto} from '../BD-Firebase/CRUD'
 
 const db =  firebaseG.firestore();
-
+const fecha = new Date
 export default function Provedor() {
   const [ data, setData ] = useState([ ])
   const [datosBuscar,setDatosBuscar] = useState([])
@@ -37,12 +37,14 @@ export default function Provedor() {
   },[])
 
   const addProducto = async  (objectoProducto)=>{ 
-    addBD('Producto', currentId,objectoProducto, "🙂 Producto Agregado Sastifactoriamente!",'🙂 Producto Agregado Sastifactoriamente!', ' Error al Agregar o Actualizar un Producto')
+    addBDProducto('Producto', currentId,objectoProducto, "🙂 Producto Agregado Sastifactoriamente!",'🙂 Producto Agregado Sastifactoriamente!', ' Error al Agregar o Actualizar un Producto')
+    addBDStock('Stock', currentId,objectoProducto)
 
     }
   const onDelete = (id,nombreProducto, cantidadProducto , precioVentaProducto, precioCompraProducto,descuentoProducto, proveedorProducto, categoriaProducto, fechaProducto) => {
     const objetoEliminar ={id,nombreProducto, cantidadProducto , precioVentaProducto, precioCompraProducto,descuentoProducto, proveedorProducto, categoriaProducto, fechaProducto}
     borrarBD('Producto',id, objetoEliminar, '🙂 Producto Eliminado Sastifactoriamente!')
+    borrarBD('Stock',id, objetoEliminar)
   }
 
 const buscar = (e)=>{

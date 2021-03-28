@@ -49,3 +49,45 @@ export const addBD = (nombreBD, currentId,objeto, mensajeAdd, mensajeActualizar,
     });
   };
   
+//producto 
+  export const addBDProducto = (nombreBD, currentId,objeto, mensajeAdd, mensajeActualizar, mensajeError) => {
+    auth.onAuthStateChanged(async user =>{
+        if(user != null){
+          try{
+            if(currentId === ""){
+                await db.collection(user.email).doc(nombreBD).collection(nombreBD).doc(objeto.id_Producto).set(objeto)
+                alertaSactifactoria(mensajeAdd)
+            }
+            else{
+                await db.collection(user.email).doc(nombreBD).collection(nombreBD).doc(currentId).update(objeto)
+                alertaSactifactoria(mensajeActualizar)
+            }
+          }
+          catch (error){  alertaError(mensajeError)}
+        }
+    })
+  };
+
+  export const addBDStock = (nombreBD, currentId,objeto, mensajeAdd, mensajeActualizar, mensajeError) => {
+    auth.onAuthStateChanged(async user =>{
+        if(user != null){
+          try{
+            if(currentId === ""){
+                await db.collection(user.email).doc(nombreBD).collection(nombreBD).doc(objeto.id_Producto).set({
+                  Descripcion:objeto.nombreProducto,
+                  ExistenciaInciales:objeto.cantidadProducto,
+                  Entrada:objeto.cantidadProducto,
+                  Salida_Inicial:0,
+                  Stock:objeto.cantidadProducto,
+                })
+                alertaSactifactoria(mensajeAdd)
+            }
+            // else{
+            //     await db.collection(user.email).doc(nombreBD).collection(nombreBD).doc(currentId).update(objeto)
+            //     alertaSactifactoria(mensajeActualizar)
+            // }
+          }
+          catch (error){  alertaError(mensajeError)}
+        }
+    })
+  };

@@ -19,6 +19,9 @@ a {
 h6{
   text-align: center;
 }
+.buttons-aceptar{
+  margin-left: 200px;
+}
 .contaniner-principal{
   margin-left: auto;
 }

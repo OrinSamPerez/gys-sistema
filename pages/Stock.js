@@ -5,11 +5,11 @@ import BotonReporte from '../Components/BotonReporte'
 const db = firebaseG.firestore()
 const auth = firebaseG.auth()
 export default function Stock(){
-const [datosStock, setDatosStock] = useState([])
+    const [datosStock, setDatosStock] = useState([])
 const [datosBuscar, setDatosBuscar] = useState([])
   auth.onAuthStateChanged(user =>{
     if(user != null){
-        db.collection(user.email).doc('Stock').collection('Stock').orderBy('id', 'asc').onSnapshot(docus =>{
+        db.collection(user.email).doc('Stock').collection('Stock').onSnapshot(docus =>{
             const docs = []
             docus.forEach(doc =>{
                 docs.push({...doc.data(),id:doc.id})
