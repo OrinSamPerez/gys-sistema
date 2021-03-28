@@ -19,7 +19,7 @@ export default function ModalFactura(props){
             }
         })
     }
-
+ 
 
     return(
         

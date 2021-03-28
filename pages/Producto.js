@@ -71,7 +71,7 @@ const buscar = (e)=>{
   return (
     <>
     <BotonReporte title="Productos" buscar={buscar} idTable={'#tProducto'} form={ <FormsProducto {...{addProducto, currentId,data}}/>}/>
-    <div >
+    <div className="scroll" >
         <table id="tProducto">
         <thead>
           <tr>
@@ -103,8 +103,8 @@ const buscar = (e)=>{
               <td>{datos.fechaProducto}</td>
               <td>
                 <li>
-                  <Button onClick={() => onDelete(datos.id, datos.nombreProducto, datos.cantidadProducto , datos.precioVentaProducto, datos.precioCompraProducto,datos.descuentoProducto, datos.proveedorProducto, datos.categoriaProducto, datos.fechaProducto  )} variant="text" color="secondary">
-                    <DeleteIcon />
+                  <Button onClick={() => onDelete(datos.id, datos.nombreProducto, datos.cantidadProducto , datos.precioVentaProducto, datos.precioCompraProducto,datos.descuentoProducto, datos.proveedorProducto, datos.categoriaProducto, datos.fechaProducto  )} variant="text" color="ff0000">
+                  <DeleteIcon style={{color:'ff0000', backGround:'ff0000'}} />
                   </Button>
                 </li>
                 </td>

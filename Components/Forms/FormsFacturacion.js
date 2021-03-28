@@ -183,7 +183,7 @@ export default function FormsFacturacion(props){
         return true;
         
     }
-    
+     
     const handleSubmit = (e)=>{
         e.preventDefault()
         if(values.nombreClienteFactura != ""){
@@ -333,8 +333,8 @@ const clienteClick = (dato)=>{
      
     <form onSubmit={handleSubmit}>
          <h2 className=" nver"><DescriptionIcon className="imgfact"/> FACTURA</h2>
-        <div id="idPfactura" className="colum colum-factura">
-             <div className="ld">
+        <div id="idPfactura " className="colum colum-factura ">
+             <div className="ld nver">
                 <h3 >Desde</h3>
                 <br></br>
                 <label className="ld1">Empresa: </label> <input className="sinborde salto" value={datosEmpresa.nameEmpresa} disabled/>
@@ -374,38 +374,37 @@ const clienteClick = (dato)=>{
     </div>
   
   
-   </div>
-    
-   <hr></hr>
-    <div  className="colum colum-factura">
-    <div className="ld">
-    <label className="nfactura" >No. Factura:</label>
-    <input id="nfac1 " className="sinborde " placeholder="Numero de factura" value={`AC${fechaA.getFullYear()}${fechaA.getDay()}${fechaA.getMonth()+1}${fechaA.getHours()}${fechaA.getMinutes()}${fechaA.getSeconds()}`} disabled/><br></br>
-    <label className="f1" >Fecha:</label> 
-    <input id="fecha1 " className="sinborde" value={`${fecha}  ${hora}`}/> <br></br>
-    <label className="sel1" >Forma de pago:</label>
-    <select className="selectle sinborde" id="tipoPagoFactura"  onChange={handleInputChange} name="tipoPagoFactura"> {metodoPago.map(pago => 
+
+   
+   
+   
+    <div className="lado-factura" >
+    <label  >No. Factura:</label>
+    <input  className="sinborde nfactura" placeholder="Numero de factura" value={`AC${fechaA.getFullYear()}${fechaA.getDay()}${fechaA.getMonth()+1}${fechaA.getHours()}${fechaA.getMinutes()}${fechaA.getSeconds()}`} disabled/><br></br>
+    <label >Fecha:</label> 
+    <input className="sinborde inputF" value={`${fecha}  ${hora}`}/> <br></br>
+    <label >Forma de pago:</label>
+    <select className=" sinborde" id="tipoPagoFactura"  onChange={handleInputChange} name="tipoPagoFactura"> {metodoPago.map(pago => 
                <option value={pago}>{pago}</option>
            )}
            </select>
-    </div>
-    <div className="ld ">
-    <label className="lado9">Plazo de Pago:</label>
-    <select className="selectles sinborde salto3" id="plazoPagoFactura" onChange={handleInputChange} name="plazoPagoFactura" >
+   
+    <label >Plazo de Pago:</label>
+    <select className=" sinborde salto3" id="plazoPagoFactura" onChange={handleInputChange} name="plazoPagoFactura" >
                <option value="10 dias">10 dias</option>
                <option value="15 dias">15 dias</option>
                <option value="25 dias">25 dias</option>
            </select>
-    <label className="lado7">Vencimiento:</label>
-    <input id="inputve " className="sinborde salto4" type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/>
-    <label className="lado10">Estado de Pago:</label>
-    <select className="selectles sinborde " id="estadoPago" onChange={handleInputChange} name="estadoPago" >
+    <label >Vencimiento:</label>
+    <input  className="sinborde salto4 ladoi" type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/>
+    <label >Estado de Pago:</label>
+    <select className=" sinborde " id="estadoPago" onChange={handleInputChange} name="estadoPago" >
                <option value="Pagada">Pagada</option>
                <option value="A plazo">No pagada</option>
            </select>
      </div>
-    </div>
-        
+
+     </div> 
            
     
     </form>
@@ -438,12 +437,12 @@ const clienteClick = (dato)=>{
                     
                     </div>
                     <div><Button onClick={addProducto} variant="text" color="default" title="Agregar Producto">
-              <Fab > <AddCircleOutlineIcon style={{fontSize:20}} color="secondary"/> </Fab> 
+              <Fab > <AddCircleOutlineIcon style={{fontSize:20, color:'008000'}} /> </Fab> 
             </Button>   
             </div>
             <div> 
           <Button onClick={handleSubmit} variant="text" color="default" title="Crear Factura">
-            <Fab> <NoteAddIcon style={{fontSize:20}} color="secondary"/></Fab>
+            <Fab> <NoteAddIcon style={{fontSize:20}} color="primary"/></Fab>
            </Button></div>
            
                     </div>

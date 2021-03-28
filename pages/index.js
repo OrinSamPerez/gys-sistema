@@ -13,7 +13,7 @@ const ventas=[10,20,30,40,50,60,70,50,42,95,78,100]
         datasets:[{
             label:'Ventas Mensuales (Ganancias)',
             backgroundColor:'rgba(0,0,0,0.1)',
-            borderColor:'aqua',
+            borderColor:'#FFB400',
             borderWidth:2,
             hoverborderColor:'#ffffff',
             data:ventas,

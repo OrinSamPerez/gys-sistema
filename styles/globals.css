@@ -7,7 +7,12 @@ body {
     background: #F6F6F6;
     
 }
-
+#btn-reportes{
+  background: #FFB400;
+  color: white;
+  font-family: Arial;
+  font-size: 16px;
+}
 a {
   color: inherit;
   text-decoration: none;
@@ -43,9 +48,16 @@ button{
   padding-left: 25px;
   cursor:pointer;
 }
-
+#btn-borrar{
+  background:#ff0000;
+  color:#ff0000;
+}
 .img-excel{
  margin-left: 25px;
+}
+.test-table-xls-button{
+  background: '#2B2B2B7E';
+  color:'#F6F6F6';
 }
 .table{
   justify-content: center;
@@ -93,7 +105,8 @@ button{
   width: 155px;
   padding-top: 35px;
   height: 155px;
-  color:#ff3eaf;
+  color:#FFB400;
+  cursor: pointer;
 }
 .setting-text{
   text-align: center;
@@ -127,6 +140,14 @@ button{
 }
 .centro{
   text-align: center;
+}
+#btn-delete{
+  background: red;
+  color: #F6F6F6;
+}
+#btn-add{
+background: green;
+color: #F6F6F6;
 }
 .imagenEmpresa-div{
   cursor: pointer;

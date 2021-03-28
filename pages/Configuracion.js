@@ -154,7 +154,7 @@ export default function Configuracion(){
     const administrador = (
         <>
         <ToastContainer />
-         <PersonIcon style={{fontSize:50, color:'#ff3eaf'}} />
+         <PersonIcon style={{fontSize:50, color:'#FFB400'}} />
          <h1>Configuracion Administrador</h1>
         <div className="settingsAdmin">
             <div className="center-settings">
@@ -187,11 +187,11 @@ export default function Configuracion(){
             </div>    
         </div>
         <div>
-        <Button onClick={()=>setOpen(false)} variant="contained" color="secondary">
+        <Button onClick={()=>setOpen(false)} variant="contained"  id="btn-delete">
               Cancelar
             </Button>    
             &nbsp; &nbsp; &nbsp; 
-            <Button onClick={updateSettings} variant="contained" color="primary">
+            <Button onClick={updateSettings} variant="contained" id="btn-add">
               Guardar 
             </Button>
         </div>
@@ -200,7 +200,7 @@ export default function Configuracion(){
 
     const imagenesEmpresa = (
         <>
-        <ImageIcon style={{fontSize:50, color:'#ff3eaf'}} />
+        <ImageIcon style={{fontSize:50, color:'#FFB400'}} />
          <h1>Configuracion de Imagenes</h1>
         <div className="settingsAdmin">
             <div>
@@ -238,11 +238,11 @@ export default function Configuracion(){
             </div>
 
             <div>
-        <Button onClick={()=>setOpen(false)} variant="contained" color="secondary">
+        <Button onClick={()=>setOpen(false)} variant="contained"  id="btn-delete">
               Cancelar
             </Button>    
             &nbsp; &nbsp; &nbsp; 
-            <Button onClick={updateSettings} variant="contained" color="primary">
+            <Button onClick={updateSettings} variant="contained" id="btn-add">
               Guardar 
             </Button>
         </div>
@@ -252,7 +252,7 @@ export default function Configuracion(){
     )
     const contraseñas = (
         <>
-            <LockIcon style={{fontSize:50, color:'#ff3eaf'}} />
+            <LockIcon style={{fontSize:50, color:'#FFB400'}} />
          <h1>Configuracion de Contraseña</h1>
         <div className="settingsAdmin">
             <div>
@@ -274,11 +274,11 @@ export default function Configuracion(){
             <br></br> {' '}
                 <br></br> {' '}
             <div>
-                <Button onClick={()=>setOpen(false)} variant="contained" color="secondary">
+                <Button onClick={()=>setOpen(false)} variant="contained" id="btn-delete">
                         Cancelar
                     </Button>    
                     &nbsp; &nbsp; &nbsp; 
-                     <Button onClick={updateSettings}  variant="contained" color="primary">
+                     <Button onClick={updateSettings}  variant="contained" id="btn-add">
                         Guardar 
                     </Button>
                 </div>
@@ -290,7 +290,7 @@ export default function Configuracion(){
     )
     const Empresa = (
         <>
-        <BusinessCenterIcon style={{fontSize:50,color:'#ff3eaf'}} />
+        <BusinessCenterIcon style={{fontSize:50,color:'#FFB400'}} />
          <h1>Configuracion de la Empresa</h1>
         <div className="settingsAdmin">
             <div className="center-settings">
@@ -339,11 +339,11 @@ export default function Configuracion(){
                 </div>
             </div>    
             <div>
-                <Button onClick={()=>setOpen(false)} variant="contained" color="secondary">
+                <Button onClick={()=>setOpen(false)} variant="contained" id="btn-delete">
                     Cancelar
                     </Button>    
                     &nbsp; &nbsp; &nbsp; 
-                    <Button onClick={updateSettings} variant="contained" color="primary">
+                    <Button onClick={updateSettings} variant="contained" id="btn-add">
                     Guardar 
                     </Button>
                 </div>
@@ -380,7 +380,7 @@ export default function Configuracion(){
                     <br></br>
                     <span>Administrador</span>
                 </div>
-
+ 
                 <div onClick={openEmpresa}> 
                     <BusinessCenterIcon style={{fontSize:50}} />
                     <br></br>

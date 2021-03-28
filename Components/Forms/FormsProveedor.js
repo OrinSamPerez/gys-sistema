@@ -75,8 +75,8 @@ export default function FormsProveedor(props){
          <label>Cargo</label> <input type="text" required value={values.cargoProveedor} onChange={handleInputChange} placeholder="Cargo del representante" name="cargoProveedor"/>
          </div>
          <Button onClick={handleSubmit} variant="text" color="default">
-         <Fab color="default" aria-label="">
-             {props.currentId === ""? (<><AddCircleOutlineIcon style={{fontSize:25}} color="secondary"/> {console.log('editar')} </>) : (<EditIcon color="primary" /> )}
+         <Fab aria-label="" color="default" style={{width:'35px', height:'6px'}}>
+             {props.currentId === ""? (<><AddCircleOutlineIcon style={{fontSize:25, color:'green'}} /> {console.log('editar')} </>) : (<EditIcon style={{fontSize:25}} color="primary" /> )}
              </Fab>
            </Button>
          

@@ -79,8 +79,8 @@ const buscar = (e)=>{
                   <td>{datos.cargoProveedor}</td>
                   <td>
                   <td> <li>
-                      <Button onClick={() => onDelete(datos.id, datos.nombreProveedor, datos.direccionProveedor,datos.correoProveedor, datos.telefonoProveedor, datos.pagoProveedor,  datos.cargoProveedor )} variant="text" color="secondary">
-                        <DeleteIcon />
+                      <Button onClick={() => onDelete(datos.id, datos.nombreProveedor, datos.direccionProveedor,datos.correoProveedor, datos.telefonoProveedor, datos.pagoProveedor,  datos.cargoProveedor )} variant="text" color="ff0000">
+                      <DeleteIcon style={{color:'ff0000', backGround:'ff0000'}} />
                       </Button>
                     </li></td>
                   <td> <li>
@@ -103,8 +103,8 @@ const buscar = (e)=>{
                   <td>{datos.cargoProveedor}</td>
                   <td>
                   <td> <li>
-                      <Button onClick={() => onDelete(datos.id, datos.nombreProveedor, datos.direccionProveedor,datos.correoProveedor, datos.telefonoProveedor, datos.pagoProveedor,  datos.cargoProveedor)} variant="text" color="secondary">
-                        <DeleteIcon />
+                      <Button id="btn-borrar" onClick={() => onDelete(datos.id, datos.nombreProveedor, datos.direccionProveedor,datos.correoProveedor, datos.telefonoProveedor, datos.pagoProveedor,  datos.cargoProveedor)} variant="text" color="ff0000">
+                      <DeleteIcon style={{color:'ff0000', backGround:'ff0000'}} />
                       </Button>
                     </li></td>
                   <td> <li>

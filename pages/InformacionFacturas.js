@@ -203,7 +203,7 @@ const verFactura = (id) =>{
               <h4>No. Factura: <small>{doc.numeroFactura}</small> Cliente: <small> {doc.nombreClienteFactura}  </small>     Fecha:<small> {doc.fechaActual}</small></h4>
         
               <div className="der">
-              <button id="bfac" variant="outlined" color="primary">
+              <button id="bfacg" variant="outlined" color="primary">
                 {doc.estadoPago}
               </button>
               </div>
@@ -224,7 +224,7 @@ const verFactura = (id) =>{
               <h4>No. Factura: <small>{doc.numeroFactura}</small> Cliente: <small> {doc.nombreClienteFactura}  </small>     Fecha:<small> {doc.fechaActual}</small></h4>
         
               <div className="der">
-              <button id="bfac" variant="outlined" color="primary">
+              <button id="bfacg" variant="outlined" color="primary">
                 {doc.estadoPago}
               </button>
               </div>
@@ -257,7 +257,7 @@ const verFactura = (id) =>{
               <h4>No. Factura: <small>{doc.numeroFactura}</small> Cliente: <small> {doc.nombreClienteFactura}  </small>     Fecha:<small> {doc.fechaActual}</small></h4>
 
               <div className="der">
-              <button id="bfac" variant="outlined" color="primary">
+              <button id="bfacr" variant="outlined" color="primary">
               {doc.estadoPago}
                 </button>
               </div>
@@ -281,7 +281,7 @@ const verFactura = (id) =>{
               <h4>No. Factura: <small>{doc.numeroFactura}</small> Cliente: <small> {doc.nombreClienteFactura}  </small>     Fecha:<small> {doc.fechaActual}</small></h4>
 
               <div className="der">
-              <button id="bfac" variant="outlined" color="primary">
+              <button id="bfacr" variant="outlined" color="primary">
               {doc.estadoPago}
                 </button>
               </div>
@@ -297,7 +297,7 @@ const verFactura = (id) =>{
         >
         <>
         
-          <Button id="mover" onClick={()=>setOpen(false)} variant="contained" color="secondary">
+          <Button id="mover" onClick={()=>setOpen(false)} variant="contained" >
               Cerrar
           </Button>
           

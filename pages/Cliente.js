@@ -89,8 +89,8 @@ const buscar = (e)=>{
               
               <td>
                <td> <li>
-                  <Button onClick={() => onDelete(datos.id,datos.nombreCliente,  datos.correoCliente,datos.direccionCliente,datos.telefonoCliente )} variant="text" color="secondary">
-                    <DeleteIcon />
+                  <Button onClick={() => onDelete(datos.id,datos.nombreCliente,  datos.correoCliente,datos.direccionCliente,datos.telefonoCliente )} variant="text" color="ff0000">
+                  <DeleteIcon style={{color:'ff0000', backGround:'ff0000'}} />
                   </Button>
                 </li></td>
                <td> <li>

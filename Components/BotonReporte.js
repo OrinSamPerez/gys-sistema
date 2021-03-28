@@ -9,12 +9,13 @@ import Button from "@material-ui/core/Button";
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import {reporte} from "../Services/reporte"
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
-import {StyledMenu, StyledMenuItem, useStyles} from '../styles/ReporteStyle'
-
+import {StyledMenu, StyledMenuItem, useStyles} from '../styles/ReporteStyle';
 export default function BotonReporte(props){
   const [anchorEl, setAnchorEl] = useState(null);
   const estilo = useStyles();
-
+ 
+  
+  
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
       };
@@ -46,10 +47,12 @@ export default function BotonReporte(props){
   
             <div className="center-table">
               <Button
+                id="btn-reportes"
+                backgroundColor= '#FFB400'
                 aria-controls="customized-menu"
                 aria-haspopup="true"
                 variant="contained"
-                color="secondary"
+            
                 onClick={handleClick}
               >
                 <GetAppIcon />
@@ -62,20 +65,11 @@ export default function BotonReporte(props){
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <StyledMenuItem>
-                  <ListItemIcon>
-                  <Button>
-                  <SendIcon fontSize="small" />
-                  
-                  </Button>
-                    
-                  </ListItemIcon>
-                  <ListItemText primary="Enviar al correo" />
-                </StyledMenuItem>
+                
                 <StyledMenuItem>
                   <ListItemIcon>
                   <Button onClick={()=>reporte(props.idTable,props.title)}>
-                  <PictureAsPdfIcon fontSize="small" />
+                  <PictureAsPdfIcon fontSize="medium" style={{color:'black'}}/>
                   
                   </Button>
                     
@@ -86,14 +80,16 @@ export default function BotonReporte(props){
                 <StyledMenuItem>
                   <ListItemIcon>
                   
-                  <img className="img-excel" src="/excel.png" width="15px" height="15px"/>
+                  <img className="img-excel" src="/excel.png" width="20px" height="20px"/>
                   <ReactHTMLTableToExcel
                       id="test-table-xls-button"
                       className="download-table-xls-button"
                       table= {props.idTable}
                       filename={props.title}
                       sheet="tablexls"
-                      buttonText="Descargar en EXCEL"/>
+                      buttonText="Descargar en EXCEL"
+                      backgroundColor="#2B2B2B7E"
+                      />
                  
                     
                   </ListItemIcon>

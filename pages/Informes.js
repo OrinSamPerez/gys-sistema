@@ -12,11 +12,11 @@ export default function Informes(){
        labels:['Fresa', 'Arroz', 'Azucar', 'Guineo', 'Lechuga'],
        datasets:[{
            label:'Productos mas vendidos (Unidades)',
-           backgroundColor:'rgba(0,255,255)',
-           borderColor:'black',
+           backgroundColor:'#83BAFF',
+           borderColor:'#2B2B2B',
            borderWidth:2,
-           hoverBackgroundColor:'rgba(0,255,255,0.63)',
-           hoverborderColor:'#ffffff',
+           hoverBackgroundColor:'#00E1FF',
+           hoverborderColor:'#83BAFF',
            data:[700,600,650,725,510]
        }]
    };
@@ -28,11 +28,11 @@ export default function Informes(){
     labels:['Platano', 'Yuca', 'Aguacate', 'Maiz', 'Papa'],
     datasets:[{
         label:'Productos menos Vendidos (Unidades)',
-        backgroundColor:'rgba(0,255,225)',
-        borderColor:'black',
+        backgroundColor:'#83BAFF',
+        borderColor:'#2B2B2B',
         borderWidth:2,
-        hoverBackgroundColor:'rgba(0, 255, 255, 0.603)',
-        hoverborderColor:'#ffffff',
+        hoverBackgroundColor:'#00E1FF',
+        hoverborderColor:'#83BAFF',
         data:[150,300,125, 250,400],
         
 
@@ -44,11 +44,11 @@ const ventas=[10,20,30,40,50,60,70,50,42,95,78,100]
         labels:meses,
         datasets:[{
             label:'Ventas Mensuales (Ganancias)',
-            backgroundColor:'rgba(0,255,225)',
-            borderColor:'black',
+            backgroundColor:'#83BAFF',
+            borderColor:'#2B2B2B',
             borderWidth:2,
-            hoverBackgroundColor:'rgba(0, 255, 255, 0.603)',
-            hoverborderColor:'#ffffff',
+            hoverBackgroundColor:'#00E1FF',
+            hoverborderColor:'#83BAFF',
             data:ventas,
             
     
@@ -81,7 +81,7 @@ const ventas=[10,20,30,40,50,60,70,50,42,95,78,100]
 <div>
 <button  type="button" onClick={()=>mostrarInforme("informe3")} > Ventas Mensuales</button>
 </div>
-
+ 
 </section>
 
 <div id="informe1" >
