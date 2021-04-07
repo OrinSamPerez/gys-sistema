@@ -449,7 +449,7 @@ const clienteClick = (dato)=>{
                     </div>
         <style jsx>{`
         .span{
-            margin-top: 4px;
+            margin-top: 4px; 
             font-size:15px;
         }
         .muestra{

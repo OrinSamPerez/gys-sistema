@@ -52,6 +52,9 @@ const getData =()=>{
     firebaseG.auth().onAuthStateChanged(async (user) => {
      if(user != null){
           await db.collection(user.email).doc('Factura').collection('Factura').doc().set(objectFactura)
+          if(objectFactura.estadoPago = 'A plazo'){
+            await db.collection('Correo-API').doc(user.email).set(objectFactura)
+          }
           data.map(async dato=>{
               dataProducto.filter(async word => {
                     if (word.id_Producto === dato.id){

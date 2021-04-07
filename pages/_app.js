@@ -12,6 +12,8 @@ import Login from "./Login";
 import EmailVerifcado from '../Components/EmailVerifcado'
 import { firebaseG, userInfo } from "../BD-Firebase/firebase.conf";
 import { useState } from "react";
+import {correo} from '../Services/enviarCorreoAclientes';
+correo()
 function MyApp({ Component, pageProps }) {
   const [userName, setUserName] = useState(null);
   return (
