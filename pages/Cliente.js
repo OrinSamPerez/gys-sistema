@@ -10,6 +10,7 @@ import BotonReporte from '../Components/BotonReporte'
 import {addBD, borrarBD} from '../BD-Firebase/CRUD'
 import {busquedaCliente,busquedaId} from '../Services/busqueda'
 const db = firebaseG.firestore();
+
 export default function  Cliente() {
   const [data, setData] = useState([]);
   const [ currentId, setCurrenId] = useState("")
@@ -34,6 +35,8 @@ export default function  Cliente() {
     getData()
   },[])
 
+  const cantidadClientes= data.length;
+  
   const addClientes=async (objectClientes)=>{
     await addBD('Clientes', currentId,objectClientes, "🙂 Cliente Agregado Sastifactoriamente!",'🙂 Cliente Actualizado Sastifactoriamente!', ' Error al Agregar o Actualizar un Cliente')
   }

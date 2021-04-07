@@ -33,11 +33,11 @@ export default function ModalFactura(props){
           <div >
             <h3 >Desde</h3>
             <br></br>
-            <label >Empresa: <small>{datosEmpresa.nameEmpresa}</small></label> <br></br>
+            <label >Empresa: <small>{datosEmpresa.nombreEmpresa}</small></label> <br></br>
             <label >Direccion: <small>{datosEmpresa.direccionEmpresa}</small></label><br></br>
             <label >RNC: <small>{datosEmpresa.rncEmpresa} </small></label><br></br>
-            <label >Correo: <small>{datosEmpresa.emailEmpresa}</small> </label><br></br>
-            <label >Telefono: <small>{datosEmpresa.numberEmpresa}</small> </label><br></br>
+            <label >Correo: <small>{datosEmpresa.correoEmpresa}</small> </label><br></br>
+            <label >Telefono: <small>{datosEmpresa.numeroEmpresa}</small> </label><br></br>
             <label >NCF: <small>{datosEmpresa.ncfEmpresa} </small> </label>
            </div>
 

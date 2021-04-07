@@ -171,6 +171,10 @@ export default function FormsFacturacion(props){
             width:20px;
             height:20px;
         }
+        .lados{
+            margin-top:3%;
+
+        }
         </style>`);
         mywindow.document.write('</head><body >');
         mywindow.document.write(props.dproductosFactura.innerHTML);
@@ -337,11 +341,11 @@ const clienteClick = (dato)=>{
              <div className="ld nver">
                 <h3 >Desde</h3>
                 <br></br>
-                <label className="ld1">Empresa: </label> <input className="sinborde salto" value={datosEmpresa.nameEmpresa} disabled/>
+                <label className="ld1">Empresa: </label> <input className="sinborde salto" value={datosEmpresa.nombreEmpresa} disabled/>
                 <label >Direccion: </label><input className="sinborde"  value={datosEmpresa.direccionEmpresa} disabled/> <br></br>
                 <label className="in1">RNC: </label><input  className="sinborde" value={datosEmpresa.rncEmpresa} disabled/><br></br>
-                <label className="in2">Correo: </label><input className="sinborde salto2" value={datosEmpresa.emailEmpresa} disabled/>
-                <label className="in3">Telefono: </label><input className="sinborde" value={datosEmpresa.numberEmpresa} disabled/><br></br>
+                <label className="in2">Correo: </label><input className="sinborde salto2" value={datosEmpresa.correoEmpresa} disabled/>
+                <label className="in3">Telefono: </label><input className="sinborde" value={datosEmpresa.numeroEmpresa} disabled/><br></br>
                 <label className="in1">NCF: </label><input className="sinborde" value={datosEmpresa.ncfEmpresa} disabled/>
             </div>
         <div >
@@ -375,12 +379,12 @@ const clienteClick = (dato)=>{
   
   
 
+  
    
    
-   
-    <div className="lado-factura" >
-    <label  >No. Factura:</label>
-    <input  className="sinborde nfactura" placeholder="Numero de factura" value={`AC${fechaA.getFullYear()}${fechaA.getDay()}${fechaA.getMonth()+1}${fechaA.getHours()}${fechaA.getMinutes()}${fechaA.getSeconds()}`} disabled/><br></br>
+    <div className="lado-factura " >
+    <label   >No. Factura:</label>
+    <input  className="sinborde nfactura lados" placeholder="Numero de factura" value={`AC${fechaA.getFullYear()}${fechaA.getDay()}${fechaA.getMonth()+1}${fechaA.getHours()}${fechaA.getMinutes()}${fechaA.getSeconds()}`} disabled/><br></br>
     <label >Fecha:</label> 
     <input className="sinborde inputF" value={`${fecha}  ${hora}`}/> <br></br>
     <label >Forma de pago:</label>
@@ -388,13 +392,14 @@ const clienteClick = (dato)=>{
                <option value={pago}>{pago}</option>
            )}
            </select>
-   
+   <br></br>
     <label >Plazo de Pago:</label>
     <select className=" sinborde salto3" id="plazoPagoFactura" onChange={handleInputChange} name="plazoPagoFactura" >
                <option value="10 dias">10 dias</option>
                <option value="15 dias">15 dias</option>
                <option value="25 dias">25 dias</option>
            </select>
+           <br></br>
     <label >Vencimiento:</label>
     <input  className="sinborde salto4 ladoi" type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/>
     <label >Estado de Pago:</label>

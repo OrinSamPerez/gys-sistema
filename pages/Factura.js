@@ -108,7 +108,7 @@ data.map(total=>{
       <h1>Facturacion</h1>
       <div id="dproductosFactura">
       <FormsFacturacion {...{addFactura, currentId, data,TOTAL, SUBTOTAL,ITBIS, dproductosFactura}}/>
-      
+       
         <table className="tablas" >
         <thead>
         <tr>
@@ -133,8 +133,8 @@ data.map(total=>{
               <td >RD$ {datos.total}</td>
               <td className="nmostrar">
                 <li >
-                  <Button onClick={() => onDelete(datos.id)} variant="text" color="secondary">
-                    <DeleteIcon />
+                  <Button onClick={() => onDelete(datos.id)} variant="text" >
+                    <DeleteIcon style={{color:'ff0000'}}/>
                   </Button>
                 </li>
               </td>
