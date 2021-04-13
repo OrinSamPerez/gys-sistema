@@ -1,7 +1,10 @@
 .colum{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr ;
     
+}
+.inputF{
+    margin-left: 11.5%;
 }
 .inputizq{
 width: 90%;
@@ -9,10 +12,35 @@ height: 9px;
 margin-bottom: 1px;
 
 } 
+#tipoPagoFactura{
+    margin-left: 0.5%;
+}
+#plazoPagoFactura{
+    margin-left: 1.5%;
+}
 .izq{
 text-align: left;
 margin-right: 15px;
 
+}
+.lado-factura{
+    text-align: left;
+
+}
+.ladoi{
+    margin-left:4% ;
+}
+.lado-factura input{
+    width: 75%;
+    height: 10px;
+}
+
+.lado-factura  select{
+    width: 75%;
+    height: 22px; 
+    margin:0;
+    padding: 0;
+    margin-bottom: 6px;
 }
 .nver{
     display: none;
@@ -150,7 +178,8 @@ margin-left: 75px;
     padding-right: 5.5px;
 }
 .nfactura{
-    padding-right: 15px;
+    margin-left:5%;
+    margin-top: 18%;
 }
 .sel1{
     padding-right: 5px;

@@ -10,6 +10,7 @@ import BotonReporte from '../Components/BotonReporte'
 import {addBD, borrarBD} from '../BD-Firebase/CRUD'
 import {busquedaCliente,busquedaId} from '../Services/busqueda'
 const db = firebaseG.firestore();
+
 export default function  Cliente() {
   const [data, setData] = useState([]);
   const [ currentId, setCurrenId] = useState("")
@@ -34,6 +35,8 @@ export default function  Cliente() {
     getData()
   },[])
 
+  const cantidadClientes= data.length;
+  
   const addClientes=async (objectClientes)=>{
     await addBD('Clientes', currentId,objectClientes, "🙂 Cliente Agregado Sastifactoriamente!",'🙂 Cliente Actualizado Sastifactoriamente!', ' Error al Agregar o Actualizar un Cliente')
   }
@@ -89,8 +92,8 @@ const buscar = (e)=>{
               
               <td>
                <td> <li>
-                  <Button onClick={() => onDelete(datos.id,datos.nombreCliente,  datos.correoCliente,datos.direccionCliente,datos.telefonoCliente )} variant="text" color="secondary">
-                    <DeleteIcon />
+                  <Button onClick={() => onDelete(datos.id,datos.nombreCliente,  datos.correoCliente,datos.direccionCliente,datos.telefonoCliente )} variant="text" color="ff0000">
+                  <DeleteIcon style={{color:'ff0000', backGround:'ff0000'}} />
                   </Button>
                 </li></td>
                <td> <li>

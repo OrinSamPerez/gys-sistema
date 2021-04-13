@@ -79,6 +79,11 @@ export default function EmpresaConf(){
         refL.put(values.imagenEmpresa).snapshot.ref.getDownloadURL().then(async imgUrl =>{
               values.imagenEmpresa = imgUrl;
               await db.collection(values.correoEmpresa).doc("datosUsuario").update(values)
+              firebaseG.auth().onAuthStateChanged(async user=>{
+                if(user != null){
+                   await db.collection('Empresa').doc(user.uid).set(values)
+                }
+              })
         })
        }
       if(values.imagenLogo === null && values.imagenEmpresa === null){

@@ -109,7 +109,6 @@ const db = firebaseG.firestore()
                       values.contraseñaEmpresa = '*****'
                       values.confContraseña = '*****'
                       await db.collection(values.correoEmpresa).doc('datosUsuario').set(values)
-                      await db.collection('Empresa').doc(values.correoEmpresa).set(values)
                     })
                     .catch(error =>{
                       error.code === 'auth/email-already-in-use'?swal("¡Atencion!", "Este correo ya esta siendo utilizado, favor iniciar seccion o colocar otro correo", "error")

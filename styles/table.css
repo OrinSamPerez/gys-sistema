@@ -39,7 +39,7 @@ tr:nth-child(even){
 .buscar{
    padding: 5px;
    top:30%;
-right:90%;
+   right:90%;
    
 }
 .buscar input{
@@ -63,7 +63,7 @@ right:90%;
 
 .button{
     
-    background: #0c59be;
+    background: #FFB400;
     margin-right: 100px;
     
     width: 50px;

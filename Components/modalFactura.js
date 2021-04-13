@@ -1,11 +1,15 @@
 import {useState} from 'react'
 import {firebaseG} from '../BD-Firebase/firebase.conf'
 import DescriptionIcon from '@material-ui/icons/Description';
+import Button from '@material-ui/core/Button'
 const db =  firebaseG.firestore();
 const auth =  firebaseG.auth();                                                                                                                                                                                                                                                         
 export default function ModalFactura(props){
     const [datos, setDatos] = useState([])
     const [datosEmpresa, setDatosEmpresa]= useState([])
+    const [estado, setEstado]= useState({
+      estadoPago:''
+    })
     if(datos.length === 0){
         auth.onAuthStateChanged(user =>{
             if(user != null){
@@ -16,11 +20,20 @@ export default function ModalFactura(props){
                 db.collection(user.email).doc('datosUsuario').get().then(docu=>{
                     setDatosEmpresa(docu.data())
                 })
-            }
+            }  
         })
     }
-
-
+    const handleChange = (e)=>{
+      setEstado({estadoPago:e.target.value})
+    }
+    const handleInput = ()=>{
+      auth.onAuthStateChanged(async user=>{
+        if(user != null){
+          await db.collection('Factura').doc(props.idFacturas).update({ estadoPago:estado.estadoPago});
+          await db.collection('Correo-API').doc(props.idFacturas).delete();
+        }
+      })
+    }
     return(
         
        <div className="sc">
@@ -33,11 +46,11 @@ export default function ModalFactura(props){
           <div >
             <h3 >Desde</h3>
             <br></br>
-            <label >Empresa: <small>{datosEmpresa.nameEmpresa}</small></label> <br></br>
+            <label >Empresa: <small>{datosEmpresa.nombreEmpresa}</small></label> <br></br>
             <label >Direccion: <small>{datosEmpresa.direccionEmpresa}</small></label><br></br>
             <label >RNC: <small>{datosEmpresa.rncEmpresa} </small></label><br></br>
-            <label >Correo: <small>{datosEmpresa.emailEmpresa}</small> </label><br></br>
-            <label >Telefono: <small>{datosEmpresa.numberEmpresa}</small> </label><br></br>
+            <label >Correo: <small>{datosEmpresa.correoEmpresa}</small> </label><br></br>
+            <label >Telefono: <small>{datosEmpresa.numeroEmpresa}</small> </label><br></br>
             <label >NCF: <small>{datosEmpresa.ncfEmpresa} </small> </label>
            </div>
 
@@ -61,10 +74,19 @@ export default function ModalFactura(props){
                 <label >Plazo de Pago: <small>{datos.plazoPagoFactura}</small></label><br></br>
                 <label >Vencimiento: {datos.vencimientoFactura}</label><br></br>
                 <label >Estado de Pago:</label>
-                <select className="estadoPago" id="estadoPago"  name="estadoPago" value={datos.estadoPago} >
-                <option value="Pagada">Pagada</option>
-                <option value="A plazo">No pagada</option>
+                {
+                  datos.estadoPago == 'Pagada'?
+                    <span>Pagada</span>
+                  :<select className="estadoPago" id="estadoPago"  name="estadoPago" onChange={handleChange} value={datos.estadoPago} >
+                    <option value="Pagada">Pagada</option>
+                    <option value="A plazo">No pagada</option>
                 </select>
+                }
+                <div className="guardar-factura">
+                    <Button onClick={handleInput} variant="contained" color="primary">
+                      Guardar
+                    </Button>
+                </div>
               </div>
           </div>
           <hr></hr>
@@ -107,6 +129,7 @@ export default function ModalFactura(props){
           </div>
        </>
        }
+
        </div>
       
     )

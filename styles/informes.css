@@ -16,7 +16,7 @@
       
      }
    .columnas button:hover{
-        color:#ff3eaf;
+        color:#FFB400;
         
        }
   .columnas div{
@@ -29,7 +29,6 @@
     -webkit-transition: all 0.2s;
     transition: all 0.2s;
     text-align: center;
-   
   }
   .columnas div:hover{
     width: 132px;
