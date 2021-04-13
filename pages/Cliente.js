@@ -64,7 +64,7 @@ const buscar = (e)=>{
   return (
     <>       
       
-      <BotonReporte title="Clientes" buscar={buscar} idTable={'#tCliente'} form={<FormsClientes {...{addClientes, currentId}}/>}/>
+      <BotonReporte title="Clientes" buscar={buscar} idTable={'#tCliente'} idTableExcel={'tCliente'} form={<FormsClientes {...{addClientes, currentId}}/>}/>
     
       <div className="scroll">
         <table id="tCliente">

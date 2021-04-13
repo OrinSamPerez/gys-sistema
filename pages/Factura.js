@@ -13,7 +13,8 @@ const [ data, setData ] = useState([ ])
 const [ dataStock, setDataStock ] = useState([ ])
 const [ currentId, setCurrenId] = useState("")
 const [dataProducto, setDataProducto]=useState([])
- 
+const meses=['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+
 const getData =()=>{
 
   firebaseG.auth().onAuthStateChanged(async (user) => {
@@ -62,9 +63,14 @@ const getData =()=>{
                       dataStock.filter(async stock=>{
                           if (stock.id === dato.id){
                             const salida = parseInt(dato.cantidad) + parseInt(stock.Salida_Inicial)
+                            
                             await db.collection(user.email).doc('Producto').collection('Producto').doc(dato.id).update({cantidadProducto:cantidadUpdate})
                             await db.collection(user.email).doc('Stock').collection('Stock').doc(dato.id).update({Stock: cantidadUpdate,Salida_Inicial:salida})
-                           await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc(dato.id).delete()
+                            await db.collection(user.email).doc('Datos-Ventas').collection(meses[fecha.getMonth()]).doc().set({totales:dato.total})
+                            await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc(dato.id).delete()
+                          
+
+                          
                           }
                         })
                 } 

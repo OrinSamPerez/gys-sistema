@@ -47,7 +47,7 @@ const getData =()=>{
   
   return (
     <>
-      <BotonReporte title="Categoria" buscar={buscar} idTable={'#tCategoria'} form={<FormsCategoria {...{ addCategoria, currentId, data }} />}/>
+      <BotonReporte title="Categoria" buscar={buscar} idTable={'#tCategoria'} idTableExcel={'tCategoria'} form={<FormsCategoria {...{ addCategoria, currentId, data }} />}/>
 
 
         <div className="scroll">

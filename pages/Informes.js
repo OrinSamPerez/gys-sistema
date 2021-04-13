@@ -1,7 +1,7 @@
 import {Bar, Line} from 'react-chartjs-2';
 import React from 'react';
 import {firebaseG} from '../BD-Firebase/firebase.conf'
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
  
 const db = firebaseG.firestore();
 
@@ -33,11 +33,19 @@ const valuesProductosMenosVendidos={
 const [datosInforme, setdatosInforme]= useState([]);
 const [productosMasV, setproductosMasV]= useState(valuesProductosMasVendidos);
 const [productosMenosV, setproductosMenosV]= useState(valuesProductosMenosVendidos);
-
+const [data3,setData3]=useState({})
+const mesData= new Object()
+const meses=['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 const documentos=[] 
-if (datosInforme.length === 0){
+meses.forEach(mes=>{
+    mesData[mes] = 0;
+    
+})
+let control=1;
+useEffect(()=>{
 firebaseG.auth().onAuthStateChanged(async (user) => {
     if(user != null){
+
      await db.collection(user.email).doc('Stock').collection('Stock').orderBy("Salida_Inicial", "desc").get().then(data=>{
          
         data.forEach(dataInforme=>{
@@ -45,40 +53,66 @@ firebaseG.auth().onAuthStateChanged(async (user) => {
             documentos.push({...dataInforme.data()})
           })
           setdatosInforme(documentos) 
-          setproductosMasV({ 
-            descripcionP1:documentos[0].Descripcion,
-            cantidadVP1:documentos[0].Salida_Inicial,
-            descripcionP2:documentos[1].Descripcion,
-            cantidadVP2:documentos[1].Salida_Inicial,
-            descripcionP3:documentos[2].Descripcion,
-            cantidadVP3:documentos[2].Salida_Inicial,
-            descripcionP4:documentos[3].Descripcion,
-            cantidadVP4:documentos[3].Salida_Inicial,
-            descripcionP5:documentos[4].Descripcion,
-            cantidadVP5:documentos[4].Salida_Inicial,
-        })
-        const n = documentos.length;
-        setproductosMenosV({ 
-            descripcionPM1:documentos[n-1].Descripcion,
-            cantidadVPM1:documentos[n-1].Salida_Inicial,
-            descripcionPM2:documentos[n-2].Descripcion,
-            cantidadVPM2:documentos[n-2].Salida_Inicial,
-            descripcionPM3:documentos[n-3].Descripcion,
-            cantidadVPM3:documentos[n-3].Salida_Inicial,
-            descripcionPM4:documentos[n-4].Descripcion,
-            cantidadVPM4:documentos[n-4].Salida_Inicial,
-            descripcionPM5:documentos[n-5].Descripcion,
-            cantidadVPM5:documentos[n-5].Salida_Inicial,
-        })
-        console.log(n)
-        console.log(n-1)
+          if (documentos.length >= 10)
+            {setproductosMasV({ 
+                descripcionP1:documentos[0].Descripcion,
+                cantidadVP1:documentos[0].Salida_Inicial,
+                descripcionP2:documentos[1].Descripcion,
+                cantidadVP2:documentos[1].Salida_Inicial,
+                descripcionP3:documentos[2].Descripcion,
+                cantidadVP3:documentos[2].Salida_Inicial,
+                descripcionP4:documentos[3].Descripcion,
+                cantidadVP4:documentos[3].Salida_Inicial,
+                descripcionP5:documentos[4].Descripcion,
+                cantidadVP5:documentos[4].Salida_Inicial,
+            })
+            const n = documentos.length;
+            setproductosMenosV({ 
+                descripcionPM1:documentos[n-1].Descripcion,
+                cantidadVPM1:documentos[n-1].Salida_Inicial,
+                descripcionPM2:documentos[n-2].Descripcion,
+                cantidadVPM2:documentos[n-2].Salida_Inicial,
+                descripcionPM3:documentos[n-3].Descripcion,
+                cantidadVPM3:documentos[n-3].Salida_Inicial,
+                descripcionPM4:documentos[n-4].Descripcion,
+                cantidadVPM4:documentos[n-4].Salida_Inicial,
+                descripcionPM5:documentos[n-5].Descripcion,
+                cantidadVPM5:documentos[n-5].Salida_Inicial,
+            })}
+        
       })
+      do{
+        meses.forEach(async mes=>{
+            await db.collection(user.email).doc('Datos-Ventas').collection(mes).get().then(dat=>{
+                dat.forEach(ventasM=>{
+                    mesData[mes]+= ventasM.data().totales;
+                })
+                const dataVentasM={
+                    labels:meses,
+                    datasets:[{
+                        label:'Ventas Mensuales (Ganancias) 2021',
+                        backgroundColor:'#83BAFF',
+                        borderColor:'#2B2B2B',
+                        borderWidth:2,
+                        hoverBackgroundColor:'#00E1FF',
+                        hoverborderColor:'#83BAFF',
+                        data:[mesData.Enero,mesData.Febrero,mesData.Marzo,mesData.Abril,mesData.Mayo,mesData.Junio,mesData.Julio,mesData.Agosto,mesData.Septiembre,mesData.Octubre,mesData.Noviembre,mesData.Diciembre],
+                        
+                
+                    }]
+            }; 
+            setData3(dataVentasM)
+              }) 
+              
+        })
+    }while(control != 1)
+    
      
+        
     }
     })
-}
 
-    
+},  [])
    const data1={
        labels:[productosMasV.descripcionP1, productosMasV.descripcionP2, productosMasV.descripcionP3, productosMasV.descripcionP4, productosMasV.descripcionP5],
        datasets:[{
@@ -104,25 +138,11 @@ firebaseG.auth().onAuthStateChanged(async (user) => {
         data:[productosMenosV.cantidadVPM1,productosMenosV.cantidadVPM2,productosMenosV.cantidadVPM3,productosMenosV.cantidadVPM4,productosMenosV.cantidadVPM5],
         
 
-    }]
-};
-const meses=['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-const ventas=[10,20,30,40,50,60,70,50,42,95,78,100]
-    const data3={
-        labels:meses,
-        datasets:[{
-            label:'Ventas Mensuales (Ganancias) 2021',
-            backgroundColor:'#83BAFF',
-            borderColor:'#2B2B2B',
-            borderWidth:2,
-            hoverBackgroundColor:'#00E1FF',
-            hoverborderColor:'#83BAFF',
-            data:ventas,
-            
-    
-        }]
+    }] 
 };
 
+
+   
    const mostrarInforme = (idInforme)=>{
    document.getElementById("informe1").style.display='none'
    document.getElementById("informe2").style.display='none'
@@ -137,6 +157,7 @@ const ventas=[10,20,30,40,50,60,70,50,42,95,78,100]
      responsive:true 
   
    }
+
     return(
       <>
   <h1 className="columnas-text">Informes</h1>
@@ -154,32 +175,33 @@ const ventas=[10,20,30,40,50,60,70,50,42,95,78,100]
 </div>
  
 </section>
-
-<div id="informe1" >
-<Bar
-    data={data1}
-    width='100%'
-    height='325px'
-    options={opciones}
-    />
-</div>
-<div id="informe2" >
-<Bar
-    data={data2}
-    width='100%'
-    height='325px'
-    options={opciones}  
-    />
-</div>
-<div id="informe3" >
-<Line
-    data={data3}
-    width='100%'
-    height='325px'
-    options={opciones}
-    />
-</div>
-
+{ datosInforme.length >= 10 ?<>
+    <div id="informe1" >
+    <Bar
+        data={data1}
+        width='100%'
+        height='325px'
+        options={opciones}
+        />
+    </div>
+    <div id="informe2" >
+    <Bar
+        data={data2}
+        width='100%'
+        height='325px'
+        options={opciones}  
+        />
+    </div>
+    <div id="informe3" >
+    <Line
+      data={data3}
+        width='100%'
+        height='325px'
+        options={opciones}
+        />
+    </div>
+</>:<h1>hola</h1>
+}
 </>
     )
 }

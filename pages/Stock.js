@@ -36,7 +36,7 @@ const [datosBuscar, setDatosBuscar] = useState([])
   // console.log(datosBuscar)
     return(
         <>
-    <BotonReporte title="Stock" buscar={buscar} idTable={'#tStock'} />
+    <BotonReporte title="Stock" buscar={buscar} idTable={'#tStock'} idTableExcel={'tStock'}/>
         <table id="tStock">
             <thead>
                 <tr>

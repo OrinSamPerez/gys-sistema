@@ -46,9 +46,6 @@ export default function AppBarNav({user}){
         <nav className="main-navegacion">
              
             <div className="info-nav">
-                <div title="Notificaciones">
-                        <NotificationsNoneSharpIcon  style={{cursor:'pointer', color:'#FFB400',marginRight:'10px'}}fontSize="medium" />
-                </div>
                 <div>
 
                     <Avatar className={classes.purple}><h3>{avatar.toUpperCase()}</h3></Avatar>
