@@ -5,7 +5,7 @@ import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import CategoryIcon from '@material-ui/icons/Category';
 import Link from 'next/link'
 import {firebaseG} from '../BD-Firebase/firebase.conf'
-import {useState} from 'react'
+import {useState , useEffect} from 'react'
 
 export default function Home() {
   const meses=['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
@@ -51,7 +51,28 @@ firebaseG.auth().onAuthStateChanged(async (user) => {
           setcantidadProducto(producto.size)
         });
 }})
+const [ datos, setDatos ] = useState([ ])
+const getData =()=>{
+  firebaseG.auth().onAuthStateChanged(async (user) => {
+   if(user != null){
+     db.collection(user.email).doc('Producto').collection('Producto').orderBy("fechaProducto", "desc").onSnapshot((querySnapshot)=>{
+       const docs = [];
+       querySnapshot.forEach(doc =>{
+        console.log(doc.data()) 
+         if (doc.data().cantidadProducto < 11) {
+         docs.push({...doc.data(),id:doc.id})  
+        console.log(doc.data())  } 
+       })
+       setDatos(docs);
+       console.log(datos)
+     });
+   }
+   })
+ }
 
+ useEffect(()=>{
+   getData()
+ },[])
   return (
     <>
   
@@ -114,15 +135,16 @@ firebaseG.auth().onAuthStateChanged(async (user) => {
             </thead>
 
            <tbody>
-              <tr >
-                <td>Pera</td>
-                <td>5</td>
-                </tr>
-                <tr >
-                <td>Limon</td>
-                <td>4</td>
-                </tr>  
-                </tbody>   
+           
+               {datos.map(dato=>
+                 <><tr >
+                   <td>{dato.nombreProducto}</td>
+                   <td>{dato.cantidadProducto}</td>
+                   </tr>
+                </>
+               )}
+               
+           </tbody>   
           </table>
           
           

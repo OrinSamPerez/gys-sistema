@@ -16,7 +16,7 @@ export const reporte= (idTable, nameTable)=>{
             logo.src='logo.png';
             const docu = new jsPDF()
             docu.addImage(logo, 'JPEG',30,5,15,15);
-            docu.text(10,25,`${doc.data().nameEmpresa}`)
+            docu.text(10,25,`${doc.data().nombreEmpresa}`)
             
             docu.text(150,25,`${fechaA.getDate()}/${meses[fechaA.getMonth()]}/${fechaA.getUTCFullYear()}` )
             docu.text(75,35, `Reporte de ${nameTable}`)

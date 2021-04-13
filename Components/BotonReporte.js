@@ -84,9 +84,10 @@ export default function BotonReporte(props){
                   <ReactHTMLTableToExcel
                       id="test-table-xls-button"
                       className="download-table-xls-button"
-                      table= {props.idTable}
+                      //table= "tCategoria"
+                      table= {props.idTableExcel}
                       filename={props.title}
-                      sheet="tablexls"
+                      sheet={props.title}
                       buttonText="Descargar en EXCEL"
                       backgroundColor="#2B2B2B7E"
                       />
