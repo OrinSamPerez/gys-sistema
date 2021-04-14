@@ -13,7 +13,8 @@ import Button from '@material-ui/core/Button'
 import ModalFactura  from '../Components/modalFactura' 
 import Modal from '@material-ui/core/Modal'
 import SearchIcon from "@material-ui/icons/Search";
-import { busquedaCliente, busquedaFecha, busquedaNoFactura} from '../Services/busqueda'
+import { busquedaCliente, busquedaFecha, busquedaNoFactura} from '../Services/busqueda';
+import ModalCotizacion from '../Components/modalCotizacion'
 const db = firebaseG.firestore();
 const auth = firebaseG.auth()
 function TabPanel(props) {
@@ -73,7 +74,8 @@ export default function InformacionFacturas() {
   const [buscarXPFacturas,setBuscarXPFacturas] = useState([])
   const [buscarPFacturas,setBuscarPFacturas] = useState([])
   const [cotizaciones, setCotizaciones]=useState([])
-  //Facturas de admin
+  const [idCotizacion, setIDCotizaciones]=useState('')
+  const [openCotizacion, setOpenCotizacion] =useState(false)  //Facturas de admin
 if(facturaADMIN.length === 0){
   auth.onAuthStateChanged(user =>{
     if(user != null){
@@ -106,6 +108,10 @@ if(facturaADMIN.length === 0){
 const verFactura = (id) =>{
   seIdFactura(id)
   setOpen(true)
+}
+const verCotizacion=(id)=>{
+  setIDCotizaciones(id)
+  setOpenCotizacion(true)
 }
   //Finalizacion
   const classes = useStyles();
@@ -304,22 +310,31 @@ const verFactura = (id) =>{
       <TabPanel value={value} index={3}>
       <h2>Cotizaciones</h2>
       <div >
-      <label className="buscar">
-      <input id="search" type="text"  placeholder="Buscar" onChange={buscarXP} />
-     <button className="button"> <i className="icon">  <SearchIcon /></i></button>
-      </label>
+            <label className="buscar">
+                  <input id="search" type="text"  placeholder="Buscar" onChange={buscarXP} />
+                  <button className="button"> <i className="icon">  <SearchIcon /></i></button>
+            </label>
       </div>
-      {cotizaciones.length === 0?
-          cotizaciones.length === 0?
-           <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
-            <Avatar>
+      {
+        cotizaciones.length === 0?
+          <h1>No existe cotizaiones</h1>
+          :cotizaciones.map(doc=>
+            <Paper onClick={()=>verCotizacion(doc.id)} title="Ver detalles de la factura" style={{padding:10, display:'flex', width:700, cursor:'pointer'}} elevation={3}>
+              <Avatar>
                 <DescriptionIcon/>
-            </Avatar>
-            <h3>No hay Cotizaciones</h3>
+              </Avatar>
+              <h4>No. Factura: <small>{doc.id}</small> Cliente: <small> {doc.email}  </small>     Fecha:<small> {doc.diaActual}</small></h4>
+
+              <div className="der">
+              <button id="bfacr" variant="outlined" color="primary">
+              {doc.estadoPago}
+                </button>
+              </div>
+              
+              {/* //{console.log(doc)} */}
           </Paper>
-            :console.log("hay")
-            :console.log("nada")
-     }
+            )
+      }
       </TabPanel>
       <Modal
         open={openM}
@@ -331,6 +346,18 @@ const verFactura = (id) =>{
           </Button>
           
           <div className="colorfondomodal"><ModalFactura  idFacturas={idFactura} /></div>
+        
+        </>
+      </Modal>
+      <Modal
+        open={openCotizacion}
+        >
+        <>
+        
+          <Button id="mover" onClick={()=>setOpenCotizacion(false)} variant="contained" >
+              Cerrar
+          </Button>
+          <div className="colorfondomodal"><ModalCotizacion  idFacturas={idCotizacion} /></div>
         
         </>
       </Modal>

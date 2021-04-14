@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {firebaseG} from '../BD-Firebase/firebase.conf'
 import DescriptionIcon from '@material-ui/icons/Description';
 import Button from '@material-ui/core/Button'
@@ -10,19 +10,19 @@ export default function ModalFactura(props){
     const [estado, setEstado]= useState({
       estadoPago:''
     })
-    if(datos.length === 0){
-        auth.onAuthStateChanged(user =>{
-            if(user != null){
-               db.collection(user.email).doc('Factura').collection('Factura').doc(props.idFacturas).get().then(doc =>{
-                    setDatos(doc.data())
-                
-                })
-                db.collection(user.email).doc('datosUsuario').get().then(docu=>{
-                    setDatosEmpresa(docu.data())
-                })
-            }  
+useEffect(()=>{
+  auth.onAuthStateChanged(user =>{
+    if(user != null){
+       db.collection(user.email).doc('Factura').collection('Factura').doc(props.idFacturas).get().then(doc =>{
+            setDatos(doc.data())
+        
         })
-    }
+        db.collection(user.email).doc('datosUsuario').get().then(docu=>{
+            setDatosEmpresa(docu.data())
+        })
+    }  
+})
+},[])
     const handleChange = (e)=>{
       setEstado({estadoPago:e.target.value})
     }

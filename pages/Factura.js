@@ -68,10 +68,13 @@ const getData =()=>{
                             const salida = parseInt(dato.cantidad) + parseInt(stock.Salida_Inicial)
                             
                             await db.collection(user.email).doc('Producto').collection('Producto').doc(dato.id).update({cantidadProducto:cantidadUpdate})
+                            console.log(1)
                             await db.collection(user.email).doc('Stock').collection('Stock').doc(dato.id).update({Stock: cantidadUpdate,Salida_Inicial:salida})
+                            console.log(2)
                             await db.collection(user.email).doc('Datos-Ventas').collection(meses[fecha.getMonth()]).doc().set({totales:dato.total})
+                            console.log(3)
                             await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc(dato.id).delete()
-                          console.log("dado")
+                            console.log(4)
 
                           
                           }
