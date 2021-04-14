@@ -106,6 +106,7 @@ export default function FormsFacturacion(props){
     const [productAdd, setProductAdd]= useState('Añadir producto')
     const [dataCliente, setDataCliente] = useState([])
     const [dataBuscarCliente,setDataBuscarCliente] = useState([])
+    const [AddClientes, setAddClientes] = useState(false)
     const handleInputChange = (e)=>{
         const { name , value } = e.target;
         setValues({...values, [name]:value}) 
@@ -207,7 +208,8 @@ export default function FormsFacturacion(props){
     const handleSubmit = (e)=>{
         e.preventDefault()
         values.nombreEmpresa = datosEmpresa.nombreEmpresa
-        if(values.nombreClienteFactura != ""){
+        console.log(AddClientes)
+        if(values.nombreClienteFactura != "" && AddClientes === false ){
             firebaseG.auth().onAuthStateChanged(async user =>{
                 if(user != null){
                     db.collection(user.email).doc('Clientes').collection('Clientes').doc().set({
@@ -336,7 +338,8 @@ const clienteClick = (dato)=>{
     values.nombreClienteFactura = dato.nombreCliente
     values.correoClienteFactura = dato.correoCliente;
     values.dirrecionCliente = dato.dirrecionCliente;
-    values.telefonoCliente = dato.telefonoCliente
+    values.telefonoCliente = dato.telefonoCliente;
+    setAddClientes(true)
 } 
     return(
        <>

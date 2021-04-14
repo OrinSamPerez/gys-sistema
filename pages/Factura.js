@@ -54,6 +54,7 @@ const getData =()=>{
     firebaseG.auth().onAuthStateChanged(async (user) => {
      if(user != null){
         objectFactura.correoEmpresa = user.email
+        console.log(objectFactura)
           await db.collection(user.email).doc('Factura').collection('Factura').doc(objectFactura.numeroFactura).set(objectFactura)
           if(objectFactura.estadoPago == 'A plazo'){ 
             await db.collection('Correo-API').doc(objectFactura.numeroFactura).set(objectFactura)
@@ -70,7 +71,7 @@ const getData =()=>{
                             await db.collection(user.email).doc('Stock').collection('Stock').doc(dato.id).update({Stock: cantidadUpdate,Salida_Inicial:salida})
                             await db.collection(user.email).doc('Datos-Ventas').collection(meses[fecha.getMonth()]).doc().set({totales:dato.total})
                             await db.collection(user.email).doc('Producto-Factura-Temporal').collection('Producto-Factura-Temporal').doc(dato.id).delete()
-                          
+                          console.log("dado")
 
                           
                           }
