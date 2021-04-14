@@ -29,6 +29,9 @@ auth.onAuthStateChanged(async user =>{
    })
   }
 })
+const  close = ()=>{
+  setOpen(false)
+}
   return (
     <>
     
@@ -112,7 +115,7 @@ auth.onAuthStateChanged(async user =>{
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-          <EmpresaConf/>
+          <EmpresaConf close={close}/>
       </Modal>
     </>
   );

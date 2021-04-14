@@ -39,6 +39,8 @@ export default function  Cliente() {
   
   const addClientes=async (objectClientes)=>{
     await addBD('Clientes', currentId,objectClientes, "🙂 Cliente Agregado Sastifactoriamente!",'🙂 Cliente Actualizado Sastifactoriamente!', ' Error al Agregar o Actualizar un Cliente')
+    setCurrenId("")
+    
   }
 
   const onDelete = (id, nombreCliente, correoCliente, direccionCliente, telefonoCliente) => {

@@ -97,17 +97,15 @@ const getData =()=>{
      db.collection(user.email).doc('Producto').collection('Producto').orderBy("fechaProducto", "desc").onSnapshot((querySnapshot)=>{
        const docs = [];
        querySnapshot.forEach(doc =>{
-        console.log(doc.data()) 
          if (doc.data().cantidadProducto < 11) {
          docs.push({...doc.data(),id:doc.id})  
-        console.log(doc.data())  } 
-       })
+          }
        setDatos(docs);
-       console.log(datos)
-     });
-   }
-   })
- }
+      });
+    })
+  }
+})  
+  }
 
  useEffect(()=>{
    getData()
