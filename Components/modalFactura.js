@@ -31,6 +31,8 @@ useEffect(()=>{
         if(user != null){
           await db.collection('Factura').doc(props.idFacturas).update({ estadoPago:estado.estadoPago});
           await db.collection('Correo-API').doc(props.idFacturas).delete();
+          props.close()
+
         }
       })
     }

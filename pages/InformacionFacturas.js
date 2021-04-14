@@ -133,6 +133,10 @@ const verCotizacion=(id)=>{
     const resultadoBusquedaNoF = busquedaNoFactura(facturasNoPagadas, e.target.value)
     setBuscarPFacturas(resultadoBusquedaNoF)
   }
+  const close = ()=>{
+    setOpenCotizacion(false)
+    setOpen(false)
+  }
   return (
     <div className={classes.root}>
       <Tabs
@@ -345,7 +349,7 @@ const verCotizacion=(id)=>{
               Cerrar
           </Button>
           
-          <div className="colorfondomodal"><ModalFactura  idFacturas={idFactura} /></div>
+          <div className="colorfondomodal"><ModalFactura  idFacturas={idFactura} close={close} /></div>
         
         </>
       </Modal>
@@ -357,7 +361,7 @@ const verCotizacion=(id)=>{
           <Button id="mover" onClick={()=>setOpenCotizacion(false)} variant="contained" >
               Cerrar
           </Button>
-          <div className="colorfondomodal"><ModalCotizacion  idFacturas={idCotizacion} /></div>
+          <div className="colorfondomodal"><ModalCotizacion  close={close} idFacturas={idCotizacion} /></div>
         
         </>
       </Modal>

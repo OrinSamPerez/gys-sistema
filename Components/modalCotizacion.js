@@ -47,7 +47,8 @@ const Facturar =()=>{
         if(user !=  null){
             await db.collection(user.email).doc('Factura').collection('Factura').doc(enviar.numeroFactura).set(enviar)
             await db.collection(user.email).doc('Clientes-Facturas').collection('Clientes-Facturas').doc(enviar.numeroFactura).delete();
-            await db.collection(enviar.email).doc('ListaCotizacion').collection('ListaCotizacion').doc(enviar.numeroFactura).delete();
+            await db.collection(enviar.correoClienteFactura).doc('ListaCotizacion').collection('ListaCotizacion').doc(enviar.numeroFactura).delete();
+            props.close()
         }
     })
 }
