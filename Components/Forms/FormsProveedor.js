@@ -30,20 +30,7 @@ export default function FormsProveedor(props){
                     if(values.telefonoProveedor != ''){
                         if(values.pagoProveedor != ''){
                             if(values.cargoProveedor != ''){
-                               const  result = props.data.filter(word => {
-                                   if( word.nombreProveedor.toLowerCase()  === values.nombreProveedor.toLowerCase() )
-                                   { 
-                                       return word.nombreProveedor
-                                    }
-                                    else{
-                                        
-                                        return ['undefined']
-                                    }
-                                })
-                                    console.log(result)
-                                    result[0].nombreProveedor === values.nombreProveedor?
-                                    swal("¡Alerta!", "¡Nombre de empresa existente!", "info")
-                                    :props.addProveedor(values);  
+                                    props.addProveedor(values);  
                                     setValues({...valueInitial})
                             }else{ swal("¡Alerta!", "No puedes dejar el a que cargo pertenece el proveedor vacio ", "info")}
                         }else{ swal("¡Alerta!", "No puedes dejar la forma de pago vacia", "info")}
