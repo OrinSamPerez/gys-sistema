@@ -35,13 +35,10 @@ export default function FormsProveedor(props){
                                    { 
                                        return word.nombreProveedor
                                     }
-                                    else{
-                                        
-                                        return ['undefined']
-                                    }
-                                })
-                                    console.log(result)
-                                    result[0].nombreProveedor === values.nombreProveedor?
+                                    
+                                }) 
+                                    
+                                    result[0] === values.nombreProveedor?
                                     swal("¡Alerta!", "¡Nombre de empresa existente!", "info")
                                     :props.addProveedor(values);  
                                     setValues({...valueInitial})
