@@ -72,15 +72,23 @@ export default function InformacionFacturas() {
   const [buscarAllFacturas,setBuscarAllFacturas] = useState([])
   const [buscarXPFacturas,setBuscarXPFacturas] = useState([])
   const [buscarPFacturas,setBuscarPFacturas] = useState([])
-
+  const [cotizaciones, setCotizaciones]=useState([])
   //Facturas de admin
 if(facturaADMIN.length === 0){
   auth.onAuthStateChanged(user =>{
     if(user != null){
+      const cotizacione=[];
+      db.collection(user.email).doc('Clientes-Facturas').collection('Clientes-Facturas').onSnapshot(cotizacion=>{
+        cotizacion.forEach(cotizar =>{
+          cotizacione.push({...cotizar.data(),id:cotizar.id})
+        })
+        setCotizaciones(cotizacione)
+      })
       db.collection(user.email).doc('Factura').collection('Factura').orderBy('fechaActual', 'desc').onSnapshot(documents =>{
         const docs = []
         const pagadas = [];
-        const noPagadas = []
+        const noPagadas = [];
+
         documents.forEach(doc =>{
           docs.push({...doc.data(),id:doc.id})
          if( doc.data().estadoPago === 'Pagada'){ pagadas.push({...doc.data(),id:doc.id})}
@@ -132,6 +140,7 @@ const verFactura = (id) =>{
         <Tab label="Todas las facturas" {...a11yProps(0)} />
         <Tab label="Facturas pagadas" {...a11yProps(1)} />
         <Tab label="Facturas por cobrar" {...a11yProps(2)} />
+        <Tab label="Cotizaciones" {...a11yProps(3)} />
       </Tabs>
       <TabPanel  value={value} index={0}>
         <h2>Todas las facturas</h2>
@@ -291,6 +300,26 @@ const verFactura = (id) =>{
             
             )
           }
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+      <h2>Cotizaciones</h2>
+      <div >
+      <label className="buscar">
+      <input id="search" type="text"  placeholder="Buscar" onChange={buscarXP} />
+     <button className="button"> <i className="icon">  <SearchIcon /></i></button>
+      </label>
+      </div>
+      {cotizaciones.length === 0?
+          cotizaciones.length === 0?
+           <Paper style={{padding:10, marginLeft:'auto'}} elevation={3}>
+            <Avatar>
+                <DescriptionIcon/>
+            </Avatar>
+            <h3>No hay Cotizaciones</h3>
+          </Paper>
+            :console.log("hay")
+            :console.log("nada")
+     }
       </TabPanel>
       <Modal
         open={openM}
