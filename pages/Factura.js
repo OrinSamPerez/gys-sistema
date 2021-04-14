@@ -49,11 +49,13 @@ const getData =()=>{
   },[])
   const addFactura =  (objectFactura)=>{
     objectFactura.horaActual = fecha.getHours()+fecha.getMinutes()+fecha.getSeconds()
+    objectFactura.diaInicial = fecha.getDate();
+    objectFactura.diaFinal = parseInt(objectFactura.plazoPagoFactura) + objectFactura.diaInicial;
     firebaseG.auth().onAuthStateChanged(async (user) => {
      if(user != null){
         objectFactura.correoEmpresa = user.email
           await db.collection(user.email).doc('Factura').collection('Factura').doc(objectFactura.numeroFactura).set(objectFactura)
-          if(objectFactura.estadoPago = 'A plazo'){
+          if(objectFactura.estadoPago == 'A plazo'){ 
             await db.collection('Correo-API').doc(objectFactura.numeroFactura).set(objectFactura)
           }
           data.map(async dato=>{

@@ -34,7 +34,8 @@ const getData =()=>{
  },[])
 
   const addCategoria = async (objectCategoria) => {
-    await addBD('Categoria', currentId,objectCategoria, "🙂 Categoria Agregada Sastifactoriamente!",'🙂 Categoria Actualizada Sastifactoriamente!', ' Error al Agregar o Actualizar una Categoria')
+    await addBD('Categoria', currentId,objectCategoria, "🙂 Categoria Agregada Sastifactoriamente!",'🙂 Categoria Actualizada Sastifactoriamente!', ' Error al Agregar o Actualizar una Categoria');
+    setCurrenId("")
   };
   const onDelete = (id,descripcionCategoria) => {
     const objetoEliminar ={id,descripcionCategoria}

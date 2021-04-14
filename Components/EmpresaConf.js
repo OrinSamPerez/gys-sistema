@@ -9,9 +9,10 @@ import Button from "@material-ui/core/Button";
 import {firebaseG} from '../BD-Firebase/firebase.conf'
 import DoneIcon from '@material-ui/icons/Done';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { PinDropSharp } from '@material-ui/icons';
 const db = firebaseG.firestore()
 const auth = firebaseG.auth()
-export default function EmpresaConf(){
+export default function EmpresaConf(props){
     const [dataEmpresa, setDataEmpresa] = useState([])
     if(dataEmpresa.length === 0){
           auth.onAuthStateChanged(async user =>{
@@ -24,6 +25,8 @@ export default function EmpresaConf(){
         }
       })
     }
+    const [logo, setLogo]=useState(null)
+    const [imagen, setImagen]=useState(null)
     const valueInitial = { 
         nombreEmpresa:dataEmpresa.nombreEmpresa,
         correoEmpresa:dataEmpresa.correoEmpresa,
@@ -65,32 +68,58 @@ export default function EmpresaConf(){
        values.estado = true
        setEnviar(true)
        if(values.imagenLogo != null){
-          const refL = firebaseG.storage().ref(`/ImagenesLogos/${values.imagenLogo.name}`)
-          console.log(values.imagenLogo)
+          const refL = await firebaseG.storage().ref(`/ImagenesLogos/${values.imagenLogo.name}`)
           refL.put(values.imagenLogo).snapshot.ref.getDownloadURL().then(async imgUrl =>{
                 values.imagenLogo = imgUrl;
-                await db.collection(values.correoEmpresa).doc("datosUsuario").update(values)
+                if( values.imagenEmpresa != null )
+                  {
+                    const refL = firebaseG.storage().ref(`/ImagenesEmpresas/${values.imagenEmpresa.name}`)
+                         await refL.put(values.imagenEmpresa).snapshot.ref.getDownloadURL().then(async imUrl =>{
+                          if(imUrl != null){
+                            console.log(imUrl)
+                            values.imagenEmpresa = await imUrl;
+                            firebaseG.auth().onAuthStateChanged(async user =>{
+                              if(user != null){
+                                await db.collection('Empresa').doc(user.uid).set(values)
+                                await db.collection(values.correoEmpresa).doc("datosUsuario").update(values)
+                                props.close()
 
+                              }
+                            })
+                          }
+                    })
+                  }
+                        else if( values.imagenEmpresa != null){
+                        const refL = firebaseG.storage().ref(`/ImagenesEmpresas/${values.imagenEmpresa.name}`)
+                        refL.put(values.imagenEmpresa).snapshot.ref.getDownloadURL().then(async imUrl =>{
+                              values.imagenEmpresa = imUrl;
+                              if(user != null){
+                                await db.collection('Empresa').doc(user.uid).set(values)
+                                await db.collection(values.correoEmpresa).doc("datosUsuario").update(values)
+                                props.close()
+
+                              }
+                        })    
+                       }
+                  else{
+                    firebaseG.auth().onAuthStateChanged(async user =>{
+                      if(user != null){
+                        await db.collection('Empresa').doc(user.uid).set(values)
+                        await db.collection(values.correoEmpresa).doc("datosUsuario").update(values)
+                        props.close()
+
+                      }
+                    })
+                  }
           })
        }
-       if(values.imagenLogo != null){
-        const refL = firebaseG.storage().ref(`/ImagenesEmpresas/${values.imagenEmpresa.name}`)
-        console.log(values.imagenLogo)
-        refL.put(values.imagenEmpresa).snapshot.ref.getDownloadURL().then(async imgUrl =>{
-              values.imagenEmpresa = imgUrl;
-              await db.collection(values.correoEmpresa).doc("datosUsuario").update(values)
-              firebaseG.auth().onAuthStateChanged(async user=>{
-                if(user != null){
-                   await db.collection('Empresa').doc(user.uid).set(values)
-                }
-              })
-        })
-       }
-      if(values.imagenLogo === null && values.imagenEmpresa === null){
+ 
+       else{
+        await db.collection('Empresa').doc(user.uid).set(values)
         await db.collection(values.correoEmpresa).doc("datosUsuario").update(values)
-
-      }
-     }
+        props.close()
+       }
+  }
     return(   
     <div className={StylesRegistro.container}>
         <div className={StylesRegistro.formMainEmpresa}>

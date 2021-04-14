@@ -171,9 +171,9 @@ export default function FormsProducto(props) {
       if(values.proveedorProducto != ''){
         if(values.categoriaProducto != ''){
           values.id_Producto= `${fechaDate.getFullYear()}${fechaDate.getMonth()+1}${fechaDate.getDate()}${fechaDate.getHours()}${fechaDate.getSeconds()}-${values.nombreProducto}`;
-          props.addProducto(values);
-          setValues({ ...valueInitial });
-          setImage(null);
+            props.addProducto(values);
+            setValues({ ...valueInitial });
+            setImage(null);
         }else{ swal("¡Alerta!", "No puedes dejar la categoria vacia", "info")}
       }else{ swal("¡Alerta!", "No puedes dejar el nombre proveedor vacio", "info")}
     }else{ swal("¡Alerta!", "No puedes dejar el nombre del producto vacio", "info")}
@@ -321,7 +321,7 @@ export default function FormsProducto(props) {
         </div>
         <Button onClick={handleSubmit} variant="text" color="default">
          <Fab color="default" style={{width:'35px', height:'6px'}} aria-label="">
-             {props.currentId === ""? (<><AddCircleOutlineIcon style={{fontSize:25, color:'green'}} /> {console.log('editar')} </>) : (<EditIcon style={{fontSize:25}} color="primary" /> )}
+             {props.currentId === ""? (<><AddCircleOutlineIcon style={{fontSize:25, color:'green'}} /> </>) : (<EditIcon style={{fontSize:25}} color="primary" /> )}
              </Fab>
            </Button>
           

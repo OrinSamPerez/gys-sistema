@@ -57,8 +57,21 @@ export default function FormsFacturacion(props){
     useEffect(()=>{
         getDataProducto()
     },[])
-
+    const [datosEmpresa, setdatosEmpresa] = useState([])
+    useEffect(()=>{
+        firebaseG.auth().onAuthStateChanged(async (user)=>{
+            if(user != null){
+              firebaseG.firestore().collection(user.email).doc('datosUsuario').get().then((doc)=>{
+                if(doc.exists){
+              
+                }
+                setdatosEmpresa(doc.data())
+            })
+        }
+        })
+    })
     const valueInitial = {
+        nombreEmpresa:'',
         numeroFactura:'',
         nombreClienteFactura:'',
         correoClienteFactura:'',
@@ -193,6 +206,7 @@ export default function FormsFacturacion(props){
      
     const handleSubmit = (e)=>{
         e.preventDefault()
+        values.nombreEmpresa = datosEmpresa.nombreEmpresa
         if(values.nombreClienteFactura != ""){
             firebaseG.auth().onAuthStateChanged(async user =>{
                 if(user != null){
@@ -207,7 +221,7 @@ export default function FormsFacturacion(props){
             })
         }
 
-        values.numeroFactura = (`AC${fechaA.getFullYear()}${fechaA.getDay()}${fechaA.getMonth()+1}${fechaA.getHours()}${fechaA.getMinutes()}${fechaA.getSeconds()}`)
+        values.numeroFactura = (`${values.nombreEmpresa}-${fechaA.getFullYear()}${fechaA.getDay()}${fechaA.getMonth()+1}${fechaA.getHours()}${fechaA.getMinutes()}${fechaA.getSeconds()}`)
         const estadoPago = document.getElementById("estadoPago").value;
         const tipoPagoFactura = document.getElementById("tipoPagoFactura").value;
         values.tipoPagoFactura = tipoPagoFactura
@@ -306,20 +320,7 @@ export default function FormsFacturacion(props){
         
     }
 
-const [datosEmpresa, setdatosEmpresa] = useState([])
-if(datosEmpresa.length === 0 ){
-    firebaseG.auth().onAuthStateChanged(async (user)=>{
-        if(user != null){
-          firebaseG.firestore().collection(user.email).doc('datosUsuario').get().then((doc)=>{
-            if(doc.exists){
-          
-            }
-            setdatosEmpresa(doc.data())
-        })
-    }
-    })
 
-} 
 const buscarCliente = (e)=>{
     const cliente = e.target.value;
     let numeroPalabraBuscar = cliente.length;
@@ -398,20 +399,21 @@ const clienteClick = (dato)=>{
            )}
            </select>
    <br></br>
-    <label >Plazo de Pago:</label>
-    <select className=" sinborde salto3" id="plazoPagoFactura" onChange={handleInputChange} name="plazoPagoFactura" >
-               <option value="10 dias">10 dias</option>
-               <option value="15 dias">15 dias</option>
-               <option value="25 dias">25 dias</option>
-           </select>
-           <br></br>
-    <label >Vencimiento:</label>
-    <input  className="sinborde salto4 ladoi" type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/>
-    <label >Estado de Pago:</label>
+   <label >Estado de Pago:</label>
     <select className=" sinborde " id="estadoPago" onChange={handleInputChange} name="estadoPago" >
                <option value="Pagada">Pagada</option>
                <option value="A plazo">No pagada</option>
            </select>
+    <label >Plazo de Pago:</label>
+    <select className=" sinborde salto3" id="plazoPagoFactura" onChange={handleInputChange} name="plazoPagoFactura" >
+               <option value="10">10 dias</option>
+               <option value="15">15 dias</option>
+               <option value="25">25 dias</option>
+           </select>
+           <br></br>
+    {/* <label >Vencimiento:</label> */}
+    {/* <input  className="sinborde salto4 ladoi" type="text"  value={values.vencimientoFactura} onChange={handleInputChange} placeholder="Vencimiento Factura" name="vencimientoFactura"/> */}
+
      </div>
 
      </div> 

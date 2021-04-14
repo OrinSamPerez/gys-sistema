@@ -16,7 +16,7 @@ export default function Provedor() {
   const [dataBuscar, setDataBuscar] = useState([])
   const getData =()=>{
 
-   firebaseG.auth().onAuthStateChanged(async (user) => {
+   firebaseG.auth().onAuthStateChanged(async (user) => { 
     if(user != null){
       db.collection(user.email).doc('Proveedor').collection('Proveedor').orderBy("nombreProveedor", "desc").onSnapshot((querySnapshot)=>{
         const docs = [];
@@ -34,6 +34,7 @@ export default function Provedor() {
   },[])
   const addProveedor =  (objectoProveedor)=>{
     addBD('Proveedor', currentId,objectoProveedor, "🙂 Proveedor Agregado Sastifactoriamente!",'🙂 Proveedor Agregado Sastifactoriamente!', ' Error al Agregar o Actualizar un Proveedor')
+    setCurrenId("")
 
   }
   const onDelete = (id,nombreProveedor, direccionProveedor,correoProveedor, telefonoProveedor, pagoProveedor,  cargoProveedor) => {

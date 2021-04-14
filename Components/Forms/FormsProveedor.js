@@ -30,8 +30,21 @@ export default function FormsProveedor(props){
                     if(values.telefonoProveedor != ''){
                         if(values.pagoProveedor != ''){
                             if(values.cargoProveedor != ''){
-                                props.addProveedor(values);  
-                                setValues({...valueInitial})
+                               const  result = props.data.filter(word => {
+                                   if( word.nombreProveedor.toLowerCase()  === values.nombreProveedor.toLowerCase() )
+                                   { 
+                                       return word.nombreProveedor
+                                    }
+                                    else{
+                                        
+                                        return ['undefined']
+                                    }
+                                })
+                                    console.log(result)
+                                    result[0].nombreProveedor === values.nombreProveedor?
+                                    swal("¡Alerta!", "¡Nombre de empresa existente!", "info")
+                                    :props.addProveedor(values);  
+                                    setValues({...valueInitial})
                             }else{ swal("¡Alerta!", "No puedes dejar el a que cargo pertenece el proveedor vacio ", "info")}
                         }else{ swal("¡Alerta!", "No puedes dejar la forma de pago vacia", "info")}
                     }else{ swal("¡Alerta!", "No puedes dejar el telefono del proveedor vacio", "info")}
@@ -64,7 +77,7 @@ export default function FormsProveedor(props){
         <div> 
          <label className="relleno2">Nombre</label> <input  type="text" required value={values.nombreProveedor} onChange={handleInputChange} placeholder="Nombre del proveedor" name="nombreProveedor"/>
          <label className="relleno1" >Direccion</label> <input  type="text" required value={values.direccionProveedor}  onChange={handleInputChange} placeholder="Direccion" name="direccionProveedor"/>
-        
+         
          <label className="relleno" >Correo</label><input  type="email" required value={values.correoProveedor}  onChange={handleInputChange} placeholder="Correo" name="correoProveedor"/>
          </div>
          <div >

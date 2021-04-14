@@ -4,9 +4,11 @@ import {firebaseG} from '../../BD-Firebase/firebase.conf'
 import EditIcon from '@material-ui/icons/Edit';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Fab from '@material-ui/core/Fab'
+import swal from 'sweetalert';
 
-const db =  firebaseG.firestore();
+const db =  firebaseG.firestore(); 
 
+let  result 
 export default function FormsCategoria(props){
     const valueInitial = {
         descripcionCategoria:''
@@ -19,10 +21,18 @@ export default function FormsCategoria(props){
     }
     const handleSubmit = (e)=>{
         e.preventDefault();
-       values.descripcionCategoria === ''? 
+       values.descripcionCategoria === ''?  
         swal("¡Alerta!", "No puedes dejar campos vacios!", "info") 
-       : props.addCategoria(values)
-         setValues({...valueInitial})   
+       :result = props.data.map(word => {
+        if( word.descripcionCategoria === values.descripcionCategoria)
+        { 
+            return word.descripcionCategoria
+         }
+     }) 
+       result[0] === values.descripcionCategoria?
+       swal("¡Alerta!", "¡Esta categoria ya existe!", "info") 
+      : props.addCategoria(values)
+      setValues({...valueInitial})  
     }
 
     const getDataId = async (id) =>{
@@ -39,6 +49,7 @@ export default function FormsCategoria(props){
         }
         else{
             getDataId(props.currentId)
+            
         }
     },[props.currentId])
 

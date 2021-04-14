@@ -39,12 +39,14 @@ export default function Provedor() {
   const addProducto = async  (objectoProducto)=>{ 
     addBDProducto('Producto', currentId,objectoProducto, "🙂 Producto Agregado Sastifactoriamente!",'🙂 Producto Agregado Sastifactoriamente!', ' Error al Agregar o Actualizar un Producto')
     addBDStock('Stock', currentId,objectoProducto)
+    setCurrenId("")
 
     }
   const onDelete = (id,nombreProducto, cantidadProducto , precioVentaProducto, precioCompraProducto,descuentoProducto, proveedorProducto, categoriaProducto, fechaProducto) => {
     const objetoEliminar ={id,nombreProducto, cantidadProducto , precioVentaProducto, precioCompraProducto,descuentoProducto, proveedorProducto, categoriaProducto, fechaProducto}
     borrarBD('Producto',id, objetoEliminar, '🙂 Producto Eliminado Sastifactoriamente!')
-    borrarBD('Stock',id, objetoEliminar)
+    // borrarBD('Stock',id, objetoEliminar)
+
   }
 
 const buscar = (e)=>{

@@ -40,8 +40,10 @@ export const addBD = (nombreBD, currentId,objeto, mensajeAdd, mensajeActualizar,
       if (resp) {
         auth.onAuthStateChanged(async user =>{
           if(user != null){
-            await db.collection(user.email).doc(`${nombreBD}-Inactivo`).collection(`${nombreBD}-Inactivo`).doc(id).set(objetoEliminar)
+            console.log(user.email, nombreBD, id)
             await db.collection(user.email).doc(nombreBD).collection(nombreBD).doc(id).delete();
+            await db.collection(user.email).doc(`${nombreBD}-Inactivo`).collection(`${nombreBD}-Inactivo`).doc(id).set(objetoEliminar)
+            console.log('Se borro', id)
             alertaError(mensaje)
           }
         })
