@@ -8,21 +8,60 @@ import {firebaseG} from '../BD-Firebase/firebase.conf'
 import {useState , useEffect} from 'react'
 
 export default function Home() {
-  const meses=['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-const ventas=[10,20,30,40,50,60,70,50,42,95,78,100]
-    const data={
-        labels:meses,
-        datasets:[{
-            label:'Ventas Mensuales (Ganancias)',
-            backgroundColor:'rgba(0,0,0,0.1)',
-            borderColor:'#FFB400',
-            borderWidth:2,
-            hoverborderColor:'#ffffff',
-            data:ventas,
-            
-    
-        }]
-};
+const meses=['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+const [data3,setData3]=useState({})
+const [datosInforme, setdatosInforme]= useState([]);
+const documentos=[]
+const mesData= new Object()
+meses.forEach(mes=>{
+  mesData[mes] = 0;
+  
+})
+let control=1;
+useEffect(()=>{
+  firebaseG.auth().onAuthStateChanged(async (user) => {
+      if(user != null){
+        await db.collection(user.email).doc('Stock').collection('Stock').orderBy("Salida_Inicial", "desc").get().then(data=>{
+         
+          data.forEach(dataInforme=>{
+              
+              documentos.push({...dataInforme.data()})
+            })
+            setdatosInforme(documentos) 
+            if (documentos.length >= 10)
+              {
+do{
+  meses.forEach(async mes=>{
+      await db.collection(user.email).doc('Datos-Ventas').collection(mes).get().then(dat=>{
+          dat.forEach(ventasM=>{
+              mesData[mes]+= ventasM.data().totales;
+          })
+          const dataVentasM={
+              labels:meses,
+              datasets:[{
+                  label:'Ventas Mensuales (Ganancias) 2021',
+                  backgroundColor:'#83BAFF',
+                  borderColor:'#2B2B2B',
+                  borderWidth:2,
+                  hoverBackgroundColor:'#00E1FF',
+                  hoverborderColor:'#83BAFF',
+                  data:[mesData.Enero,mesData.Febrero,mesData.Marzo,mesData.Abril,mesData.Mayo,mesData.Junio,mesData.Julio,mesData.Agosto,mesData.Septiembre,mesData.Octubre,mesData.Noviembre,mesData.Diciembre],
+                  
+          
+              }]
+      }; 
+      setData3(dataVentasM)
+        }) 
+        
+  })
+}while(control != 1)
+}
+              })
+}})
+
+},  [])
+
+
 const opciones={
   maintainAspectRatio:false,
    responsive:true 
@@ -113,13 +152,17 @@ const getData =()=>{
 <br></br>
 <hr></hr>
 <div>
-    <Line
-      data={data}
-      width='100%'
-      height='325px'
-      options={opciones}  
-    />
+{ datosInforme.length >= 10 ?<>
+<Line
+      data={data3}
+        width='100%'
+        height='325px'
+        options={opciones}
+        />
+        </>:<h1 id="mensajeAdv">NO HAY SUFICIENTES PRODUCTOS REGISTRADOS PARA GENERAR UN INFORME</h1>
+}
 </div>
+
 <br></br>
 <hr></hr>
 <div>

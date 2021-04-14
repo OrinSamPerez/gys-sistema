@@ -200,7 +200,7 @@ firebaseG.auth().onAuthStateChanged(async (user) => {
         options={opciones}
         />
     </div>
-</>:<h1>hola</h1>
+</>:<h1 id="mensajeAdv">NO HAY SUFICIENTES PRODUCTOS REGISTRADOS PARA GENERAR UN INFORME</h1>
 }
 </>
     )

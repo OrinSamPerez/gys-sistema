@@ -38,7 +38,7 @@ auth.onAuthStateChanged(async user =>{
 
         <div className="Logo">
             <img src="/inventario.svg"/>
-            <h1>SGIF</h1>
+            <h1>SGI&F</h1>
         </div>
         <li>
         <Link href="/">

@@ -37,7 +37,7 @@ export default function Provedor() {
   },[])
 
   const addProducto = async  (objectoProducto)=>{ 
-    addBDProducto('Producto', currentId,objectoProducto, "🙂 Producto Agregado Sastifactoriamente!",'🙂 Producto Agregado Sastifactoriamente!', ' Error al Agregar o Actualizar un Producto')
+    addBDProducto('Producto', currentId,objectoProducto, "🙂 Producto Agregado Sastifactoriamente!",'🙂 Producto Actualizado Sastifactoriamente!', ' Error al Agregar o Actualizar un Producto')
     addBDStock('Stock', currentId,objectoProducto)
 
     }
