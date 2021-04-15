@@ -29,7 +29,7 @@ useEffect(()=>{
     const handleInput = ()=>{
       auth.onAuthStateChanged(async user=>{
         if(user != null){
-          await db.collection('Factura').doc(props.idFacturas).update({ estadoPago:estado.estadoPago});
+          await db.collection(user.email).doc('Factura').collection('Factura').doc(props.idFacturas).update({ estadoPago:'Pagada'});
           await db.collection('Correo-API').doc(props.idFacturas).delete();
           props.close()
 
@@ -79,16 +79,13 @@ useEffect(()=>{
                 {
                   datos.estadoPago == 'Pagada'?
                     <span>Pagada</span>
-                  :<select className="estadoPago" id="estadoPago"  name="estadoPago" onChange={handleChange} value={datos.estadoPago} >
-                    <option value="Pagada">Pagada</option>
-                    <option value="A plazo">No pagada</option>
-                </select>
-                }
-                <div className="guardar-factura">
+                  :<div className="guardar-factura">
                     <Button onClick={handleInput} variant="contained" color="primary">
-                      Guardar
+                        Pagar
                     </Button>
                 </div>
+                }
+
               </div>
           </div>
           <hr></hr>
